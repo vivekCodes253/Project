@@ -16,5 +16,6 @@ public class ScrumController {
 		return "Landing";
 	}
 	
+	public void hell2o() {}
 	
 }
