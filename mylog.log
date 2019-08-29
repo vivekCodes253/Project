@@ -1,2 +1,4 @@
 [INFO ] 2019-08-29 06:09:55,539 com.scrum.log.LoggerMain - Logging initialized.
 [WARN ] 2019-08-29 06:09:55,540 com.scrum.log.LoggerMain - New Intro
+[INFO ] 2019-08-29 08:41:01,616 com.scrum.log.LoggerMain - Logging initialized.
+[WARN ] 2019-08-29 08:41:17,678 com.scrum.log.LoggerMain - New Introduction
