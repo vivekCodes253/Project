@@ -18,8 +18,8 @@ public class ScrumController {
 	
 	@RequestMapping("/")
 	public String hello() {	
-		LoggerMain.logger.warn("New Introduction");
-		return "Landing";
+		//LoggerMain.logger.warn("New Introduction");
+		return "file";
 	}
 	
 	@RequestMapping("/tasks")
