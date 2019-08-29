@@ -12,7 +12,7 @@ public class ScrumController {
 	@RequestMapping("/")
 	public String hello() {
 		LoggerMain lm = new LoggerMain();
-		LoggerMain.logger.warn("New Intro");
+		LoggerMain.logger.warn("New Introduction");
 		return "Landing";
 	}
 }
