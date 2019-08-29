@@ -19,13 +19,19 @@ public class ScrumController {
 	@RequestMapping("/")
 	public String hello() {	
 		//LoggerMain.logger.warn("New Introduction");
-		return "file";
+		return "particles";
 	}
 	
 	@RequestMapping("/tasks")
 	String taskHandler(Model model) {
 		model.addAttribute("tasks", taskRepo.allTasks());
 		return "tasks";
+	}
+	
+	@RequestMapping("/addTasks")
+	public String addTasks() {	
+		//LoggerMain.logger.warn("New Introduction");
+		return "AddTask";
 	}
 	
 }
