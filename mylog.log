@@ -81,9 +81,4 @@
 [INFO ] 2019-08-29 14:55:22,134 com.scrum.log.LoggerMain - Logging initialized.
 [INFO ] 2019-08-29 14:56:27,909 com.scrum.log.LoggerMain - Logging initialized.
 [INFO ] 2019-08-29 14:59:04,790 com.scrum.log.LoggerMain - Logging initialized.
-<<<<<<< HEAD
-MORE LOG
-=======
-[INFO ] 2019-08-29 14:59:39,226 com.scrum.log.LoggerMain - Logging initialized.
-UMM
->>>>>>> 52bec69d53f82da766af7915ac20bac26eadcaa2
+OK
