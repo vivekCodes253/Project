@@ -8,11 +8,13 @@ import com.scrum.log.LoggerMain;
 
 @Controller
 public class ScrumController {
+	LoggerMain lm = new LoggerMain();
 	
 	@RequestMapping("/")
-	public String hello() {
-		LoggerMain lm = new LoggerMain();
+	public String hello() {	
 		LoggerMain.logger.warn("New Introduction");
 		return "Landing";
 	}
+	
+	
 }
