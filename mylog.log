@@ -81,4 +81,41 @@
 [INFO ] 2019-08-29 14:55:22,134 com.scrum.log.LoggerMain - Logging initialized.
 [INFO ] 2019-08-29 14:56:27,909 com.scrum.log.LoggerMain - Logging initialized.
 [INFO ] 2019-08-29 14:59:04,790 com.scrum.log.LoggerMain - Logging initialized.
-[INFO ] 2019-08-29 14:59:39,226 com.scrum.log.LoggerMain - Logging initialized.
+[INFO ] 2019-08-29 14:59:39,226 com.scrum.log.LoggerMain - Logging initialized.[INFO ] 2019-08-29 16:06:12,882 com.scrum.log.LoggerMain - Logging initialized.
+[INFO ] 2019-08-29 16:08:44,939 com.scrum.log.LoggerMain - Logging initialized.
+[INFO ] 2019-08-29 16:09:13,765 com.scrum.log.LoggerMain - Logging initialized.
+[INFO ] 2019-08-29 16:13:54,219 com.scrum.log.LoggerMain - Logging initialized.
+[INFO ] 2019-08-29 16:14:40,585 com.scrum.log.LoggerMain - Logging initialized.
+[INFO ] 2019-08-29 16:16:01,765 com.scrum.log.LoggerMain - Logging initialized.
+[INFO ] 2019-08-29 16:17:11,117 com.scrum.log.LoggerMain - Logging initialized.
+[INFO ] 2019-08-29 16:28:16,400 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:28:28,472 com.scrum.log.LoggerMain - Task addition requested
+[INFO ] 2019-08-29 16:28:40,970 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:28:45,729 com.scrum.log.LoggerMain - Task addition requested
+[INFO ] 2019-08-29 16:28:51,689 com.scrum.log.LoggerMain - Task addition requested
+[INFO ] 2019-08-29 16:36:29,202 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:36:50,667 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:38:00,744 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:38:12,121 com.scrum.log.LoggerMain - Task addition requested
+[INFO ] 2019-08-29 16:38:31,389 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:38:33,757 com.scrum.log.LoggerMain - Task addition requested
+[INFO ] 2019-08-29 16:39:49,549 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:39:51,989 com.scrum.log.LoggerMain - Task addition requested
+[INFO ] 2019-08-29 16:40:46,481 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:41:21,627 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:45:00,677 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:45:09,759 com.scrum.log.LoggerMain - Root page called
+[INFO ] 2019-08-29 16:47:05,475 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:47:27,392 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:50:05,382 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:52:54,198 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 16:53:21,691 com.scrum.log.LoggerMain - All tasks requested
+[INFO ] 2019-08-29 16:53:21,808 com.scrum.log.LoggerMain - All tasks requested
+[INFO ] 2019-08-29 17:00:03,900 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 17:00:22,574 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 17:02:29,650 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 17:02:57,527 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 17:06:15,027 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 17:07:18,779 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 17:09:24,253 com.scrum.log.LoggerMain - New session
+[INFO ] 2019-08-29 17:10:22,000 com.scrum.log.LoggerMain - New session

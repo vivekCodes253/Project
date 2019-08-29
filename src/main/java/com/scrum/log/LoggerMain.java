@@ -22,10 +22,9 @@ public class LoggerMain {
 		try {
 			logProperties.load(new FileInputStream(LOG_PROPERTIES_FILE));
 			PropertyConfigurator.configure(logProperties);
-			logger.info("Logging initialized.");
+			logger.info("New session");
 		} catch (IOException e) {
 			logger.error("Unable to load logging property :", e);
 		}
-
 	}
 }

@@ -5,11 +5,12 @@ import java.sql.Date;
 public class Task {
 	private String jira_Number;
 	private String task_name;
-	private String Owner;
+	private String owner;
 	private Date start_date;
 	private Date end_date;
 	private String task_status;
 	private String update_space;
+	
 	public String getJira_Number() {
 		return jira_Number;
 	}
@@ -23,10 +24,10 @@ public class Task {
 		this.task_name = task_name;
 	}
 	public String getOwner() {
-		return Owner;
+		return owner;
 	}
 	public void setOwner(String owner) {
-		Owner = owner;
+		this.owner = owner;
 	}
 	public Date getStart_date() {
 		return start_date;
@@ -52,12 +53,13 @@ public class Task {
 	public void setUpdate_space(String update_space) {
 		this.update_space = update_space;
 	}
+
 	public Task(String jira_Number, String task_name, String owner, Date start_date, Date end_date, String task_status,
 			String update_space) {
-		super();
+		
 		this.jira_Number = jira_Number;
 		this.task_name = task_name;
-		Owner = owner;
+		this.owner = owner;
 		this.start_date = start_date;
 		this.end_date = end_date;
 		this.task_status = task_status;

@@ -1,4 +1,5 @@
 package com.scrum.jdbc;
+
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -12,58 +13,62 @@ import org.springframework.stereotype.Component;
 
 import com.scrum.business.Task;
 import com.scrum.business.TasksData;
+import com.scrum.log.LoggerMain;
 
 @Component
-public class JDBCops implements TasksData{
-	
-	private final String PASSWORD 		= 	"c0nygre";
-	private final String USER_ID 		= 	"root";
-	private final String SCHEMA			=	"scrum";
-	private final String PORT			=	"3306";
-	private final String CONNECTION_URL = 	"jdbc:mysql://localhost:"+PORT+"/"+SCHEMA+"?useSSL=" +
-										"false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-	
+public class JDBCops implements TasksData {
+
+	private final String PASSWORD = "c0nygre";
+	private final String USER_ID = "root";
+	private final String SCHEMA = "scrum";
+	private final String PORT = "3306";
+	private final String CONNECTION_URL = "jdbc:mysql://localhost:" + PORT + "/" + SCHEMA + "?useSSL="
+			+ "false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+
 	private Connection cn;
 	private Statement st;
 	private ResultSet rs;
-	//private Contact contact;
-	
+
 	private void init() throws Exception {
 		Driver d = new com.mysql.cj.jdbc.Driver();
 		DriverManager.registerDriver(d);
-		cn = DriverManager.getConnection(CONNECTION_URL,USER_ID,PASSWORD);
+		cn = DriverManager.getConnection(CONNECTION_URL, USER_ID, PASSWORD);
 		st = cn.createStatement();
 	}
-	
+
 	private void closeConnection() {
-		if(cn != null){
-			try{
-				if(!cn.isClosed())
+		if (cn != null) {
+			try {
+				if (!cn.isClosed())
 					cn.close();
-			}
-			catch(Exception ex){
+			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
+				LoggerMain.logger.error(ex);
 			}
 		}
 	}
-	
+
 	@Override
 	public List<Task> allTasks() {
 		List<Task> Tasks = new ArrayList<>();
-		try{
+		try {
 			init();
+			LoggerMain.logger.info("All tasks requested");
 			rs = st.executeQuery("SELECT jira_no,task_name,owner,start_date,end_date,"
 					+ "task_status,update_space FROM Task_details");
-			while (rs.next()) { 
-				Tasks.add(new Task(rs.getString(1),rs.getString(2),rs.getString(3),rs.getDate(4),rs.getDate(5),rs.getString(6),rs.getString(7)));
+
+			while (rs.next()) {
+				Tasks.add(new Task(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
+						rs.getString(6), rs.getString(7)));
+				System.out.println("Hello " + rs.getString(1));
 			}
-		}
-		catch(Exception ex){
+		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
+			LoggerMain.logger.error(ex);
+		} finally {
+			closeConnection();
 		}
-		finally{
-			closeConnection();	
-		}
+
 		return Tasks;
 	}
 }
@@ -81,6 +86,7 @@ public class JDBCops implements TasksData{
 //		}
 //		catch(Exception ex){
 //			System.out.println(ex.getMessage());
+//	LoggerMain.logger.error(ex);
 //		}
 //		finally{
 //			closeConnection();
@@ -101,6 +107,7 @@ public class JDBCops implements TasksData{
 //		}
 //		catch(Exception ex){
 //			System.out.println(ex.getMessage());
+//	LoggerMain.logger.error(ex);
 //		}
 //		finally{
 //			closeConnection();
@@ -119,6 +126,7 @@ public class JDBCops implements TasksData{
 //		}
 //		catch(Exception ex){
 //			System.out.println(ex.getMessage());
+// LoggerMain.logger.error(ex);
 //		}
 //		finally{
 //			closeConnection();
@@ -135,4 +143,4 @@ public class JDBCops implements TasksData{
 //			st.setString(2, contact.getPhone());
 //			st.executeUpdate();
 //		}
-//		catch(Exception ex){
+//		catch(Exception ex){LoggerMain.logger.error(ex);
