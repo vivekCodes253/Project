@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.scrum.business.Employee;
 import com.scrum.business.Task;
 import com.scrum.business.TasksData;
 import com.scrum.log.LoggerMain;
@@ -71,8 +72,30 @@ public class JDBCops implements TasksData {
 
 		return Tasks;
 	}
-}
 
+@Override
+public List<Employee> allEmployee() {
+	List<Employee> Employee = new ArrayList<>();
+	try {
+		init();
+		LoggerMain.logger.info("All tasks requested");
+		rs = st.executeQuery("SELECT name, soeid , role , sec_scrum , manager_id , project_id FROM employees");
+
+		while (rs.next()) {
+			Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+					rs.getString(6)));
+			//System.out.println("Hello " + rs.getString(1));
+		}
+	} catch (Exception ex) {
+		System.out.println(ex.getMessage());
+		LoggerMain.logger.error(ex);
+	} finally {
+		closeConnection();
+	}
+
+	return Employee;
+}
+}
 //	@Override
 //	public Contact getContactById(int id) {
 //		try{

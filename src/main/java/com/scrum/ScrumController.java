@@ -1,22 +1,22 @@
 package com.scrum;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.scrum.business.EmployeeRepository;
 import com.scrum.business.TaskRepository;
 import com.scrum.log.LoggerMain;
-import com.scrum.mailer.Mailer;
 
 @Controller
 public class ScrumController {
 
 	@Autowired
 	TaskRepository taskRepo;
+	
+	@Autowired
+	EmployeeRepository empRepo;
 
 	@RequestMapping("/")
 	public String hello() {
@@ -35,10 +35,24 @@ public class ScrumController {
 	}
 
 	@RequestMapping("/addtasks")
-	public String addTasks() {
+	String addTasks(Model model) {
 		LoggerMain.logger.info("Task addition requested");
+		model.addAttribute("tasks", taskRepo.allTasks());
+		return "addtasks";
+	}
+	@RequestMapping("/modify")
+	String modifyTasks(Model model) {
+		LoggerMain.logger.info("Task addition requested");
+		model.addAttribute("tasks", taskRepo.allTasks());
+		return "modify";
+	}
+	
+	@RequestMapping("/addmembers")
+	public String addMembers(Model model) {
+		LoggerMain.logger.info("Member addition requested");
 		// LoggerMain.logger.warn("New Introduction");
-		return "add";
+		
+		return "addmembers";
 	}
 	
 	@RequestMapping("/template")

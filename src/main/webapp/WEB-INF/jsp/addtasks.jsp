@@ -5,13 +5,16 @@
 <div class="container register">
                 <div class="row">
                  
-                    <div class="col-md-9 register-right">
+                    <div class="col-md-12  register-right">
                         <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">AddTask</a>
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Task</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">AddMember</a>
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="addmembers" role="tab" aria-controls="profile" aria-selected="false">Member</a>
+                            </li>
+                             <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="modify" role="tab" aria-controls="profile" aria-selected="false">Modify</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
