@@ -30,8 +30,9 @@ import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.ListLabelsResponse;
 import com.google.api.services.gmail.model.Message;
+import com.scrum.log.LoggerMain;
 
-public class GmailQuickstart {
+public class Mailer {
     private static final String APPLICATION_NAME = "Gmail API Java Quickstart";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
@@ -47,9 +48,9 @@ public class GmailQuickstart {
      * @return An authorized Credential object.
      * @throws IOException If the credentials.json file cannot be found.
      */
-    private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+    private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
-        InputStream in = GmailQuickstart.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream in = Mailer.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
         }
@@ -65,7 +66,7 @@ public class GmailQuickstart {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public static void main(String[] args) throws IOException, GeneralSecurityException {
+    public void sendMail(String email_receiver_id, String email_subject, String email_message) throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
     
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -87,17 +88,18 @@ public class GmailQuickstart {
         }
         
         try {
-        	String message = "Hello there, testing scrum master auto mail - mail sent from JAVA Program";
-			MimeMessage myMail = createEmail("hemanths8991@gmail.com", "citi.fxlm.scrum@gmail.com", "Test - JAVA Auto Mail", message);
+        	//String message = "Hello there, testing scrum master auto mail - mail sent from JAVA Program";
+			MimeMessage myMail = createEmail(email_receiver_id, "citi.fxlm.scrum@gmail.com", email_subject,email_message);
 			sendMessage(service,"me",myMail);
+			LoggerMain.logger.info("Mailing - "+email_receiver_id);
 		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
+			LoggerMain.logger.error(e);
 			e.printStackTrace();
 		}
     }
     
     
-    public static MimeMessage createEmail(String to, String from, String subject, String bodyText)
+    public MimeMessage createEmail(String to, String from, String subject, String bodyText)
 			throws MessagingException {
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
@@ -111,7 +113,7 @@ public class GmailQuickstart {
 		return email;
 	}
 
-	public static Message createMessageWithEmail(MimeMessage emailContent) throws MessagingException, IOException {
+	public Message createMessageWithEmail(MimeMessage emailContent) throws MessagingException, IOException {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		emailContent.writeTo(buffer);
 		byte[] bytes = buffer.toByteArray();
@@ -121,7 +123,7 @@ public class GmailQuickstart {
 		return message;
 	}
 
-	public static Message sendMessage(Gmail service, String userId, MimeMessage emailContent)
+	public Message sendMessage(Gmail service, String userId, MimeMessage emailContent)
 			throws MessagingException, IOException {
 		Message message = createMessageWithEmail(emailContent);
 		message = service.users().messages().send(userId, message).execute();
