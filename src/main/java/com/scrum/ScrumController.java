@@ -19,7 +19,7 @@ public class ScrumController {
 
 		LoggerMain.logger.info("Root page called");
 		// LoggerMain.logger.warn("New Introduction");
-		return "particles";
+		return "login";
 	}
 
 	@RequestMapping("/tasks")
@@ -33,7 +33,7 @@ public class ScrumController {
 	public String addTasks() {
 		LoggerMain.logger.info("Task addition requested");
 		// LoggerMain.logger.warn("New Introduction");
-		return "addtask";
+		return "add";
 	}
 	
 	@RequestMapping("/template")
