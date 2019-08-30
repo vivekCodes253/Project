@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.scrum.business.Employee;
 import com.scrum.business.EmployeeRepository;
+import com.scrum.business.LoginRepository;
 import com.scrum.business.TaskRepository;
 import com.scrum.log.LoggerMain;
 
@@ -21,14 +22,32 @@ public class ScrumController {
 	
 	@Autowired
 	EmployeeRepository empRepo;
+	
+	@Autowired
+	LoginRepository logRepo;
 
-	@RequestMapping("/")
+	@GetMapping("/")
 	public String hello() {
 
 		LoggerMain.logger.info("Root page called");
 		// LoggerMain.logger.warn("New Introduction");
 		
 		return "login";
+	}
+	
+	@PostMapping("/")
+	public String loginCheck(Model model,@RequestParam String username, @RequestParam String password) {
+
+		LoggerMain.logger.info("Attepting login username : "+username);
+		
+		//
+		
+		if(logRepo.verifyUser(username,password))
+			return "addtasks";
+		else{
+			model.addAttribute("Error","Wrong credentials");
+			return "login";
+		}
 	}
 
 	@RequestMapping("/tasks")

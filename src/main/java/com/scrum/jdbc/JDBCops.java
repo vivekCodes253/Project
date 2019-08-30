@@ -140,6 +140,30 @@ public class JDBCops implements TasksData {
 			LoggerMain.logger.error(ex);
 		}
 	}
+
+	@Override
+	public boolean verifyUser(String username, String hash) {
+		try {
+			init();
+			PreparedStatement st = cn.prepareStatement("SELECT username,password FROM login WHERE username=? and password=?");
+			st.setString(1, username);
+			st.setString(2, hash);
+			
+			rs = st.executeQuery();
+			rs.last();
+			
+			int noOfResults = rs.getRow();
+			return (noOfResults>0);
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			LoggerMain.logger.error(ex);
+		} finally {
+			closeConnection();
+		}
+		return false;
+	}
+
+	
 }
 
 //	@Override

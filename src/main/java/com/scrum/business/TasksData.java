@@ -9,4 +9,5 @@ public interface TasksData {
 	public List<Employee> allEmployee();
 	List<Employee> specificEmployees(String type);
 	void addEmployee(Employee employee);
+	public boolean verifyUser(String username, String password);
 }
