@@ -73,29 +73,75 @@ public class JDBCops implements TasksData {
 		return Tasks;
 	}
 
-@Override
-public List<Employee> allEmployee() {
-	List<Employee> Employee = new ArrayList<>();
-	try {
-		init();
-		LoggerMain.logger.info("All tasks requested");
-		rs = st.executeQuery("SELECT name, soeid , role , sec_scrum , manager_id , project_id FROM employees");
+	@Override
+	public List<Employee> allEmployee() {
+		List<Employee> Employee = new ArrayList<>();
+		try {
+			init();
+			LoggerMain.logger.info("All tasks requested");
+			rs = st.executeQuery("SELECT name, soeid , role , sec_scrum , manager_id , project_id FROM employees");
 
-		while (rs.next()) {
-			Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-					rs.getString(6)));
-			//System.out.println("Hello " + rs.getString(1));
+			while (rs.next()) {
+				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6)));
+				// System.out.println("Hello " + rs.getString(1));
+			}
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			LoggerMain.logger.error(ex);
+		} finally {
+			closeConnection();
 		}
-	} catch (Exception ex) {
-		System.out.println(ex.getMessage());
-		LoggerMain.logger.error(ex);
-	} finally {
-		closeConnection();
+
+		return Employee;
 	}
 
-	return Employee;
+	@Override
+	public List<Employee> specificEmployees(String type) {
+		List<Employee> Employee = new ArrayList<>();
+		try {
+			init();
+			LoggerMain.logger.info("All tasks requested");
+			rs = st.executeQuery(
+					"SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees where role = '"
+							+ type + "'");
+
+			while (rs.next()) {
+				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6)));
+				// System.out.println("Hello " + rs.getString(1));
+			}
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			LoggerMain.logger.error(ex);
+		} finally {
+			closeConnection();
+		}
+
+		return Employee;
+	}
+
+	@Override
+	public void addEmployee(Employee employee) {
+		try {
+			init();
+			PreparedStatement st = cn
+					.prepareStatement("insert into Employees(soeid,name,role,Sec_scrum,manager_soeid,project_id)  "
+							+ "values(?,?,?,?,?,?)");
+			st.setString(1, employee.getSoeid());
+			st.setString(2, employee.getName());
+			st.setString(3, employee.getRole());
+			st.setString(4, employee.getSecondary_scrum());
+			st.setString(5, employee.getManager_id());
+			st.setString(6, employee.getProject_id());
+
+			st.executeUpdate();
+		} catch (Exception ex) {
+			LoggerMain.logger.error(ex);
+		}
+	}
 }
-}
+
 //	@Override
 //	public Contact getContactById(int id) {
 //		try{

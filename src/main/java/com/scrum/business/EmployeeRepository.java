@@ -18,9 +18,20 @@ public class EmployeeRepository {
 		this.jdbctasks = jdbctasks;
 	}
 	
-	public List<Employee> allTasks()
+	public List<Employee> allEmployee()
 	{
 		return jdbctasks.allEmployee();
 	}
+	
+	public List<Employee> specificEmployees(String type)
+	{
+		return jdbctasks.specificEmployees(type);
+	}
+	
+	public void addEmployee(Employee employee) {
+		jdbctasks.addEmployee(employee);
+	}
+	
+	
 	
 }

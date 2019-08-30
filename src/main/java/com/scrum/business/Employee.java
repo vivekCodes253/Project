@@ -53,5 +53,12 @@ public class Employee {
 		this.manager_id = manager_id;
 		this.project_id = project_id;
 	}
+	@Override
+	public String toString() {
+		return "Employee [name=" + name + ", soeid=" + soeid + ", role=" + role + ", secondary_scrum=" + secondary_scrum
+				+ ", manager_id=" + manager_id + ", project_id=" + project_id + "]";
+	}
+	
+	
 	
 }

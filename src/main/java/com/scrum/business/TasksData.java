@@ -7,4 +7,6 @@ public interface TasksData {
 
 	public List<Task> allTasks();
 	public List<Employee> allEmployee();
+	List<Employee> specificEmployees(String type);
+	void addEmployee(Employee employee);
 }

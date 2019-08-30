@@ -3,8 +3,12 @@ package com.scrum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.scrum.business.Employee;
 import com.scrum.business.EmployeeRepository;
 import com.scrum.business.TaskRepository;
 import com.scrum.log.LoggerMain;
@@ -47,10 +51,22 @@ public class ScrumController {
 		return "modify";
 	}
 	
-	@RequestMapping("/addmembers")
+	@GetMapping("/addmembers")
 	public String addMembers(Model model) {
 		LoggerMain.logger.info("Member addition requested");
-		// LoggerMain.logger.warn("New Introduction");
+		model.addAttribute("managerlist", empRepo.specificEmployees("Manager"));
+		
+		
+		return "addmembers";
+	}
+	
+	@PostMapping("/addmembers")
+	public String addMember(Model model,@RequestParam String SOEID, @RequestParam String name,@RequestParam String manager,@RequestParam String scrum_master,@RequestParam String role) {
+		
+		Employee employee = new Employee(name,SOEID,role,scrum_master,manager,"1");
+		empRepo.addEmployee(employee);
+		
+		System.out.println();
 		
 		return "addmembers";
 	}
