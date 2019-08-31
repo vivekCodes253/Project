@@ -26,7 +26,12 @@
                                             <input type="text" class="form-control" placeholder="Taskname" value="" />
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="TaskOwner" value="" />
+                                             <select class="form-control">
+                                                <option class="hidden"  selected disabled>Select Employee</option>
+                                                <option>person1</option>
+                                                <option>person2</option>
+                                                <option>person3</option>
+                                            </select>
                                         </div>
                                         <div class="form-group">
                                             <input type="date" class="form-control" placeholder="Start-Date" value="" />
@@ -51,12 +56,12 @@
                                                 </select>
                                             </div>
                                         <div class="form-group">
-                                            <select class="form-control">
+                                         <!--   <select class="form-control">
                                                 <option class="hidden"  selected disabled>Select Team </option>
                                                 <option>person1</option>
                                                 <option>person2</option>
                                                 <option>person3</option>
-                                            </select>
+                                            </select>  --> 
                                         </div>
                                         <input type="submit" class="btnRegister"  value="Submit"/>
                                     </div>

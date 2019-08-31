@@ -14,13 +14,21 @@ public class TaskRepository {
 
 	@Autowired
 	public TaskRepository(JDBCops jdbctasks) {
-		super();
+	
 		this.jdbctasks = jdbctasks;
 	}
 	
 	public List<Task> allTasks()
 	{
 		return jdbctasks.allTasks();
+	}
+	
+	public Task getTaskById(String taskId) {
+		return jdbctasks.taskById(taskId);
+		
+	}
+	public Task saveTask(Task t) {
+		return jdbctasks.editTask(t);
 	}
 	
 }

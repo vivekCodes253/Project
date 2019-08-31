@@ -2,6 +2,41 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link rel = "stylesheet" href = "css/add.css">
+<script>
+
+
+
+function update(name) {
+	
+	 var URL = "getx?task_id=" + $("#selected_task").val();
+     $.ajax({
+         type: "GET",
+         url: URL,
+         dataType: 'JSON',
+         cache: false,
+    
+     })
+     .done(function (data) {
+
+    	
+         document.getElementById("task_owner").value = data.owner;
+         document.getElementById("start_date").value = data.start_date;
+         document.getElementById("end_date").value = data.end_date;
+         document.getElementById("task_status").value = data.task_status;
+         
+     })
+     .fail(function (data) {
+         
+         console.log("fail() called, with data " + data);
+     })
+     .always(function (data) {
+    	
+         
+         console.log("always() called, with data " + data);
+     });
+}
+</script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="container register">
                 <div class="row">
                  
@@ -23,21 +58,22 @@
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                                <select class="form-control">
+                                                <select  id="selected_task" onchange = "update(this)"class="form-control">
                                                     <option class="hidden"  selected disabled>Select Task</option>
-                                                    <option>Project 1</option>
-                                                    <option>Project 2</option>
-                                                    <option>Project 3</option>
+                                                     <c:forEach var="task" items="${tasks}">
+                                                			<option value=${task.jira_Number} }>${task.task_name}</option>
+                                            			</c:forEach>
+                                                    
                                                 </select>
                                             </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="TaskOwner" value="" disabled />
+                                            <input type="text" id="task_owner" class="form-control" placeholder="TaskOwner" value="" disabled />
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Start-Date" value="" disabled/>
+                                            <input id = "start_date" type="text" class="form-control" placeholder="Start-Date" value="" disabled/>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control"  placeholder="End-Date" value="" disabled/>
+                                            <input id="end_date"type="text" class="form-control"  placeholder="End-Date" value="" disabled/>
                                         </div>
                                       <div class="form-group">
                                             
@@ -45,7 +81,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Current Status" value="" disabled />
+                                            <input id="task_status"type="text" class="form-control" placeholder="Current Status" value="" disabled />
                                         </div>
                                         <!-- <div class="form-group">
                                                 <select class="form-control">
@@ -57,7 +93,8 @@
                                             </div>-->
                                         <div class="form-group">
                                             <select class="form-control">
-                                                <option class="hidden"  selected disabled>Select Members</option>
+                                                <option class="hidden"  selected disabled>New Owner</option>
+                                                
                                                 <option>person1</option>
                                                 <option>person2</option>
                                                 <option>person3</option>

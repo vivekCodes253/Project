@@ -10,4 +10,6 @@ public interface TasksData {
 	List<Employee> specificEmployees(String type);
 	void addEmployee(Employee employee);
 	public boolean verifyUser(String username, String password);
+	public Task taskById(String task_id);
+	public Task editTask(Task t);
 }

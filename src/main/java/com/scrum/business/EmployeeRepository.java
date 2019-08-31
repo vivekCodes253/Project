@@ -31,6 +31,11 @@ public class EmployeeRepository {
 	public void addEmployee(Employee employee) {
 		jdbctasks.addEmployee(employee);
 	}
+
+	public List<String> getMailIds() {
+		
+		return jdbctasks.getEmployeeEmailIds();
+	}
 	
 	
 	
