@@ -1,6 +1,8 @@
 package com.scrum.business;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class Task {
 	private String jira_Number;
@@ -65,6 +67,35 @@ public class Task {
 		this.task_status = task_status;
 		this.update_space = update_space;
 	}
+	
+	public Task(String jira_Number, String task_name, String owner, String start_date, String end_date,
+			String task_status, String update_space) {
+		Date start_date_date=null, end_date_date=null;
+		try {
+			start_date_date = new SimpleDateFormat("dd/MM/yyyy").parse(start_date);
+		} catch (ParseException e) {
+			start_date_date = new Date();
+		}
+		try {
+			end_date_date = new SimpleDateFormat("dd/MM/yyyy").parse(end_date);
+		} catch (ParseException e) {
+			end_date_date = new Date();
+		}
+		this.jira_Number = jira_Number;
+		this.task_name = task_name;
+		this.owner = owner;
+		this.start_date = start_date_date;
+		this.end_date = end_date_date;
+		this.task_status = task_status;
+		this.update_space = update_space;
+	}
+	@Override
+	public String toString() {
+		return "Task [jira_Number=" + jira_Number + ", task_name=" + task_name + ", owner=" + owner + ", start_date="
+				+ start_date + ", end_date=" + end_date + ", task_status=" + task_status + ", update_space="
+				+ update_space + "]";
+	}
+	
 	
 	
 }

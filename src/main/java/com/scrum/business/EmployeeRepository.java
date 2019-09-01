@@ -1,5 +1,6 @@
 package com.scrum.business;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,20 @@ public class EmployeeRepository {
 	public List<String> getMailIds() {
 		
 		return jdbctasks.getEmployeeEmailIds();
+	}
+
+	public List<String> getEmployeeNames(List<Task> allTasks) {
+		
+		List<String> names = new ArrayList<>();
+		for(Task task : allTasks) {
+			names.add(jdbctasks.getEmployeeBySOEID(task.getOwner()));
+		}
+		return names;
+	}
+
+	public Employee getFreeEmployeeNames() {
+		
+		return jdbctasks.getFreeEmployees();
 	}
 	
 	

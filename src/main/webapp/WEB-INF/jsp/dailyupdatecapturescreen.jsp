@@ -41,6 +41,8 @@
 			var modal = document.getElementById("myModal");
 			modal.style.display = "none";
 		}
+
+		
 		
 </script>
 
@@ -52,7 +54,7 @@
 
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html"><img style="width: 15%; height: auto"alt="" src="/logos/scrumlogo.png"></a>
+    <a class="navbar-brand mr-1" href="index.html"><img style="width: 15%; height: auto"alt="" src="/logos/scrumlogo2.png"></a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
       <i class="fas fa-bars"></i>
@@ -124,7 +126,7 @@
 	        </a>
 	    </form>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
       	<form id="editPageForm" action ="/" method="post">
       		<input type="hidden" name="type" value="editpage" />
 	        <a class="nav-link" href="#" onclick="document.getElementById('editPageForm').submit();">
@@ -242,17 +244,7 @@
           </div>
         </div>
 
-        <!-- Area Chart Example-->
-        <div class="card mb-3">
-          <div class="card-header">
-            <i class="fas fa-chart-area"></i>
-            Area Chart Example</div>
-          <div class="card-body">
-            <canvas id="myAreaChart" width="100%" height="30"></canvas>
-          </div>
-          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-        </div>
-
+        
         <!-- DataTables Example -->
         <div class="card mb-3">
           <div class="card-header">
@@ -260,22 +252,30 @@
             Data Table Example</div>
           <div class="card-body">
             <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-		<tr>
+            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+		<tr><th></rh>
+			<th>Owner</th>
 			<th>JIRA Number</th>
 			<th>Task Name</th>
-			<th>Owner</th>
 			<th>Start Date</th>
 			<th>End Date</th>
 			<th>Task Status</th>
 			<th>Update Space</th>
 			<th>Make Changes</th>
 		</tr>
-		<c:forEach var="t" items="${tasks}">
+		<c:forEach var="t" items="${tasks}" varStatus = "status">
 			<tr >
+				<td>
+					<div  style="height:30%;width:auto" data-toggle="buttons">
+					  <label class="btn-sm btn-normal btn btn-secondary active">
+					    <input checked type="checkbox" name="${t.jira_Number}status" id="${t.jira_Number}check" autocomplete="off" style ="font-size: 50%" > Present
+					  </label>
+					  
+					</div>
+				</td>
+				<td>${members[status.index]} (${t.owner})</td>
 				<td>${t.jira_Number}</td>
 				<td>${t.task_name}</td>
-				<td>${t.owner}</td>
 				<td>${t.start_date}</td>
 				<td>${t.end_date}</td>
 				<td>${t.task_status}</td>

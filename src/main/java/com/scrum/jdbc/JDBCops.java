@@ -1,6 +1,7 @@
 package com.scrum.jdbc;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -79,12 +80,12 @@ public class JDBCops implements TasksData {
 		try {
 			init();
 			LoggerMain.logger.info("All tasks requested");
-			rs = st.executeQuery("SELECT name, soeid , role , sec_scrum , manager_id , project_id FROM employees");
-			rs.first();
+			rs = st.executeQuery("SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees");
+			//rs.first();
 			while (rs.next()) {
 				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6)));
-				// System.out.println("Hello " + rs.getString(1));
+				 System.out.println("Hello employee " + rs.getString(1));
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -233,6 +234,56 @@ public class JDBCops implements TasksData {
 			closeConnection();
 		}
 		return mailIds;
+	}
+
+	public String getEmployeeBySOEID(String SOEID) {
+		try {
+			init();
+			//LoggerMain.logger.info("Employee mail ids requested");
+			rs = st.executeQuery("SELECT name FROM employees where soeid = '"+SOEID+"'");
+			
+			while (rs.next()) {
+				return rs.getString(1);
+			}
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			LoggerMain.logger.error(ex);
+			return "";
+		} finally {
+			closeConnection();
+		}
+		return "";
+	}
+
+	public void addTasks(List<Task> tasks) {
+		try {
+			init();
+			PreparedStatement st;
+			for(Task task : tasks) {
+				st = cn.prepareStatement("insert into task_details(Jira_no,task_name,Owner,start_date,end_date,task_status,update_space)  "
+								+ "values(?,?,?,?,?,?,?)");
+				st.setString(1, task.getJira_Number());
+				st.setString(2, task.getTask_name());
+				st.setString(3, task.getOwner());
+				st.setDate(4, new java.sql.Date(task.getStart_date().getTime()));
+				st.setDate(5, new java.sql.Date(task.getEnd_date().getTime()));
+				st.setString(6, task.getTask_status());
+				st.setString(7 , task.getUpdate_space());
+	
+				st.executeUpdate();
+			}
+		} catch (Exception ex) {
+			LoggerMain.logger.error(ex);
+		}
+		finally {
+			closeConnection();
+		}
+		
+	}
+
+	public Employee getFreeEmployees() {
+		List<Employee> freeEmployees;
+		return null;
 	}
 }
 	

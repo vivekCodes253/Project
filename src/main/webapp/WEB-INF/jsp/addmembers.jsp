@@ -12,9 +12,10 @@
 
 		<div class="col-md-12 register-right">
 			<ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-				<li class="nav-item"><a class="nav-link" id="profile-tab"
-					data-toggle="tab" href="addtasks" role="tab"
-					aria-controls="nav-home" selected="false">Task</a></li>
+				<li class="nav-item">
+					<a class="nav-link" id="profile-tab" data-toggle="tab" href="addtasks" role="tab"
+						aria-controls="nav-home" selected="false">Task</a>
+				</li>
 				<li class="nav-item"><a class="nav-link active" id="home-tab"
 					data-toggle="tab" href="addmembers" role="tab"
 					aria-controls="nav-home" selected="true">Member</a></li>

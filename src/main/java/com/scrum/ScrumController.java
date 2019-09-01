@@ -58,8 +58,15 @@ public class ScrumController {
 		if("submitemail".equals(type)) {
 			return submitMail(request,model);
 		}
+		else if("editpage".equals(type)) {
+			//LoggerMain.logger.info("Member addition requested");
+			model.addAttribute("managerlist", empRepo.specificEmployees("Manager"));
+			return "addmembers";
+		}
 		else if("dashboard".equals(type)) {
 			model.addAttribute("tasks", taskRepo.allTasks());
+
+			model.addAttribute("members",empRepo.getEmployeeNames(taskRepo.allTasks()));
 			return "dailyupdatecapturescreen";
 		}
 		else if("save".equals(type)) {
@@ -94,6 +101,7 @@ public class ScrumController {
 		if(logRepo.verifyUser(username,password)) {
 			LoggerMain.logger.info("Login success");
 			model.addAttribute("tasks", taskRepo.allTasks());
+			model.addAttribute("members",empRepo.getEmployeeNames(taskRepo.allTasks()));
 			return "dailyupdatecapturescreen";
 		} else{
 			LoggerMain.logger.info("Login failed!" );
@@ -104,7 +112,7 @@ public class ScrumController {
 
 	@RequestMapping("/tasks")
 	String taskHandler(Model model) {
-		LoggerMain.logger.info("All tasks requested");
+		//LoggerMain.logger.info("All tasks requested");
 		model.addAttribute("tasks", taskRepo.allTasks());
 		return "tasks";
 	}
@@ -112,12 +120,13 @@ public class ScrumController {
 	@RequestMapping("/addtasks")
 	String addTasks(Model model) {
 		LoggerMain.logger.info("Task addition requested");
-		model.addAttribute("tasks", taskRepo.allTasks());
+		model.addAttribute("employeelist",empRepo.allEmployee());
 		return "addtasks";
 	}
+	
 	@GetMapping("/modify")
 	String modifyTasks(Model model) {
-		LoggerMain.logger.info("Task addition requested");
+		LoggerMain.logger.info("Task modification requested");
 		model.addAttribute("tasks", taskRepo.allTasks());
 		return "modify";
 	}
@@ -126,7 +135,8 @@ public class ScrumController {
 	@ResponseBody	
 	public  Task modifyTasksPost(@RequestParam String task_id) {
 		LoggerMain.logger.info("Task ");
-		 System.out.println( taskRepo.getTaskById(task_id));
+		 //System.out.println( taskRepo.getTaskById(task_id));
+		
 		return taskRepo.getTaskById(task_id);
 		
 	}
@@ -136,8 +146,6 @@ public class ScrumController {
 	public String addMembers(Model model) {
 		LoggerMain.logger.info("Member addition requested");
 		model.addAttribute("managerlist", empRepo.specificEmployees("Manager"));
-		
-		
 		return "addmembers";
 	}
 	
@@ -146,9 +154,6 @@ public class ScrumController {
 		model.addAttribute("managerlist", empRepo.specificEmployees("Manager"));
 		Employee employee = new Employee(name,SOEID,role,scrum_master,manager,"1");
 		empRepo.addEmployee(employee);
-		
-		
-		
 		return "addmembers";
 	}
 	
@@ -174,6 +179,7 @@ public class ScrumController {
 				request.getParameter("task_status"),request.getParameter("update_space"));
 		taskRepo.saveTask(t);
 		model.addAttribute("tasks", taskRepo.allTasks());
+		model.addAttribute("members",empRepo.getEmployeeNames(taskRepo.allTasks()));
 		return "dailyupdatecapturescreen";
 	}
 	
