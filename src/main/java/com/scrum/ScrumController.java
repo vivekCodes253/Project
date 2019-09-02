@@ -1,7 +1,5 @@
 package com.scrum;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -18,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.scrum.business.Employee;
-import com.scrum.business.EmployeeRepository;
-import com.scrum.business.LoginRepository;
 import com.scrum.business.Task;
-import com.scrum.business.TaskRepository;
 import com.scrum.log.LoggerMain;
 import com.scrum.mailer.Mailer;
+import com.scrum.repositories.EmployeeRepository;
+import com.scrum.repositories.LoginRepository;
+import com.scrum.repositories.TaskRepository;
 
 @Controller
 public class ScrumController {
@@ -37,47 +35,126 @@ public class ScrumController {
 	@Autowired
 	LoginRepository logRepo;
 
-	@GetMapping("/")
-	public String hello() {
 
-		LoggerMain.logger.info("Root page called");
-		// LoggerMain.logger.warn("New Introduction");
-		
+	/* Function Name 	: landingPage
+	 * Purpose 			: Redirects Get mappings to login page
+	 * Input 			: -
+	 * Return 			: String mapping to login page*/
+	@GetMapping("/")
+	public String landingPage() {
+		LoggerMain.logger.info("Login page called");
 		return "login";
 	}
 	
-	@RequestMapping("/particles")
-	public String particles() {
-		
-		return "particles";
-	}
 	
+	/* Function Name 	: landingPagePost
+	 * Purpose 			: Redirects Post mappings to login and dashboard page
+	 * Input 			: Model, request objects : type hidden html object value to redirect to correct page
+	 * Return 			: String mapping to multiple pages page*/
 	@PostMapping("/")
-	public String rootMapping(HttpServletRequest request,Model model, @RequestParam(required=false) String type) {
+	public String landingPagePost(HttpServletRequest request,Model model, @RequestParam(required=false) String type) {
 
 		if("submitemail".equals(type)) {
 			return submitMail(request,model);
 		}
 		else if("editpage".equals(type)) {
-			//LoggerMain.logger.info("Member addition requested");
-			model.addAttribute("managerlist", empRepo.specificEmployees("Manager"));
-			return "addmembers";
+			return addMembers(model);
 		}
 		else if("dashboard".equals(type)) {
-			model.addAttribute("tasks", taskRepo.allTasks());
-
-			model.addAttribute("members",empRepo.getEmployeeNames(taskRepo.allTasks()));
-			return "dailyupdatecapturescreen";
+			return dailyUpdateScreenDisplay(model);
 		}
 		else if("save".equals(type)) {
 			return taskSaveHandler(request,model);
-		}else{
+		} else {
 			return loginCheck(request,model);
 		}
 	}
 	
-	public String submitMail(HttpServletRequest request,Model model) {
+	
+	/* Function Name 	: dailyUpdateScreenDisplay
+	 * Purpose 			: Redirects dashboard page
+	 * Input 			: Model object
+	 * Return 			: String mapping to dashboard page*/
+	@RequestMapping("/dashboard")
+	public String dailyUpdateScreenDisplay(Model model) {
+		LoggerMain.logger.info("Dashboard page called");
+		List<Task> tasks = taskRepo.allTasks();
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("taskcount",tasks.size());
+		model.addAttribute("members",empRepo.getEmployeeNames(tasks));
+		model.addAttribute("deadlinetaskcount",taskRepo.getDeadlineTasksCount(tasks));
+		model.addAttribute("todaytaskcount",taskRepo.getTodayTasksCount(tasks));
+		return "dailyupdatecapturescreen";
+	}
+	
 
+	/* Function Name 	: addtasks
+	 * Purpose 			: Redirects Add Tasks page
+	 * Input 			: Model object
+	 * Return 			: String mapping to Add Tasks page*/
+	@RequestMapping("/addtasks")
+	String addTasks(Model model) {
+		LoggerMain.logger.info("Task addition requested");
+		model.addAttribute("employeelist",empRepo.allEmployee());
+		return "addtasks";
+	}
+	
+	
+	/* Function Name 	: modifyTasks
+	 * Purpose 			: Redirects Modify Tasks page
+	 * Input 			: Model object
+	 * Return 			: String mapping to Modify Tasks page*/
+	@GetMapping("/modify")
+	String modifyTasks(Model model) {
+		LoggerMain.logger.info("Task modification requested");
+		model.addAttribute("tasks", taskRepo.allTasks());
+		return "modify";
+	}
+	
+	
+	/* Function Name 	: modifyTaskTaskData
+	 * Purpose 			: Asynchronously loads task data onto modify page - AJAX
+	 * Input 			: Requested task id
+	 * Return 			: JSON object of required task*/
+	@GetMapping("/getTaskDetails")
+	@ResponseBody	
+	public  Task modifyTasksTaskData(@RequestParam String task_id) {
+		LoggerMain.logger.info("Task "+task_id+" loaded for modification");
+		return taskRepo.getTaskById(task_id);	
+	}
+	
+	
+	/* Function Name 	: addMembers
+	 * Purpose 			: Redirects to Add Members page
+	 * Input 			: Model object
+	 * Return 			: String mapping to Add Members page*/
+	@GetMapping("/addmembers")
+	public String addMembers(Model model) {
+		LoggerMain.logger.info("Member addition requested");
+		model.addAttribute("managerlist", empRepo.specificEmployees("Manager"));
+		return "addmembers";
+	}
+	
+	
+	/* Function Name 	: addMembersPost
+	 * Purpose 			: Redirects to Add Members page after saving the passed new employee
+	 * Input 			: Model object
+	 * Return 			: String mapping to Add Members page*/
+	@PostMapping("/addmembers")
+	public String addMembersPost(Model model,@RequestParam String SOEID, @RequestParam String name,
+			@RequestParam String manager,@RequestParam String scrum_master,@RequestParam String role) {
+		Employee employee = new Employee(name,SOEID,role,scrum_master,manager,"1");
+		empRepo.addEmployee(employee);
+		LoggerMain.logger.info("New employee "+name+" SOEID : "+SOEID+" added!");
+		return addMembers(model);
+	}
+	
+	
+	/* Function Name 	: submitMail
+	 * Purpose 			: Sends email to all registered users with summary - TODO summary
+	 * Input 			: HTTPRequest object, Model object
+	 * Return 			: String mapping to login page*/
+	public String submitMail(HttpServletRequest request,Model model) {
 		List<String> emailId = empRepo.getMailIds();
 		Mailer mailer = new Mailer();
 		SimpleDateFormat formatter= new SimpleDateFormat("E d, MMMM 'at' HH:mm z");
@@ -94,15 +171,17 @@ public class ScrumController {
 		return "login";
 	}
 	
+	/* Function Name 	: loginCheck
+	 * Purpose 			: Validated user login
+	 * Input 			: HTTPRequest object, Model object
+	 * Return 			: String mapping to login page if fail else maps to dashboard*/
 	public String loginCheck(HttpServletRequest request,Model model) {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		LoggerMain.logger.info("Attepting login username : "+username);
 		if(logRepo.verifyUser(username,password)) {
 			LoggerMain.logger.info("Login success");
-			model.addAttribute("tasks", taskRepo.allTasks());
-			model.addAttribute("members",empRepo.getEmployeeNames(taskRepo.allTasks()));
-			return "dailyupdatecapturescreen";
+			return dailyUpdateScreenDisplay(model);
 		} else{
 			LoggerMain.logger.info("Login failed!" );
 			model.addAttribute("Error","Wrong credentials");
@@ -110,51 +189,42 @@ public class ScrumController {
 		}
 	}
 
+	
+	/* Function Name 	: taskSavveHandler
+	 * Purpose 			: Saves updates to tasks
+	 * Input 			: HTTPRequest object, Model object
+	 * Return 			: String mapping to dashboard page*/
+	@RequestMapping("/save")
+	String taskSaveHandler(HttpServletRequest request, Model model) {
+		Date start_date=Date.valueOf("2019-09-18");		//dummy date value
+		Date end_date=Date.valueOf(request.getParameter("end_date"));
+		Task t = new Task(request.getParameter("jira_Number"),
+				"",request.getParameter("owner"),start_date,end_date,
+				request.getParameter("task_status"),request.getParameter("update_space"));
+		taskRepo.saveTask(t);
+		return dailyUpdateScreenDisplay(model);
+	}
+	
+	
+	
+	//-----------DEBUG CODES-------------------------
+	@RequestMapping("/particles")
+	public String particles() {
+		
+		return "particles";
+	}
+	
 	@RequestMapping("/tasks")
 	String taskHandler(Model model) {
 		//LoggerMain.logger.info("All tasks requested");
 		model.addAttribute("tasks", taskRepo.allTasks());
 		return "tasks";
 	}
-
-	@RequestMapping("/addtasks")
-	String addTasks(Model model) {
-		LoggerMain.logger.info("Task addition requested");
-		model.addAttribute("employeelist",empRepo.allEmployee());
-		return "addtasks";
-	}
 	
-	@GetMapping("/modify")
-	String modifyTasks(Model model) {
-		LoggerMain.logger.info("Task modification requested");
-		model.addAttribute("tasks", taskRepo.allTasks());
-		return "modify";
-	}
-	
-	@GetMapping("/getx")
-	@ResponseBody	
-	public  Task modifyTasksPost(@RequestParam String task_id) {
-		LoggerMain.logger.info("Task ");
-		 //System.out.println( taskRepo.getTaskById(task_id));
-		
-		return taskRepo.getTaskById(task_id);
-		
-	}
-	
-	
-	@GetMapping("/addmembers")
-	public String addMembers(Model model) {
-		LoggerMain.logger.info("Member addition requested");
-		model.addAttribute("managerlist", empRepo.specificEmployees("Manager"));
-		return "addmembers";
-	}
-	
-	@PostMapping("/addmembers")
-	public String addMember(Model model,@RequestParam String SOEID, @RequestParam String name,@RequestParam String manager,@RequestParam String scrum_master,@RequestParam String role) {
-		model.addAttribute("managerlist", empRepo.specificEmployees("Manager"));
-		Employee employee = new Employee(name,SOEID,role,scrum_master,manager,"1");
-		empRepo.addEmployee(employee);
-		return "addmembers";
+	@RequestMapping("/dashboarddebug")
+	public String dashboard() {
+		// LoggerMain.logger.warn("New Introduction");
+		return "dashboard";
 	}
 	
 	@RequestMapping("/template")
@@ -163,25 +233,5 @@ public class ScrumController {
 		return "templatex";
 	}
 	
-	@RequestMapping("/dashboard")
-	public String dashboard() {
-		// LoggerMain.logger.warn("New Introduction");
-		return "dashboard";
-	}
-	
-	@RequestMapping("/save")
-	String taskSaveHandler(HttpServletRequest request, Model model) {
-		 Date start_date=Date.valueOf("2019-09-18");
-		 Date end_date=Date.valueOf(request.getParameter("end_date"));
-		 System.out.println("Date: "+end_date);
-		Task t = new Task(request.getParameter("jira_Number"),
-				"",request.getParameter("owner"),start_date,end_date,
-				request.getParameter("task_status"),request.getParameter("update_space"));
-		taskRepo.saveTask(t);
-		model.addAttribute("tasks", taskRepo.allTasks());
-		model.addAttribute("members",empRepo.getEmployeeNames(taskRepo.allTasks()));
-		return "dailyupdatecapturescreen";
-	}
-	
-
+	//-----------DEBUG CODES-------------------------
 }

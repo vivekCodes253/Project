@@ -1,4 +1,4 @@
-package com.scrum.fileops;
+package com.scrum.misc;
 
 import java.io.*;
 import java.io.FileNotFoundException;
@@ -24,7 +24,8 @@ public class FileReader {
 
 	
 	/*
-	 * Function Name : fileread Purpose : read data from file Input : filepath
+	 * Function Name : fileread 
+	 * Purpose : read data from file Input : filepath
 	 * Return : Read message or status
 	 */
 	public static String fileread(String filepath) {

@@ -14,6 +14,7 @@
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- Page level plugin CSS-->
   <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
@@ -34,6 +35,8 @@
 
 			var modal = document.getElementById("myModal");
 			modal.style.display = "block";
+			alert(this.innerHTML)
+			this.innerHTML = "Updated";
 		}
 
 		
@@ -43,8 +46,98 @@
 		}
 
 		
+
+		function setSize(container){
+			var theContainer = document.getElementById(container);
+
+			var container_all = document.getElementById("all_tasks_container");
+			var container_nearing = document.getElementById("nearing_tasks_container");
+			var container_today = document.getElementById("today_tasks_container");
+			
+			container_all.classList.remove("col-xl-6", "col-sm-6","mb-6");
+			container_all.classList.add("col-xl-3","col-sm-3","mb-3");
+			container_nearing.classList.remove("col-xl-6","col-sm-6","mb-6");
+			container_nearing.classList.add("col-xl-3","col-sm-3","mb-3");
+			container_today.classList.remove("col-xl-6","col-sm-6","mb-6");
+			container_today.classList.add("col-xl-3","col-sm-3","mb-3");
+			
+			theContainer.classList.add("col-xl-6","col-sm-6","mb-6");
+			theContainer.classList.remove("col-xl-3","col-sm-3","mb-3");
+			
+		
+		}
+
+		function nearingTasksx(countOfNearingTasks){
+			var elmtTable = document.getElementById('dataTable');
+			var tableRows = elmtTable.getElementsByTagName('tr');
+			var rowCount = tableRows.length;
+			for (var x=1; x<rowCount; x++) {
+			
+			   	elmtTable.rows[x].style.visibility = 'hidden'
+			}
+			
+			setSize("nearing_tasks_container")
+			
+			
+		}
+
+		function resetView(){
+			var elmtTable = document.getElementById('dataTable');
+			var tableRows = elmtTable.getElementsByTagName('tr');
+			var rowCount = tableRows.length;
+			for (var x=1; x<rowCount; x++) {
+			
+			   	elmtTable.rows[x].style.display = ''
+			}
+		}
+		
+		function nearingTasks(countOfNearingTasks){
+			resetView();
+			var elmtTable = document.getElementById('dataTable');
+			var tableRows = elmtTable.getElementsByTagName('tr');
+			var rowCount = tableRows.length;
+			for (var x=1+countOfNearingTasks; x<rowCount; x++) {
+				elmtTable.rows[x].style.display = 'none'
+			}
+		
+			
+			
+		}
+
+	
+
+		function allTasks(){
+			resetView();
+		}
+		
 		
 </script>
+<style>
+table{
+transform:scale(0.93,0.93);
+z-index:1;
+table-layout:fixed;
+}
+tr:not(:first-child){
+	fint-weight:initial;
+	transition: 0.2s;
+ transform:scale(1,1);
+}
+
+tr:not(:first-child):hover{
+height:120%;
+
+transform: scale(1.1,1.1);
+z-index: 3;
+font-weight:bold;
+}
+ button
+ {border-radius: 150%;
+ 	font-weight:bold;
+
+ }
+	
+</style>
 
   
 
@@ -61,7 +154,7 @@
     </button>
 
     <!-- Navbar Search -->
-    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-5 my-5 my-md-0">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
@@ -124,6 +217,7 @@
 	          <i class="fas fa-fw fa-tachometer-alt"></i>
 	          <span>Dashboard</span>
 	        </a>
+	        
 	    </form>
       </li>
       <li class="nav-item">
@@ -167,106 +261,73 @@
     <div id="content-wrapper">
 
       <div class="container-fluid">
-
+			
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
+        
           <li class="breadcrumb-item">
             <a href="#">Dashboard</a>
           </li>
           <li class="breadcrumb-item active">Overview</li>
+          <li class="float-right"  style="margin-left:65%;">
+          	<div class="btn-group-justified float-right " style="font-weight:bold;text-align: right">
+
+          
+          <button onclick="allTasks()" id = "all_tasks_container" class="font-weight-bold btn btn-primary" selected>
+            
+                ALL TASKS (${taskcount})
+          </button>
+           <button onclick="nearingTasks(${todaytaskcount})"" id = "today_tasks_container" class="font-weight-bold btn btn-danger">
+               DUE TODAY (${todaytaskcount})
+          </button>
+          
+          <button onclick="nearingTasks(${deadlinetaskcount})" id = "nearing_tasks_container" class=" font-weight-bold btn btn-warning">
+               DUE SOON (${deadlinetaskcount})
+             
+            
+          </button>
+          
+           
+          
+         
+         
+         
+          
+        </div>
+          	
+          </li>
         </ol>
+               
+               
 
         <!-- Icon Cards-->
-        <div class="row">
-          <div class="col-xl-3 col-sm-6 mb-3">
-            <div class="card text-white bg-primary o-hidden h-100">
-              <div class="card-body">
-                <div class="card-body-icon">
-                  <i class="fas fa-fw fa-comments"></i>
-                </div>
-                <div class="mr-5">26 New Messages!</div>
-              </div>
-              <a class="card-footer text-white clearfix small z-1" href="#">
-                <span class="float-left">View Details</span>
-                <span class="float-right">
-                  <i class="fas fa-angle-right"></i>
-                </span>
-              </a>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-3">
-            <div class="card text-white bg-warning o-hidden h-100">
-              <div class="card-body">
-                <div class="card-body-icon">
-                  <i class="fas fa-fw fa-list"></i>
-                </div>
-                <div class="mr-5">11 New Tasks!</div>
-              </div>
-              <a class="card-footer text-white clearfix small z-1" href="#">
-                <span class="float-left">View Details</span>
-                <span class="float-right">
-                  <i class="fas fa-angle-right"></i>
-                </span>
-              </a>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-3">
-            <div class="card text-white bg-success o-hidden h-100">
-              <div class="card-body">
-                <div class="card-body-icon">
-                  <i class="fas fa-fw fa-shopping-cart"></i>
-                </div>
-                <div class="mr-5">123 New Orders!</div>
-              </div>
-              <a class="card-footer text-white clearfix small z-1" href="#">
-                <span class="float-left">View Details</span>
-                <span class="float-right">
-                  <i class="fas fa-angle-right"></i>
-                </span>
-              </a>
-            </div>
-          </div>
-          <div class="col-xl-3 col-sm-6 mb-3">
-            <div class="card text-white bg-danger o-hidden h-100">
-              <div class="card-body">
-                <div class="card-body-icon">
-                  <i class="fas fa-fw fa-life-ring"></i>
-                </div>
-                <div class="mr-5">13 New Tickets!</div>
-              </div>
-              <a class="card-footer text-white clearfix small z-1" href="#">
-                <span class="float-left">View Details</span>
-                <span class="float-right">
-                  <i class="fas fa-angle-right"></i>
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
+        
+         
 
         
         <!-- DataTables Example -->
-        <div class="card mb-3">
-          <div class="card-header">
-            <i class="fas fa-table"></i>
-            Data Table Example</div>
+        <div class="card mb-3" >
+          
+            
+            
           <div class="card-body">
             <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
-		<tr><th></rh>
+            <table class="table table-bordered table-hover" name="dataTable"id="dataTable" width="100%" cellspacing="0">
+		   <tr>
+			<th></th>
 			<th>Owner</th>
 			<th>JIRA Number</th>
 			<th>Task Name</th>
 			<th>Start Date</th>
 			<th>End Date</th>
 			<th>Task Status</th>
-			<th>Update Space</th>
+			<th>Update Space&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 			<th>Make Changes</th>
 		</tr>
 		<c:forEach var="t" items="${tasks}" varStatus = "status">
-			<tr >
+			<tr class="collapsed-row">
 				<td>
-					<div  style="height:30%;width:auto" data-toggle="buttons">
+					<div style="height:30%;width:auto" data-toggle="buttons">
 					  <label class="btn-sm btn-normal btn btn-secondary active">
 					    <input checked type="checkbox" name="${t.jira_Number}status" id="${t.jira_Number}check" autocomplete="off" style ="font-size: 50%" > Present
 					  </label>
@@ -279,7 +340,7 @@
 				<td>${t.start_date}</td>
 				<td>${t.end_date}</td>
 				<td>${t.task_status}</td>
-				<td>${t.update_space}</td>
+				<td >${t.update_space}</td>
 				<td><button class="btn btn-link"id="myBtn" onclick="EditPopup('${t.jira_Number}','${t.task_status}','${t.update_space}','${t.task_name}','${t.owner}','${t.start_date}','${t.end_date}')">Edit</button></td>
 			</tr>
 		</c:forEach>
@@ -325,8 +386,9 @@
 	</div>
 	<form id="submitEmail" action ="/" method="post">
       		<input type="hidden" name="type" value="submitemail" />
-	        <button onclick="document.getElementById('submitEmail').submit();">Submit & Close Session</button>
-	        
+      		<div style="text-align:center">
+	        <button class="btn btn-danger" onclick="document.getElementById('submitEmail').submit();">Submit & Close Session</button>
+	        </div>
 	 </form>
 	 
 	

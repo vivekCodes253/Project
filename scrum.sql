@@ -29,6 +29,10 @@ ALTER TABLE task_details ADD foreign key fk_owner(Owner) REFERENCES Employees(So
 
 INSERT INTO task_details VALUES('ET1234','Trade testing','vj69875','2019-08-29','2019-09-03','Requirement Analysis','Types of Test cases are being considered');
 INSERT INTO task_details VALUES('ET2000','Code commenting','VR67457','2019-08-31','2019-09-01','Thinking','Whats up?');
+INSERT INTO task_details VALUES('ET2001','Extra','VR67457','2019-10-31','2019-11-01','Thinking','Whats up?');
+INSERT INTO task_details VALUES('ET2002','Extra','VR67457','2019-7-29','2019-09-02','Thinking','Whats up?');
+INSERT INTO task_details VALUES('ET2003','Extra','VR67457','2019-7-29','2020-09-02','Far off','Very far off');
+INSERT INTO task_details VALUES('ET2004','Extra','VR67457','2019-7-29','2019-09-04','Far off','Kinda close');
 #---
 
 DROP TABLE Update_Details;

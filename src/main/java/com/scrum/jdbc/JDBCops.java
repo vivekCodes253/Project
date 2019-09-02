@@ -20,10 +20,10 @@ import com.scrum.log.LoggerMain;
 @Component
 public class JDBCops implements TasksData {
 
-	private final String PASSWORD = "c0nygre";
-	private final String USER_ID = "root";
-	private final String SCHEMA = "scrum";
-	private final String PORT = "3306";
+	private final String PASSWORD 		= "c0nygre";
+	private final String USER_ID 		= "root";
+	private final String SCHEMA 		= "scrum";
+	private final String PORT 			= "3306";
 	private final String CONNECTION_URL = "jdbc:mysql://localhost:" + PORT + "/" + SCHEMA + "?useSSL="
 			+ "false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
 
@@ -32,10 +32,14 @@ public class JDBCops implements TasksData {
 	private ResultSet rs;
 
 	private void init() throws Exception {
-		Driver d = new com.mysql.cj.jdbc.Driver();
-		DriverManager.registerDriver(d);
-		cn = DriverManager.getConnection(CONNECTION_URL, USER_ID, PASSWORD);
-		st = cn.createStatement();
+		try {
+			Driver d = new com.mysql.cj.jdbc.Driver();
+			DriverManager.registerDriver(d);
+			cn = DriverManager.getConnection(CONNECTION_URL, USER_ID, PASSWORD);
+			st = cn.createStatement();
+		}catch(Exception e) {
+			LoggerMain.logger.error(e);
+		}
 	}
 
 	private void closeConnection() {
@@ -57,7 +61,7 @@ public class JDBCops implements TasksData {
 			init();
 			LoggerMain.logger.info("All tasks requested");
 			rs = st.executeQuery("SELECT jira_no,task_name,owner,start_date,end_date,"
-					+ "task_status,update_space FROM Task_details");
+					+ "task_status,update_space FROM Task_details order by end_date");
 
 			while (rs.next()) {
 				Tasks.add(new Task(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
@@ -81,11 +85,10 @@ public class JDBCops implements TasksData {
 			init();
 			LoggerMain.logger.info("All tasks requested");
 			rs = st.executeQuery("SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees");
-			//rs.first();
 			while (rs.next()) {
 				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6)));
-				 System.out.println("Hello employee " + rs.getString(1));
+				System.out.println("Hello employee " + rs.getString(1));
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -93,7 +96,6 @@ public class JDBCops implements TasksData {
 		} finally {
 			closeConnection();
 		}
-
 		return Employee;
 	}
 
@@ -106,11 +108,9 @@ public class JDBCops implements TasksData {
 			rs = st.executeQuery(
 					"SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees where role = '"
 							+ type + "'");
-			//rs.first();
 			while (rs.next()) {
 				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6)));
-				// System.out.println("Hello " + rs.getString(1));
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -146,15 +146,16 @@ public class JDBCops implements TasksData {
 	public boolean verifyUser(String username, String hash) {
 		try {
 			init();
-			PreparedStatement st = cn.prepareStatement("SELECT username,password FROM login WHERE username=? and password=?");
+			PreparedStatement st = cn
+					.prepareStatement("SELECT username,password FROM login WHERE username=? and password=?");
 			st.setString(1, username);
 			st.setString(2, hash);
-			
+
 			rs = st.executeQuery();
 			rs.last();
-			
+
 			int noOfResults = rs.getRow();
-			return (noOfResults>0);
+			return (noOfResults > 0);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			LoggerMain.logger.error(ex);
@@ -169,17 +170,13 @@ public class JDBCops implements TasksData {
 		Task task = null;
 		try {
 			init();
-			LoggerMain.logger.info("Task searhed by id "+taskId);
+			LoggerMain.logger.info("Task searhed by id " + taskId);
 			rs = st.executeQuery("SELECT jira_no,task_name,owner,start_date,end_date,"
-					+ "task_status,update_space FROM Task_details where jira_no='"+taskId+"'");
-			
-			//System.out.println("Hello "+rs.getString(1));
+					+ "task_status,update_space FROM Task_details where jira_no='" + taskId + "'");
 			rs.first();
-			//rs.next();
 			return (new Task(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
-						rs.getString(6), rs.getString(7)));
-				
-			
+					rs.getString(6), rs.getString(7)));
+
 		} catch (Exception ex) {
 			LoggerMain.logger.error(ex);
 		} finally {
@@ -192,25 +189,24 @@ public class JDBCops implements TasksData {
 
 	@Override
 	public Task editTask(Task task) {
-			try{
+		try {
 			init();
-			PreparedStatement st = cn.prepareStatement("UPDATE task_details SET task_status = ?, update_space = ? WHERE " + 
-			"jira_no = ?");
+			PreparedStatement st = cn.prepareStatement(
+					"UPDATE task_details SET task_status = ?, update_space = ? WHERE " + "jira_no = ?");
 			st.setString(1, task.getTask_status());
 			st.setString(2, task.getUpdate_space());
 			st.setString(3, task.getJira_Number());
-		    st.executeUpdate();
-		    
-		    PreparedStatement st1 = cn.prepareStatement("INSERT INTO update_details(Jira_no,owner,update_space) VALUES(?,?,?)");
-		    st1.setString(1, task.getJira_Number());
+			st.executeUpdate();
+
+			PreparedStatement st1 = cn
+					.prepareStatement("INSERT INTO update_details(Jira_no,owner,update_space) VALUES(?,?,?)");
+			st1.setString(1, task.getJira_Number());
 			st1.setString(2, task.getOwner());
 			st1.setString(3, task.getUpdate_space());
-		    st1.executeUpdate();
-			}
-		catch(Exception ex){
+			st1.executeUpdate();
+		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-		}
-		finally{
+		} finally {
 			closeConnection();
 		}
 		return task;
@@ -222,7 +218,7 @@ public class JDBCops implements TasksData {
 			init();
 			LoggerMain.logger.info("Employee mail ids requested");
 			rs = st.executeQuery("SELECT email_id FROM employeemail");
-			
+
 			while (rs.next()) {
 				mailIds.add(rs.getString(1));
 				// System.out.println("Hello " + rs.getString(1));
@@ -239,9 +235,9 @@ public class JDBCops implements TasksData {
 	public String getEmployeeBySOEID(String SOEID) {
 		try {
 			init();
-			//LoggerMain.logger.info("Employee mail ids requested");
-			rs = st.executeQuery("SELECT name FROM employees where soeid = '"+SOEID+"'");
-			
+			// LoggerMain.logger.info("Employee mail ids requested");
+			rs = st.executeQuery("SELECT name FROM employees where soeid = '" + SOEID + "'");
+
 			while (rs.next()) {
 				return rs.getString(1);
 			}
@@ -259,8 +255,9 @@ public class JDBCops implements TasksData {
 		try {
 			init();
 			PreparedStatement st;
-			for(Task task : tasks) {
-				st = cn.prepareStatement("insert into task_details(Jira_no,task_name,Owner,start_date,end_date,task_status,update_space)  "
+			for (Task task : tasks) {
+				st = cn.prepareStatement(
+						"insert into task_details(Jira_no,task_name,Owner,start_date,end_date,task_status,update_space)  "
 								+ "values(?,?,?,?,?,?,?)");
 				st.setString(1, task.getJira_Number());
 				st.setString(2, task.getTask_name());
@@ -268,17 +265,16 @@ public class JDBCops implements TasksData {
 				st.setDate(4, new java.sql.Date(task.getStart_date().getTime()));
 				st.setDate(5, new java.sql.Date(task.getEnd_date().getTime()));
 				st.setString(6, task.getTask_status());
-				st.setString(7 , task.getUpdate_space());
-	
+				st.setString(7, task.getUpdate_space());
+
 				st.executeUpdate();
 			}
 		} catch (Exception ex) {
 			LoggerMain.logger.error(ex);
-		}
-		finally {
+		} finally {
 			closeConnection();
 		}
-		
+
 	}
 
 	public Employee getFreeEmployees() {
@@ -286,80 +282,3 @@ public class JDBCops implements TasksData {
 		return null;
 	}
 }
-	
-
-	
-	
-
-
-//	@Override
-//	public Contact getContactById(int id) {
-//		try{
-//			init();
-//			PreparedStatement st = cn.prepareStatement("SELECT id, name, phone FROM Contact WHERE id=?");
-//			st.setInt(1, id);
-//			rs = st.executeQuery();
-//			while (rs.next()) { 
-//				contact = new Contact(rs.getInt(1),rs.getString(2),rs.getString(3));
-//			}
-//		}
-//		catch(Exception ex){
-//			System.out.println(ex.getMessage());
-//	LoggerMain.logger.error(ex);
-//		}
-//		finally{
-//			closeConnection();
-//		}
-//		return contact;
-//	}
-//
-//	@Override
-//	public Contact editContact(Contact contacts) {
-//			try{
-//			init();
-//			PreparedStatement st = cn.prepareStatement("UPDATE Contact SET Name = ?, Phone = ? WHERE " + 
-//			"ID = ?");
-//			st.setString(1, contacts.getName());
-//			st.setString(2, contacts.getPhone());
-//			st.setInt(3, contacts.getId());
-//			st.executeUpdate();
-//		}
-//		catch(Exception ex){
-//			System.out.println(ex.getMessage());
-//	LoggerMain.logger.error(ex);
-//		}
-//		finally{
-//			closeConnection();
-//		}
-//		return contacts;
-//	}
-//
-//	@Override
-//	public void deleteContact(int id) {
-//		try{
-//			init();
-//			PreparedStatement st = cn.prepareStatement("delete from Contact WHERE " + 
-//			"ID = ?");
-//			st.setInt(1,id);
-//			st.executeUpdate();
-//		}
-//		catch(Exception ex){
-//			System.out.println(ex.getMessage());
-// LoggerMain.logger.error(ex);
-//		}
-//		finally{
-//			closeConnection();
-//		}	
-//	}
-//
-//	@Override
-//	public void addContact(Contact contact) {
-//		try{
-//			init();
-//			PreparedStatement st = cn.prepareStatement("insert into Contact(name,phone)  " + 
-//			"values(?,?)");
-//			st.setString(1,contact.getName());
-//			st.setString(2, contact.getPhone());
-//			st.executeUpdate();
-//		}
-//		catch(Exception ex){LoggerMain.logger.error(ex);

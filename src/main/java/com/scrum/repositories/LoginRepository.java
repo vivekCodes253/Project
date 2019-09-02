@@ -1,4 +1,4 @@
-package com.scrum.business;
+package com.scrum.repositories;
 
 import java.util.List;
 
@@ -17,6 +17,8 @@ public class LoginRepository {
 	
 		this.jdbctasks = jdbctasks;
 	}
+	
+	public LoginRepository() {}; //testing
 	
 	public boolean verifyUser(String username, String hash)
 	{

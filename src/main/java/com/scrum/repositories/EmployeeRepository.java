@@ -1,12 +1,16 @@
-package com.scrum.business;
+package com.scrum.repositories;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.scrum.business.Employee;
+import com.scrum.business.Task;
 import com.scrum.jdbc.JDBCops;
+import com.scrum.misc.DateTimeOps;
 
 @Service
 public class EmployeeRepository {
@@ -18,6 +22,8 @@ public class EmployeeRepository {
 	
 		this.jdbctasks = jdbctasks;
 	}
+	
+	public EmployeeRepository() {};		//For testing
 	
 	public List<Employee> allEmployee()
 	{
@@ -51,6 +57,8 @@ public class EmployeeRepository {
 		
 		return jdbctasks.getFreeEmployees();
 	}
+
+	
 	
 	
 	

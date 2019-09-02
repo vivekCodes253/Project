@@ -8,7 +8,7 @@
 
 function update(name) {
 	
-	 var URL = "getx?task_id=" + $("#selected_task").val();
+	 var URL = "getTaskDetails?task_id=" + $("#selected_task").val();
      $.ajax({
          type: "GET",
          url: URL,

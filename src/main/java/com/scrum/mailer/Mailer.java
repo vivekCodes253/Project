@@ -42,21 +42,14 @@ public class Mailer {
             Arrays.asList(GmailScopes.MAIL_GOOGLE_COM);
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
 
-    /**
-     * Creates an authorized Credential object.
-     * @param HTTP_TRANSPORT The network HTTP Transport.
-     * @return An authorized Credential object.
-     * @throws IOException If the credentials.json file cannot be found.
-     */
+   
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
-        // Load client secrets.
         InputStream in = Mailer.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
         }
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
-        // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
                 .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))
@@ -67,14 +60,13 @@ public class Mailer {
     }
 
     public void sendMail(String email_receiver_id, String email_subject, String email_message) throws IOException, GeneralSecurityException {
-        // Build a new authorized API client service.
-    
+       
+    	LoggerMain.logger.info("Mailing - "+email_receiver_id);
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
 
-        // Print the labels in the user's account.
         String user = "me";
         ListLabelsResponse listResponse = service.users().labels().list(user).execute();
         List<com.google.api.services.gmail.model.Label> labels = listResponse.getLabels();
@@ -88,8 +80,7 @@ public class Mailer {
         }
         
         try {
-        	//String message = "Hello there, testing scrum master auto mail - mail sent from JAVA Program";
-			MimeMessage myMail = createEmail(email_receiver_id, "citi.fxlm.scrum@gmail.com", email_subject,email_message);
+   		MimeMessage myMail = createEmail(email_receiver_id, "citi.fxlm.scrum@gmail.com", email_subject,email_message);
 			sendMessage(service,"me",myMail);
 			LoggerMain.logger.info("Mailing - "+email_receiver_id);
 		} catch (MessagingException e) {
@@ -127,9 +118,6 @@ public class Mailer {
 			throws MessagingException, IOException {
 		Message message = createMessageWithEmail(emailContent);
 		message = service.users().messages().send(userId, message).execute();
-
-		System.out.println("Message id: " + message.getId());
-		System.out.println(message.toPrettyString());
 		return message;
 	}
     
