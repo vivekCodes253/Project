@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.BasicConfigurator;
 import org.springframework.stereotype.Component;
 
 import com.mysql.cj.jdbc.CallableStatement;
@@ -87,6 +88,7 @@ public class JDBCops implements TasksData {
 	public List<Employee> allEmployee(String username) {
 		List<Employee> Employee = new ArrayList<>();
 		try {
+			BasicConfigurator.configure();
 			init();
 			LoggerMain.logger.info("All tasks requested");
 			rs = st.executeQuery(
@@ -111,6 +113,7 @@ public class JDBCops implements TasksData {
 		List<Employee> Employee = new ArrayList<>();
 		try {
 			init();
+			BasicConfigurator.configure();
 			LoggerMain.logger.info("All tasks requested");
 			rs = st.executeQuery(
 					"SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees where role = '"
@@ -118,6 +121,7 @@ public class JDBCops implements TasksData {
 			while (rs.next()) {
 				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6)));
+				System.out.println("hello "+ rs.getString(1));
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());

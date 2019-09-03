@@ -2,6 +2,7 @@ package com.scrum;
 
 import java.util.List;
 
+import org.apache.log4j.BasicConfigurator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.unbescape.csv.CsvEscape;
@@ -17,6 +18,7 @@ public class ScrumApplication {
 	private static String CSV_FILE_PATH = "values.csv";
 	
 	public static void main(String[] args) {
+		BasicConfigurator.configure();
 		LoggerMain loggermain = new LoggerMain();
 		updateTasks(CSV_FILE_PATH);
 		SpringApplication.run(ScrumApplication.class, args);

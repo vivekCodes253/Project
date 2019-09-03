@@ -13,6 +13,9 @@ public class Task {
 	private String task_status;
 	private String update_space;
 
+	public Task() {
+		
+	}
 	public String getJira_Number() {
 		return jira_Number;
 	}
