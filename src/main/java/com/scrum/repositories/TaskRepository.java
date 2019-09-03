@@ -1,5 +1,6 @@
 package com.scrum.repositories;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -74,6 +75,17 @@ public class TaskRepository {
 				count++;
 		}
 		return count;
+	}
+
+	public void addTask(Task task) {
+		List<Task> tasks = new ArrayList<>();
+		tasks.add(task);
+		jdbctasks.addTasks(tasks);
+		
+	}
+
+	public void modifyTaskOwner(Task task) {
+		jdbctasks.modifyTaskOwner(task);
 	}
 	
 }

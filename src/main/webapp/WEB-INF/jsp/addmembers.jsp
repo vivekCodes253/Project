@@ -298,14 +298,7 @@ $(document).ready(function() {
                                             value="" />
                                     </div>
                                     <div class="form-group">
-                                        <select class="form-control" name="manager" >
-                                            <option class="hidden" selected disabled>Select
-                                                Manager</option>
-                                            <c:forEach var="manager" items="${managerlist}">
-                                                <option value=${manager.soeid} }>${manager.name}</option>
-                                            </c:forEach>
-
-                                        </select>
+                                        
 
                                     </div>
                                     <div class="form-group"></div>
@@ -333,7 +326,7 @@ $(document).ready(function() {
                                 </div>
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Project-1"
-                                        value="1" disabled />
+                                        value="Project 1" disabled />
                                 </div>
                                 <input type="submit" class="btnRegister" value="Submit" />
                             </div>

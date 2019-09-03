@@ -320,19 +320,21 @@ function update(name) {
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <h3 class="register-heading">Modify Task - Change Owner</h3>
+                                <form method="POST" action="/">
+                                <input type="hidden" name="type" value="modify" />
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                                <select  id="selected_task" onchange = "update(this)"class="form-control">
+                                                <select  name ="jira_no" id="selected_task" onchange = "update(this)"class="form-control">
                                                     <option class="hidden"  selected disabled>Select Task</option>
                                                      <c:forEach var="task" items="${tasks}">
-                                                			<option value=${task.jira_Number} }>${task.task_name}</option>
+                                                			<option value=${task.jira_Number} }>${task.task_name} (${task.jira_Number})</option>
                                             			</c:forEach>
                                                     
                                                 </select>
                                             </div>
                                         <div class="form-group">
-                                            <input type="text" id="task_owner" class="form-control" placeholder="TaskOwner" value="" disabled />
+                                            <input type="text" id="task_owner" name = "task_owner" class="form-control" placeholder="TaskOwner" value="" disabled />
                                         </div>
                                         <div class="form-group">
                                             <input id = "start_date" type="text" class="form-control" placeholder="Start-Date" value="" disabled/>
@@ -342,7 +344,7 @@ function update(name) {
                                         </div>
                                       <div class="form-group">
                                             
-                                        </div>
+                                       </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -357,20 +359,21 @@ function update(name) {
                                                 </select>
                                             </div>-->
                                         <div class="form-group">
-                                            <select class="form-control">
-                                                <option class="hidden"  selected disabled>New Owner</option>
-                                                
-                                                <option>person1</option>
-                                                <option>person2</option>
-                                                <option>person3</option>
-                                            </select>
+                                            <select name="owner" class="form-control">
+		                                                <option class="hidden"  selected disabled>Select Employee</option>
+		                                                <c:forEach var="employee" items="${employeelist}">
+		                                                	<option value=${employee.soeid} }>${employee.name}</option>
+		                                            	</c:forEach>
+		                                            </select>
                                         </div>
                                         <input type="submit" class="btnRegister"  value="Submit"/>
                                     </div>
                                 </div>
+                                </form>
                             </div>
                             <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <h3  class="register-heading">Apply as a Hirer</h3>
+                               
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -406,6 +409,7 @@ function update(name) {
                                         <input type="submit" class="btnRegister"  value="Register"/>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>

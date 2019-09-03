@@ -287,4 +287,24 @@ public class JDBCops implements TasksData {
 		List<Employee> freeEmployees;
 		return null;
 	}
+
+	public void modifyTaskOwner(Task task) {
+		// TODO Auto-generated method stub
+		System.out.println("Hell");
+		try {
+			init();
+			PreparedStatement st = cn.prepareStatement(
+					"UPDATE task_details SET owner=? WHERE " + "jira_no = ?");
+			st.setString(1, task.getOwner());
+			st.setString(2, task.getJira_Number());
+			st.executeUpdate();
+
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+			closeConnection();
+		}
+	
+		
+	}
 }

@@ -286,13 +286,17 @@ $(document).ready(function() {
                                 <form action="/" method="POST" id="mainform" class="registerForm">
                                 
                                 <input type="hidden" name="type" value="addtask" />
+                                
 		                                <div class="row register-form">
 		                                    <div class="col-md-6">
+		                                     <div class="form-group">
+		                                            <input name="jira_no" type="text" class="form-control" placeholder="Jira Number" value="" />
+		                                        </div>
 		                                        <div class="form-group">
 		                                            <input name ="task_name" type="text" class="form-control" placeholder="Taskname" value="" />
 		                                        </div>
 		                                        <div class="form-group">
-		                                             <select name="employee" class="form-control">
+		                                             <select name="owner" class="form-control">
 		                                                <option class="hidden"  selected disabled>Select Employee</option>
 		                                                <c:forEach var="employee" items="${employeelist}">
 		                                                	<option value=${employee.soeid} }>${employee.name}</option>
@@ -314,7 +318,7 @@ $(document).ready(function() {
 		                                            <input name="update_space" type="text" class="form-control" placeholder="Update Space" value="" />
 		                                        </div>
 		                                        <div class="form-group">
-		                                                <select name="task_phase" class="form-control">
+		                                                <select name="task_status" class="form-control">
 		                                                    <option class="hidden"  selected disabled>Select Task Phase</option>
 		                                                    <option value="Requirement Analysis">Requirement Analysis</option>
 															<option value="Feasibility study">Feasiblity study</option>

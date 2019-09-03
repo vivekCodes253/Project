@@ -383,6 +383,10 @@ font-weight:bold;
 			</tr>
 		</c:forEach>
 	</table>
+	 <form action="/" method="POST">
+	 <input type="hidden" name="type" value="sendMail" />
+	 	<input type="submit" class="btn btn-danger" value="Close Session & Submit">
+	 </form>
 	</div>
 	</div>
 	</div>
@@ -419,7 +423,7 @@ font-weight:bold;
       <input type="submit" class="fadeIn sixth" value="Submit">
     </form>
   </div>
-	 
+	
 	
 	
             

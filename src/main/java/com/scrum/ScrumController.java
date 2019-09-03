@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.scrum.business.Employee;
 import com.scrum.business.Task;
 import com.scrum.log.LoggerMain;
+import com.scrum.mailer.MailGenerator;
 import com.scrum.mailer.Mailer;
 import com.scrum.repositories.EmployeeRepository;
 import com.scrum.repositories.LoginRepository;
@@ -55,11 +55,15 @@ public class ScrumController {
 	@PostMapping("/")
 	public String landingPagePost(HttpServletRequest request,Model model, @RequestParam(required=false) String type) {
 
-		if("submitemail".equals(type)) {
+		if("sendMail".equals(type)) {
 			return submitMail(request,model);
 		}
+		else if("modify".equals(type)) {
+			return modifyTask(request,model);
+		}
+		
 		else if("addtask".equals(type)) {
-			return "";
+			return addTask(request,model);
 		}
 		else if("editpage".equals(type)) {
 			return addMembers(request,model);
@@ -75,6 +79,42 @@ public class ScrumController {
 	}
 	
 	
+	private String modifyTask(HttpServletRequest request, Model model) {
+		String username=(String) request.getSession().getAttribute("username");
+		if(username==null)
+		{
+			return "login";
+		}
+		else
+		{
+			Task task = new Task(request.getParameter("jira_no"),
+					"",request.getParameter("owner"),"2019-12-12",
+					"2019-12-12","","");
+				taskRepo.modifyTaskOwner(task);
+		}
+		
+		return modifyTasks(request,model);
+	}
+
+
+	private String addTask(HttpServletRequest request, Model model) {
+		String username=(String) request.getSession().getAttribute("username");
+		if(username==null)
+		{
+			return "login";
+		}
+		else
+		{
+			Task task = new Task(request.getParameter("jira_no"),
+				request.getParameter("task_name"),request.getParameter("owner"),request.getParameter("start_date"),
+				request.getParameter("end_date"),request.getParameter("task_status"),request.getParameter("update_space"));
+			taskRepo.addTask(task);
+			
+		}
+		return addTasks(request, model);
+	}
+
+
 	/* Function Name 	: dailyUpdateScreenDisplay
 	 * Purpose 			: Redirects dashboard page
 	 * Input 			: Model object
@@ -136,6 +176,7 @@ public class ScrumController {
 		{
 		LoggerMain.logger.info("Task modification requested");
 		model.addAttribute("tasks", taskRepo.allTasks(username));
+		model.addAttribute("employeelist",empRepo.allEmployee(username));
 		return "modify";
 		}
 	}
@@ -166,9 +207,9 @@ public class ScrumController {
 		}
 		else
 		{
-		LoggerMain.logger.info("Member addition requested");
-		model.addAttribute("managerlist", empRepo.specificEmployees("Manager"));
-		return "addmembers";
+			LoggerMain.logger.info("Member addition requested");
+			model.addAttribute("managerlist", empRepo.specificEmployees("Manager"));
+			return "addmembers";
 		}
 	}
 	
@@ -179,7 +220,7 @@ public class ScrumController {
 	 * Return 			: String mapping to Add Members page*/
 	@PostMapping("/addmembers")
 	public String addMembersPost(HttpServletRequest request,Model model,@RequestParam String SOEID, @RequestParam String name,
-			@RequestParam String manager,@RequestParam String scrum_master,@RequestParam String role) {
+			@RequestParam String scrum_master,@RequestParam String role) {
 		String username=(String) request.getSession().getAttribute("username");
 		if(username==null)
 		{
@@ -187,10 +228,10 @@ public class ScrumController {
 		}
 		else
 		{
-		Employee employee = new Employee(name,SOEID,role,scrum_master,username,"1");
-		empRepo.addEmployee(employee);
-		LoggerMain.logger.info("New employee "+name+" SOEID : "+SOEID+" added!");
-		return addMembers(request,model);
+			Employee employee = new Employee(name,SOEID,role,scrum_master,username,"1");
+			empRepo.addEmployee(employee);
+			LoggerMain.logger.info("New employee "+name+" SOEID : "+SOEID+" added!");
+			return addMembers(request,model);
 		}
 	}
 	
@@ -211,16 +252,18 @@ public class ScrumController {
 		Mailer mailer = new Mailer();
 		SimpleDateFormat formatter= new SimpleDateFormat("E d, MMMM 'at' HH:mm z");
 		String dateString = formatter.format(new Date(System.currentTimeMillis()));
+		String message = MailGenerator.generateSummary(username);
 		for(String email : emailId) {
-			String email_message = "Test mail";
+			
 			try {
-				mailer.sendMail(email,"Scrum summary - "+ dateString, email_message);
+				mailer.sendMail(email,"Scrum summary - "+ dateString, message);
 			} catch (Exception e) {
 				LoggerMain.logger.warn("Exception "+e+" while sending mail to "+email);		
 			}
 		}
+		
 		model.addAttribute("Error", "Session Closed");
-		return "login";
+		return logout(request,model);
 		}
 	}
 	
@@ -265,6 +308,16 @@ public class ScrumController {
 		taskRepo.saveTask(t);
 		return dailyUpdateScreenDisplay(request,model);
 		}
+	}
+	
+	/* Function Name 	: logout
+	 * Purpose 			: logout
+	 * Input 			: 
+	 * Return 			: */
+	@RequestMapping("/logout")
+	String logout(HttpServletRequest request, Model model) {
+		request.getSession().setAttribute("username", null);
+		return "login"; 
 	}
 	
 	
