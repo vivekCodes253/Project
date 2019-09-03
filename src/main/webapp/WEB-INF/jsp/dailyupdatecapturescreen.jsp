@@ -22,6 +22,7 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
    <link href="css/updatetasksmodal.css" rel="stylesheet">
+ 
   <script>
 		function EditPopup(jira_number, task_status, update_space, name, owner,
 				start, end) {
@@ -36,7 +37,7 @@
 
 			var modal = document.getElementById("myModal");
 			modal.style.display = "block";
-			alert(this.innerHTML)
+			
 			this.innerHTML = "Updated";
 		}
 
@@ -137,6 +138,42 @@ font-weight:bold;
  	font-weight:bold;
 
  }
+	.modal {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 1; /* Sit on top */
+	padding-top: 100px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0, 0, 0); /* Fallback color */
+	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+}
+
+/* The Close Button */
+.close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover, .close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
 	
 </style>
 
@@ -346,61 +383,30 @@ font-weight:bold;
 			</tr>
 		</c:forEach>
 	</table>
-	<div id="myModal" class="container modal">
+	</div>
+	</div>
+	</div>
+
+	
+	<div  id="myModal" class="modal" >
 
 		<!-- Modal content -->
-		<div class="modal-content">
-			<span class="close" onclick="EditClose()">&times;</span>
-			<!-- <form action="/" method="post">
-				<center> 
-					<h3>Update Record</h3>
-				</center>
-				<p>JIRA Number:</p>
-				<input type="text" id="jira_Number" name="jira_Number"
-					readonly /><br />
-				<p>Owner</p>
-				 <input type="text" id="owner" name="owner" readonly /><br />
-				<p>End Date</p>
-				<input type="date" id="end_date" name="end_date"
-					 /><br />
-				<p>Task Status</p>
-				<input type="hidden" name="type" value="save" />
-				<select id="task_status" name="task_status">
-					<option id="task_Status" value="" selected hidden></option>
-					<option value="Requirement Analysis">Requirement Analysis</option>
-					<option value="Feasibility study">Feasiblity study</option>
-					<option value="Development">Development</option>
-					<option value="Unit Testing">Unit Testing</option>
-					<option value="Integration Testing">Integration Testing</option>
-					<option value="UAT Testing Coordination">UAT Testing
-						Coordination</option>
-					<option value="Deployment Activity">Deployment Activity</option>
-					<option value="Post Release Activity">Post Release
-						Activity</option>
-				</select><br />
-				<p>Update Space</p>
-				<input type="text" id="update_space" name="update_space" /><br />
-				<br /><input type="submit" value="Save" />
-			</form>
-		</div>
+		
+			
 
-	</div>
-	<form id="submitEmail" action ="/" method="post">
-      		<input type="hidden" name="type" value="submitemail" />
-      		<div style="text-align:center">
-	        <button class="btn btn-danger" onclick="document.getElementById('submitEmail').submit();">Submit & Close Session</button>
-	        </div>
-	 </form> -->
-	  <div id="formContent">
-    <form action="" class="registerForm"></form>
-      <input type="text" id="number" class="fadeIn second" name="jira_number" placeholder="Jira number">
+	  <div id="formContent" call="modal-content" style="margin-left:40%;margin-top:15%">
+	  <span class="close" onclick="EditClose()">&times;</span>
+    <form action="/save" method = "POST" class="registerForm">
+    <h2>Update</h2>
+      <input type="text" id="jira_Number" class="fadeIn second" name="jira_Number" placeholder="Jira number">
       <input type="text" id="owner" class="fadeIn third" name="owner" placeholder="Jira Owner">
-      <input type = "text" id = "space" class = "fadeIn fourth" name ="update_space" placeholder = "UpdateSpace" aria-rowspan="3">
-      <input type = "date" id = "dateofend" class = "fadeIn fifth" name ="end_date" placeholder = "Ending Date">
+      <input type = "text" id = "update_space" class = "fadeIn fourth" name ="update_space" placeholder = "UpdateSpace" aria-rowspan="3">
+      <input type = "date" id = "end_date" class = "fadeIn fifth" name ="end_date" placeholder = "Ending Date">
       <div class="dropdown">
-            <SELECT class="dropbtn" name = "task_Status">Task Selection</select>
+            <SELECT id = "task_status" name = "task_status">Task Selection</select>
             <div class="dropdown-content">
-              <option value = "Requirement Analysis">Requirement Analysis</option>
+            	<option id="task_Status" value="" selected hidden></option>
+              <option  value = "Requirement Analysis">Requirement Analysis</option>
               <option value = "Feasibility study">Feasibility study</option>
               <option value = "Development">Development</option>
               <option value = "Unit Testing">Unit Testing</option>
@@ -418,22 +424,14 @@ font-weight:bold;
 	
             
             	
-           	</div>
+           	
           </div>
-          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-        </div>
-
+       
       </div>
       <!-- /.container-fluid -->
 
       <!-- Sticky Footer -->
-      <footer class="sticky-footer">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright © Your Website 2019</span>
-          </div>
-        </div>
-      </footer>
+     
 
     </div>
     <!-- /.content-wrapper -->
@@ -441,30 +439,8 @@ font-weight:bold;
   </div>
   <!-- /#wrapper -->
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
+ 
+  
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
