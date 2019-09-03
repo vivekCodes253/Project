@@ -24,9 +24,9 @@ public class TaskRepository {
 	public TaskRepository() {} //testing
 		
 	
-	public List<Task> allTasks()
+	public List<Task> allTasks(String username)
 	{
-		return jdbctasks.allTasks();
+		return jdbctasks.allTasks(username);
 	}
 	
 	public Task getTaskById(String taskId) {

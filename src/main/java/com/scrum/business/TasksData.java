@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface TasksData {
 
-	public List<Task> allTasks();
+	public List<Task> allTasks(String username);
 
-	public List<Employee> allEmployee();
+	public List<Employee> allEmployee(String username);
 
 	List<Employee> specificEmployees(String type);
 

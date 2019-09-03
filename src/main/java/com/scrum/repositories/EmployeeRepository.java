@@ -25,9 +25,9 @@ public class EmployeeRepository {
 	
 	public EmployeeRepository() {};		//For testing
 	
-	public List<Employee> allEmployee()
+	public List<Employee> allEmployee(String username)
 	{
-		return jdbctasks.allEmployee();
+		return jdbctasks.allEmployee(username);
 	}
 	
 	public List<Employee> specificEmployees(String type)

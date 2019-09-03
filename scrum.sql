@@ -51,7 +51,9 @@ INSERT INTO login VALUES('AT0001','123');
 
 #---
 DELIMITER //
-CREATE PROCEDURE getAllTask()
+CREATE PROCEDURE getAllTask(IN Manager_id varchar(10))
 BEGIN
-SELECT jira_no,task_name,owner,start_date,end_date,task_status,update_space FROM Task_details;
+SELECT jira_no,task_name,owner,start_date,end_date,task_status,update_space 
+FROM Task_details as t JOIN Employees as e ON t.owner = e.Soeid 
+WHERE e.Manager_Soeid = Manager_id;
 END//

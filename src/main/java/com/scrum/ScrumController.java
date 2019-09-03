@@ -90,7 +90,7 @@ public class ScrumController {
 		else
 		{
 		LoggerMain.logger.info("Dashboard page called");
-		List<Task> tasks = taskRepo.allTasks();
+		List<Task> tasks = taskRepo.allTasks(username);
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("taskcount",tasks.size());
 		model.addAttribute("members",empRepo.getEmployeeNames(tasks));
@@ -115,7 +115,7 @@ public class ScrumController {
 		else
 		{
 		LoggerMain.logger.info("Task addition requested");
-		model.addAttribute("employeelist",empRepo.allEmployee());
+		model.addAttribute("employeelist",empRepo.allEmployee(username));
 		return "addtasks";
 		}
 	}
@@ -135,7 +135,7 @@ public class ScrumController {
 		else
 		{
 		LoggerMain.logger.info("Task modification requested");
-		model.addAttribute("tasks", taskRepo.allTasks());
+		model.addAttribute("tasks", taskRepo.allTasks(username));
 		return "modify";
 		}
 	}
@@ -187,7 +187,7 @@ public class ScrumController {
 		}
 		else
 		{
-		Employee employee = new Employee(name,SOEID,role,scrum_master,manager,"1");
+		Employee employee = new Employee(name,SOEID,role,scrum_master,username,"1");
 		empRepo.addEmployee(employee);
 		LoggerMain.logger.info("New employee "+name+" SOEID : "+SOEID+" added!");
 		return addMembers(request,model);
@@ -277,9 +277,10 @@ public class ScrumController {
 	}
 	
 	@RequestMapping("/tasks")
-	String taskHandler(Model model) {
+	String taskHandler(HttpServletRequest request,Model model) {
+		String username = (String) request.getSession().getAttribute("username");
 		//LoggerMain.logger.info("All tasks requested");
-		model.addAttribute("tasks", taskRepo.allTasks());
+		model.addAttribute("tasks", taskRepo.allTasks(username));
 		return "tasks";
 	}
 	

@@ -56,7 +56,7 @@ public class JDBCops implements TasksData {
 	}
 
 	@Override
-	public List<Task> allTasks() {
+	public List<Task> allTasks(String username) {
 		List<Task> Tasks = new ArrayList<>();
 		try {
 			LoggerMain.logger.info("All tasks requested");
@@ -66,8 +66,9 @@ public class JDBCops implements TasksData {
 //			rs = st.executeQuery("SELECT jira_no,task_name,owner,start_date,end_date,"
 //					+ "task_status,update_space FROM Task_details");
 			CallableStatement cStmt = null;
-			String plsql = "{CALL getAllTask}";
+			String plsql = "{CALL getAllTask(?)}";
 			cStmt = (CallableStatement) cn.prepareCall(plsql);
+			cStmt.setString(1, username);
 			rs=cStmt.executeQuery();
 			System.out.println("Callable statement");
 			while (rs.next()) { 
@@ -84,12 +85,12 @@ public class JDBCops implements TasksData {
 	}
 
 	@Override
-	public List<Employee> allEmployee() {
+	public List<Employee> allEmployee(String username) {
 		List<Employee> Employee = new ArrayList<>();
 		try {
 			init();
 			LoggerMain.logger.info("All tasks requested");
-			rs = st.executeQuery("SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees");
+			rs = st.executeQuery("SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees WHERE manager_soeid='"+username+"'");
 			while (rs.next()) {
 				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6)));
