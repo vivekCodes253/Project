@@ -257,7 +257,7 @@ public class ScrumController {
 			}
 			
 			model.addAttribute("Error", "Session Closed");
-			return "addmembers";// logout(request, model);
+			return "";// logout(request, model);
 		}
 	}
 
