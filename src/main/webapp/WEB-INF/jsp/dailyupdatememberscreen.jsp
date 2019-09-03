@@ -139,7 +139,7 @@ transform: scale(1.1,1.1);
 z-index: 3;
 font-weight:bold;
 background-color: #bbbbbb;
-filter:alpha(opacity=100);
+
 
 
 } button
@@ -284,18 +284,25 @@ filter:alpha(opacity=100);
             
           <div class="card-body">
             <div class="table-responsive">
+            <form action="/" method="POST">
             <table class="table table-bordered table-hover" name="dataTable"id="dataTable" width="100%" cellspacing="0">
 		   <tr>
 		    <th>Employee</th>
 			<th>Attended?</th>
+		
 		</tr>
 		<c:forEach var="e" items="${employeelist}" varStatus = "status">
 			<tr class="collapsed-row">
 			<td>${e.name} (${e.soeid})</td>
 				<td>
 					<div style="height:30%;width:auto" data-toggle="buttons">
-					  <label class="btn-sm btn-normal btn btn-secondary active">
-					    <input checked type="checkbox" name="${e.name}status" id="${e.name}check" autocomplete="off" style ="font-size: 50%" > Present
+					  <label class="btn-sm btn-success btn btn-secondary active">
+					    <input checked type="radio" name="${e.name}" id="${e.name}check" value="present" autocomplete="off" style ="font-size: 50%" > Present
+					  </label>
+					  
+				
+					  <label class="btn-sm btn-danger btn btn-secondary active">
+					    <input type="radio" name="${e.name}" id="${e.name}check" value="absent" autocomplete="off" style ="font-size: 50%" > N/A
 					  </label>
 					  
 					</div>
@@ -304,8 +311,8 @@ filter:alpha(opacity=100);
 				</tr>
 		</c:forEach>
 	</table>
-	 <form action="/" method="POST">
-	 <input type="hidden" name="type" value="sendMail" />
+	 
+	  <input type="hidden" name="type" value="sendMail" />
 	 	<input type="submit" class="btn btn-danger" value="Close Session & Submit">
 	 </form>
 	</div>

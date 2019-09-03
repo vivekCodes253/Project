@@ -80,7 +80,8 @@ public class Mailer {
         }
         
         try {
-   		MimeMessage myMail = createEmail(email_receiver_id, "citi.fxlm.scrum@gmail.com", email_subject,email_message);
+   		MimeMessage myMail = createEmail(email_receiver_id, "citi.fxlm.scrum@gmail.com", email_subject,"");//email_message);
+   		myMail.setContent(email_message, "text/html; charset=utf-8");
 			sendMessage(service,"me",myMail);
 			LoggerMain.logger.info("Mailing - "+email_receiver_id);
 		} catch (MessagingException e) {

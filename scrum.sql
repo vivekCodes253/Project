@@ -13,7 +13,8 @@ INSERT INTO Employees VALUES('rs63572','ramesh Sarvanan','DBDev','NO','bs65643',
 INSERT INTO Employees VALUES('vj69875','Vijay Jaganadhan','QA','NO','bs65643','FX1234');
 INSERT INTO Employees VALUES('sp62345','Shreya Prakash','BA','NO','bs65643','FX1234');
 INSERT INTO Employees VALUES('VR67457','ADEEB','Manager','NO','RR67654','XYZ1');
-
+INSERT INTO Employees VALUES('CD123','Chandana','Manager','NO','RR67654','XYZ21');
+SELECT * from Employees;
 
 #---
 DROP TABLE EmployeeMail;
@@ -23,11 +24,15 @@ ALTER TABLE EmployeeMail ADD foreign key fk_soeid(Soeid) REFERENCES Employees(So
 INSERT INTO EmployeeMail VALUES('VR67457','rvivek253@gmail.com');
 INSERT INTO EmployeeMail VALUES('HS','hemanths8991@gmail.com');
 INSERT INTO EmployeeMail Values('123','samyu.vj97@gmail.com');
+INSERT INTO EmployeeMail Values('sp62345','harichandana5555@gmail.com');
+INSERT INTO EmployeeMail Values('vj69875','bhavanakamaraj@gmail.com');
+
 #---
 
 DROP TABLE Task_Detals;
 CREATE TABLE Task_details(Jira_no varchar(10) PRIMARY KEY,Task_name varchar(50),Owner varchar(10),start_date date, end_date date,Task_status varchar(30),update_space varchar(100));
 ALTER TABLE task_details ADD foreign key fk_owner(Owner) REFERENCES Employees(Soeid);
+SELECT * 
 
 INSERT INTO task_details VALUES('ET1234','Trade testing','vj69875','2019-08-29','2019-09-03','Requirement Analysis','Types of Test cases are being considered');
 INSERT INTO task_details VALUES('ET2000','Code commenting','VR67457','2019-08-31','2019-09-01','Thinking','Whats up?');
@@ -50,6 +55,7 @@ INSERT INTO login VALUES('bs65643','12345');
 INSERT INTO login VALUES('AT0001','123');
 
 #---
+DROP PROCEDURE getAllTask; 
 DELIMITER //
 CREATE PROCEDURE getAllTask(IN Manager_id varchar(10))
 BEGIN

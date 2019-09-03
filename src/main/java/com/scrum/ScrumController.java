@@ -1,8 +1,11 @@
 package com.scrum;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -237,11 +240,13 @@ public class ScrumController {
 		if (username == null) {
 			return "login";
 		} else {
+			Map<String, String[]> attendees = request.getParameterMap();
 			List<String> emailId = empRepo.getMailIds();
 			Mailer mailer = new Mailer();
 			SimpleDateFormat formatter = new SimpleDateFormat("E d, MMMM 'at' HH:mm z");
 			String dateString = formatter.format(new Date(System.currentTimeMillis()));
-			String message = MailGenerator.generateSummary(username);
+			String message = MailGenerator.generateSummary(username,attendees,dateString,"Adeeb Tahir"); //todo -> get scrum master name
+			
 			for (String email : emailId) {
 
 				try {
@@ -250,9 +255,9 @@ public class ScrumController {
 					LoggerMain.logger.warn("Exception " + e + " while sending mail to " + email);
 				}
 			}
-
+			
 			model.addAttribute("Error", "Session Closed");
-			return logout(request, model);
+			return "addmembers";// logout(request, model);
 		}
 	}
 
