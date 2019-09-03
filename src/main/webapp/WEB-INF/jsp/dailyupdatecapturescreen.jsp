@@ -21,6 +21,7 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
+   <link href="css/updatetasksmodal.css" rel="stylesheet">
   <script>
 		function EditPopup(jira_number, task_status, update_space, name, owner,
 				start, end) {
@@ -350,7 +351,7 @@ font-weight:bold;
 		<!-- Modal content -->
 		<div class="modal-content">
 			<span class="close" onclick="EditClose()">&times;</span>
-			<form action="/" method="post">
+			<!-- <form action="/" method="post">
 				<center> 
 					<h3>Update Record</h3>
 				</center>
@@ -389,7 +390,29 @@ font-weight:bold;
       		<div style="text-align:center">
 	        <button class="btn btn-danger" onclick="document.getElementById('submitEmail').submit();">Submit & Close Session</button>
 	        </div>
-	 </form>
+	 </form> -->
+	  <div id="formContent">
+    <form action="" class="registerForm"></form>
+      <input type="text" id="number" class="fadeIn second" name="jira_number" placeholder="Jira number">
+      <input type="text" id="owner" class="fadeIn third" name="owner" placeholder="Jira Owner">
+      <input type = "text" id = "space" class = "fadeIn fourth" name ="update_space" placeholder = "UpdateSpace" aria-rowspan="3">
+      <input type = "date" id = "dateofend" class = "fadeIn fifth" name ="end_date" placeholder = "Ending Date">
+      <div class="dropdown">
+            <SELECT class="dropbtn" name = "task_Status">Task Selection</select>
+            <div class="dropdown-content">
+              <option value = "Requirement Analysis">Requirement Analysis</option>
+              <option value = "Feasibility study">Feasibility study</option>
+              <option value = "Development">Development</option>
+              <option value = "Unit Testing">Unit Testing</option>
+              <option value = "Integration Testing">Integration Testing</option>
+              <option value = "UAT Testing Coordination">UAT Testing Coordination</option>
+              <option value="Deployment Activity">Deployment Activity</option>
+                    <option value="Post Release Activity">Post Release Activity</option>
+            </div>
+          </div>
+      <input type="submit" class="fadeIn sixth" value="Submit">
+    </form>
+  </div>
 	 
 	
 	

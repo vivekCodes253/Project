@@ -11,14 +11,13 @@ public class MailGenerator {
 	
 	public static String generateSummary() {
 		
-		List<Task> tasks = jdbctasks.allTasks();
+		/*List<Task> tasks = jdbctasks.allTasks();
 		StringBuilder sb = new StringBuilder();
 		for (Task task : tasks) {
 			sb.append("JIRA : " +task.getJira_Number()+  "Task Owner" +task.getOwner() +" Task name : "+task.getTask_name() + " Status" + task.getUpdate_space() + " End Date " + task.getEnd_date());
 			
 		}
 		return sb.toString() ;
-		
+		*/return null;
 	}
-
 }
