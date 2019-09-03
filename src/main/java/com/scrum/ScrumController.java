@@ -58,6 +58,9 @@ public class ScrumController {
 		if("submitemail".equals(type)) {
 			return submitMail(request,model);
 		}
+		else if("addtask".equals(type)) {
+			return "";
+		}
 		else if("editpage".equals(type)) {
 			return addMembers(request,model);
 		}

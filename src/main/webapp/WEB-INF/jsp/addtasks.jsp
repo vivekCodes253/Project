@@ -283,7 +283,9 @@ $(document).ready(function() {
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <h3 class="register-heading">Add Task </h3>
-                                <form action="/" method="get" id="mainform" class="registerForm">
+                                <form action="/" method="POST" id="mainform" class="registerForm">
+                                
+                                <input type="hidden" name="type" value="addtask" />
 		                                <div class="row register-form">
 		                                    <div class="col-md-6">
 		                                        <div class="form-group">
