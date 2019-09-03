@@ -64,6 +64,8 @@ public class ScrumController {
 			return modifyTask(request, model);
 		}else if ("addtask".equals(type)) {
 			return addTask(request, model);
+		}else if ("showEmployee".equals(type)) {
+			return employeeDashboard(request, model);
 		}else if ("addtasks".equals(type)) {
 			return addTasks(request, model);
 		} else if ("editpage".equals(type)) {
@@ -74,6 +76,19 @@ public class ScrumController {
 			return taskSaveHandler(request, model);
 		} else {
 			return loginCheck(request, model);
+		}
+	}
+	
+	@RequestMapping("/employeedashboard")
+	private String employeeDashboard(HttpServletRequest request, Model model) {
+		String username = (String) request.getSession().getAttribute("username");
+		System.out.println("Hello");
+		if (username == null) {
+			return "login";
+		} else {
+			LoggerMain.logger.info("Task addition requested");
+			model.addAttribute("employeelist", empRepo.allEmployee(username));
+			return "dailyupdatememberscreen";
 		}
 	}
 

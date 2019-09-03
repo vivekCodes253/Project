@@ -257,19 +257,19 @@ font-weight:bold;
             <a href="#">Dashboard</a>
           </li>
           <li class="breadcrumb-item active">Overview</li>
-          <li class="float-right"  style="margin-left:60%;">
+          <li class="float-right"  style="margin-left:65%;">
           	<div class="btn-group-justified float-right " style="font-weight:bold;text-align: right;transform:scale(0.7,0.7)">
 
           
-          <button onclick="allTasks()" id = "all_tasks_container" class="font-weight-bold btn btn-outline-dark" selected>
+          <button onclick="allTasks()" id = "all_tasks_container" class="font-weight-bold btn btn-primary" selected>
             
                 ALL TASKS (${taskcount})
           </button>
-           <button onclick="nearingTasks(${todaytaskcount})"" id = "today_tasks_container" class="font-weight-bold btn btn-outline-dark">
+           <button onclick="nearingTasks(${todaytaskcount})"" id = "today_tasks_container" class="font-weight-bold btn btn-danger">
                DUE TODAY (${todaytaskcount})
           </button>
           
-          <button onclick="nearingTasks(${deadlinetaskcount})" id = "nearing_tasks_container" class=" font-weight-bold btn btn-outline-dark">
+          <button onclick="nearingTasks(${deadlinetaskcount})" id = "nearing_tasks_container" class=" font-weight-bold btn btn-warning">
                DUE SOON (${deadlinetaskcount})
              
             
@@ -303,44 +303,39 @@ font-weight:bold;
             <table class="table table-bordered table-hover" name="dataTable"id="dataTable" width="100%" cellspacing="0">
 		   <tr>
 			<th></th>
-			<th>Owner</th>
-			<th>JIRA Number</th>
-			<th>Task Name</th>
-			<th>Start Date</th>
-			<th>End Date</th>
-			<th>Task Status</th>
-			<th>Update Space&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-			<th>Make Changes</th>
+			<th>Employee name</th>
+			<th>SOEID</th>
+			<th>Role</th>
+			<th>Secondary Scrum Master</th>
+			<th>Manager SOEID</th>
+			<th>Project ID</th>
 		</tr>
-		<c:forEach var="t" items="${tasks}" varStatus = "status">
+		<c:forEach var="e" items="${employeelist}" varStatus = "status">
 			<tr class="collapsed-row">
 				<td>
 					<div style="height:30%;width:auto" data-toggle="buttons">
 					  <label class="btn-sm btn-normal btn btn-secondary active">
-					    <input checked type="checkbox" name="${t.jira_Number}status" id="${t.jira_Number}check" autocomplete="off" style ="font-size: 50%" > Present
+					    <input checked type="checkbox" name="${e.name}status" id="${e.name}check" autocomplete="off" style ="font-size: 50%" > Present
 					  </label>
 					  
 					</div>
 				</td>
-				<td>${members[status.index]} (${t.owner})</td>
-				<td>${t.jira_Number}</td>
-				<td>${t.task_name}</td>
-				<td>${t.start_date}</td>
-				<td>${t.end_date}</td>
-				<td>${t.task_status}</td>
-				<td >${t.update_space}</td>
-				<td><button class="btn btn-link"id="myBtn" onclick="EditPopup('${t.jira_Number}','${t.task_status}','${t.update_space}','${t.task_name}','${t.owner}','${t.start_date}','${t.end_date}')">Edit</button></td>
-			</tr>
+				<td>${e.name}</td>
+				<td>${e.soeid}</td>
+				<td>${e.role}</td>
+				<td>${e.secondary_scrum}</td>
+				<td>${e.manager_id}</td>
+				<td>${e.project_id}</td>
+				</tr>
 		</c:forEach>
 	</table>
 	 <form action="/" method="POST">
-	 <input type="hidden" name="type" value="showEmployee" />
+	 <input type="hidden" name="type" value="sendMail" />
 	 	<input type="submit" class="btn btn-danger" value="Close Session & Submit">
 	 </form>
 	</div>
 	</div>
 	</div>
-
 	
 	<div  id="myModal" class="modal" >
 
@@ -373,7 +368,7 @@ font-weight:bold;
     </form>
   </div>
 	
-	
+	n>
 	
             
             	
