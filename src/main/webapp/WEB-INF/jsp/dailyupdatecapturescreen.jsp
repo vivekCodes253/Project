@@ -116,23 +116,34 @@
 		
 </script>
 <style>
+label{
+margin-top:3%;margin-bottom:1%}
 table{
-transform:scale(0.93,0.93);
+transform:scale(0.92,0.92);
 z-index:1;
 table-layout:fixed;
+font-size: 130%;
+
 }
 tr:not(:first-child){
 	fint-weight:initial;
 	transition: 0.2s;
  transform:scale(1,1);
+ padding:10px;
+ filter:alpha(opacity=30);
 }
 
 tr:not(:first-child):hover{
 height:120%;
-
+padding-top:10%;
+padding-bottom:10%;
 transform: scale(1.1,1.1);
 z-index: 3;
 font-weight:bold;
+background-color: #bbbbbb;
+filter:alpha(opacity=100);
+
+
 }
  button
  {border-radius: 150%;
@@ -300,9 +311,9 @@ font-weight:bold;
             
           <div class="card-body">
             <div class="table-responsive">
-            <table class="table table-bordered table-hover" name="dataTable"id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered" style="border:1px solid blue;"name="dataTable"id="dataTable" width="100%" cellspacing="0">
 		   <tr>
-			<th></th>
+			
 			<th>Owner</th>
 			<th>JIRA Number</th>
 			<th>Task Name</th>
@@ -313,15 +324,8 @@ font-weight:bold;
 			<th>Make Changes</th>
 		</tr>
 		<c:forEach var="t" items="${tasks}" varStatus = "status">
-			<tr class="collapsed-row">
-				<td>
-					<div style="height:30%;width:auto" data-toggle="buttons">
-					  <label class="btn-sm btn-normal btn btn-secondary active">
-					    <input checked type="checkbox" name="${t.jira_Number}status" id="${t.jira_Number}check" autocomplete="off" style ="font-size: 50%" > Present
-					  </label>
-					  
-					</div>
-				</td>
+			<tr class="">
+				
 				<td>${members[status.index]} (${t.owner})</td>
 				<td>${t.jira_Number}</td>
 				<td>${t.task_name}</td>
@@ -335,7 +339,7 @@ font-weight:bold;
 	</table>
 	 <form action="/" method="POST">
 	 <input type="hidden" name="type" value="showEmployee" />
-	 	<input type="submit" class="btn btn-danger" value="Close Session & Submit">
+	 	<input type="submit" class="btn btn-danger" value="Conclude session">
 	 </form>
 	</div>
 	</div>
@@ -348,15 +352,21 @@ font-weight:bold;
 		
 			
 
-	  <div id="formContent" call="modal-content" style="margin-left:40%;margin-top:15%">
+	  <div id="formContent" call="modal-content" style="margin-left:40%;margin-top:0%">
 	  <span class="close" onclick="EditClose()">&times;</span>
     <form action="/save" method = "POST" class="registerForm">
-    <h2>Update</h2>
+    <h1 style="font-size:220%">Update</h1><hr>
+    <label>Jira Number : </label>
       <input type="text" id="jira_Number" class="fadeIn second" name="jira_Number" placeholder="Jira number" readonly>
+      
+     <label>Task owner : </label>
       <input type="text" id="owner" class="fadeIn third" name="owner" placeholder="Jira Owner" readonly>
-      <input type = "text" id = "update_space" class = "fadeIn fourth" name ="update_space" placeholder = "UpdateSpace" aria-rowspan="3" style="background-color:white">
+      
+      
+      <label>Task end date : </label>
       <input type = "date" id = "end_date" class = "fadeIn fifth" name ="end_date" placeholder = "Ending Date" style="background-color:white">
-      <div >
+      <label>Task Status :</label>
+      <div>
   <select id = "task_status" name="task_status" class = "fadeIn sixth custom-select" style="width:390px; text-align:center">
   <option id="task_Status" value="" selected hidden></option>
         <option value = "Requirement Analysis">Requirement Analysis</option>
@@ -369,7 +379,13 @@ font-weight:bold;
         <option value="Post Release Activity">Post Release Activity</option>
   </select>
 </div>
-      <input type="submit" class="fadeIn seventh mt-5" value="Submit">
+
+	<label>Updates and Comments : </label><br>
+	<div class="container-fluid">
+      <textarea  rows ="3"  id = "update_space" class = "form-control fadeIn fourth" name ="update_space" placeholder = "UpdateSpace" style="background-color:white;">
+      </textarea>
+      </div><br>
+      <input type="submit" class="fadeIn seventh " value="Submit">
     </form>
   </div>
 	
