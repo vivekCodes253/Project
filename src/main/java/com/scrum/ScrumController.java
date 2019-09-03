@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,10 +59,10 @@ public class ScrumController {
 			return submitMail(request,model);
 		}
 		else if("editpage".equals(type)) {
-			return addMembers(model);
+			return addMembers(request,model);
 		}
 		else if("dashboard".equals(type)) {
-			return dailyUpdateScreenDisplay(model);
+			return dailyUpdateScreenDisplay(request,model);
 		}
 		else if("save".equals(type)) {
 			return taskSaveHandler(request,model);
@@ -76,7 +77,15 @@ public class ScrumController {
 	 * Input 			: Model object
 	 * Return 			: String mapping to dashboard page*/
 	@RequestMapping("/dashboard")
-	public String dailyUpdateScreenDisplay(Model model) {
+	public String dailyUpdateScreenDisplay(HttpServletRequest request,Model model) {
+		String username;
+		username=(String) request.getSession().getAttribute("username");
+		if(username == null)
+		{
+			return "login";
+		}
+		else
+		{
 		LoggerMain.logger.info("Dashboard page called");
 		List<Task> tasks = taskRepo.allTasks();
 		model.addAttribute("tasks", tasks);
@@ -85,6 +94,7 @@ public class ScrumController {
 		model.addAttribute("deadlinetaskcount",taskRepo.getDeadlineTasksCount(tasks));
 		model.addAttribute("todaytaskcount",taskRepo.getTodayTasksCount(tasks));
 		return "dailyupdatecapturescreen";
+		}
 	}
 	
 
@@ -93,10 +103,18 @@ public class ScrumController {
 	 * Input 			: Model object
 	 * Return 			: String mapping to Add Tasks page*/
 	@RequestMapping("/addtasks")
-	String addTasks(Model model) {
+	String addTasks(HttpServletRequest request,Model model) {
+		String username=(String) request.getSession().getAttribute("username");
+		if(username==null)
+		{
+			return "login";
+		}
+		else
+		{
 		LoggerMain.logger.info("Task addition requested");
 		model.addAttribute("employeelist",empRepo.allEmployee());
 		return "addtasks";
+		}
 	}
 	
 	
@@ -105,10 +123,18 @@ public class ScrumController {
 	 * Input 			: Model object
 	 * Return 			: String mapping to Modify Tasks page*/
 	@GetMapping("/modify")
-	String modifyTasks(Model model) {
+	String modifyTasks(HttpServletRequest request,Model model) {
+		String username=(String) request.getSession().getAttribute("username");
+		if(username==null)
+		{
+			return "login";
+		}
+		else
+		{
 		LoggerMain.logger.info("Task modification requested");
 		model.addAttribute("tasks", taskRepo.allTasks());
 		return "modify";
+		}
 	}
 	
 	
@@ -118,7 +144,7 @@ public class ScrumController {
 	 * Return 			: JSON object of required task*/
 	@GetMapping("/getTaskDetails")
 	@ResponseBody	
-	public  Task modifyTasksTaskData(@RequestParam String task_id) {
+	public  Task modifyTasksTaskData(HttpServletRequest request,@RequestParam String task_id) {
 		LoggerMain.logger.info("Task "+task_id+" loaded for modification");
 		return taskRepo.getTaskById(task_id);	
 	}
@@ -129,10 +155,18 @@ public class ScrumController {
 	 * Input 			: Model object
 	 * Return 			: String mapping to Add Members page*/
 	@GetMapping("/addmembers")
-	public String addMembers(Model model) {
+	public String addMembers(HttpServletRequest request,Model model) {
+		String username=(String) request.getSession().getAttribute("username");
+		if(username==null)
+		{
+			return "login";
+		}
+		else
+		{
 		LoggerMain.logger.info("Member addition requested");
 		model.addAttribute("managerlist", empRepo.specificEmployees("Manager"));
 		return "addmembers";
+		}
 	}
 	
 	
@@ -141,12 +175,20 @@ public class ScrumController {
 	 * Input 			: Model object
 	 * Return 			: String mapping to Add Members page*/
 	@PostMapping("/addmembers")
-	public String addMembersPost(Model model,@RequestParam String SOEID, @RequestParam String name,
+	public String addMembersPost(HttpServletRequest request,Model model,@RequestParam String SOEID, @RequestParam String name,
 			@RequestParam String manager,@RequestParam String scrum_master,@RequestParam String role) {
+		String username=(String) request.getSession().getAttribute("username");
+		if(username==null)
+		{
+			return "login";
+		}
+		else
+		{
 		Employee employee = new Employee(name,SOEID,role,scrum_master,manager,"1");
 		empRepo.addEmployee(employee);
 		LoggerMain.logger.info("New employee "+name+" SOEID : "+SOEID+" added!");
-		return addMembers(model);
+		return addMembers(request,model);
+		}
 	}
 	
 	
@@ -155,6 +197,13 @@ public class ScrumController {
 	 * Input 			: HTTPRequest object, Model object
 	 * Return 			: String mapping to login page*/
 	public String submitMail(HttpServletRequest request,Model model) {
+		String username=(String) request.getSession().getAttribute("username");
+		if(username==null)
+		{
+			return "login";
+		}
+		else
+		{
 		List<String> emailId = empRepo.getMailIds();
 		Mailer mailer = new Mailer();
 		SimpleDateFormat formatter= new SimpleDateFormat("E d, MMMM 'at' HH:mm z");
@@ -169,6 +218,7 @@ public class ScrumController {
 		}
 		model.addAttribute("Error", "Session Closed");
 		return "login";
+		}
 	}
 	
 	/* Function Name 	: loginCheck
@@ -181,7 +231,8 @@ public class ScrumController {
 		LoggerMain.logger.info("Attepting login username : "+username);
 		if(logRepo.verifyUser(username,password)) {
 			LoggerMain.logger.info("Login success");
-			return dailyUpdateScreenDisplay(model);
+			request.getSession().setAttribute("username", username);
+			return dailyUpdateScreenDisplay(request,model);
 		} else{
 			LoggerMain.logger.info("Login failed!" );
 			model.addAttribute("Error","Wrong credentials");
@@ -196,13 +247,21 @@ public class ScrumController {
 	 * Return 			: String mapping to dashboard page*/
 	@RequestMapping("/save")
 	String taskSaveHandler(HttpServletRequest request, Model model) {
+		String username=(String) request.getSession().getAttribute("username");
+		if(username==null)
+		{
+			return "login";
+		}
+		else
+		{
 		Date start_date=Date.valueOf("2019-09-18");		//dummy date value
 		Date end_date=Date.valueOf(request.getParameter("end_date"));
 		Task t = new Task(request.getParameter("jira_Number"),
 				"",request.getParameter("owner"),start_date,end_date,
 				request.getParameter("task_status"),request.getParameter("update_space"));
 		taskRepo.saveTask(t);
-		return dailyUpdateScreenDisplay(model);
+		return dailyUpdateScreenDisplay(request,model);
+		}
 	}
 	
 	
