@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.scrum.business.Task;
+import com.scrum.fileops.DateTimeOps;
 import com.scrum.jdbc.JDBCops;
-import com.scrum.misc.DateTimeOps;
 
 @Service
 public class TaskRepository {
@@ -18,47 +18,47 @@ public class TaskRepository {
 
 	@Autowired
 	public TaskRepository(JDBCops jdbctasks) {
-	
+
 		this.jdbctasks = jdbctasks;
 	}
-	
-	public TaskRepository() {} //testing
-		
-	
-	public List<Task> allTasks(String username)
-	{
+
+	public TaskRepository() {
+	} // testing
+
+	public List<Task> allTasks(String username) {
 		return jdbctasks.allTasks(username);
 	}
-	
+
 	public Task getTaskById(String taskId) {
 		return jdbctasks.taskById(taskId);
-		
+
 	}
+
 	public Task saveTask(Task t) {
 		return jdbctasks.editTask(t);
 	}
-	
+
 	public int getDeadlineTasksCount(List<Task> tasks) {
 		int count = 0;
 		Date date;
 		Date today = new Date();
-		for(Task task : tasks) {
+		for (Task task : tasks) {
 			date = task.getEnd_date();
-			System.out.println(today+" "+date);
-			if(DateTimeOps.getDifferenceDays(today,date)<4)
+			System.out.println(today + " " + date);
+			if (DateTimeOps.getDifferenceDays(today, date) < 4)
 				count++;
 		}
 		return count;
 	}
-	
+
 	public int getDeadlineTasksCountFromDate(List<Task> tasks, Date today) {
 		int count = 0;
 		Date date;
-		
-		for(Task task : tasks) {
+
+		for (Task task : tasks) {
 			date = task.getEnd_date();
-			System.out.println(today+" "+date);
-			if(DateTimeOps.getDifferenceDays(today,date)<4)
+			System.out.println(today + " " + date);
+			if (DateTimeOps.getDifferenceDays(today, date) < 4)
 				count++;
 		}
 		return count;
@@ -68,10 +68,10 @@ public class TaskRepository {
 		int count = 0;
 		Date date;
 		Date today = new Date();
-		for(Task task : tasks) {
+		for (Task task : tasks) {
 			date = task.getEnd_date();
-			System.out.println(today+" "+date);
-			if(DateTimeOps.getDifferenceDays(today,date)<1)
+			System.out.println(today + " " + date);
+			if (DateTimeOps.getDifferenceDays(today, date) < 1)
 				count++;
 		}
 		return count;
@@ -81,11 +81,11 @@ public class TaskRepository {
 		List<Task> tasks = new ArrayList<>();
 		tasks.add(task);
 		jdbctasks.addTasks(tasks);
-		
+
 	}
 
 	public void modifyTaskOwner(Task task) {
 		jdbctasks.modifyTaskOwner(task);
 	}
-	
+
 }

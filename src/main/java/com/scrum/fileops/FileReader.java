@@ -1,4 +1,4 @@
-package com.scrum.misc;
+package com.scrum.fileops;
 
 import java.io.*;
 import java.io.FileNotFoundException;
@@ -13,19 +13,17 @@ public class FileReader {
 		List<Task> taskList = new ArrayList<>();
 		String fileData = fileread(filePath);
 		String[] elements = fileData.split(",");
-		//System.out.println(fileData);
 		for (int i = 0; i < elements.length;) {
-			taskList.add(new Task(elements[i],elements[i+1],elements[i+2],elements[i+3],elements[i+4],elements[i+5],elements[i+6]));
-			i+=7;
+			taskList.add(new Task(elements[i], elements[i + 1], elements[i + 2], elements[i + 3], elements[i + 4],
+					elements[i + 5], elements[i + 6]));
+			i += 7;
 		}
 
-			return taskList;
+		return taskList;
 	}
 
-	
 	/*
-	 * Function Name : fileread 
-	 * Purpose : read data from file Input : filepath
+	 * Function Name : fileread Purpose : read data from file Input : filepath
 	 * Return : Read message or status
 	 */
 	public static String fileread(String filepath) {

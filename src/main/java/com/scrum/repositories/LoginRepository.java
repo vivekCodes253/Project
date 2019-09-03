@@ -14,19 +14,15 @@ public class LoginRepository {
 
 	@Autowired
 	public LoginRepository(JDBCops jdbctasks) {
-	
+
 		this.jdbctasks = jdbctasks;
 	}
-	
-	public LoginRepository() {}; //testing
-	
-	public boolean verifyUser(String username, String hash)
-	{
+
+	public LoginRepository() {
+	}; // testing
+
+	public boolean verifyUser(String username, String hash) {
 		return jdbctasks.verifyUser(username, hash);
 	}
-	
-	
-	
-	
-	
+
 }

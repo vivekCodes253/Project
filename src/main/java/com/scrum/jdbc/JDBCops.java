@@ -21,11 +21,11 @@ import com.scrum.log.LoggerMain;
 @Component
 public class JDBCops implements TasksData {
 
-	private final String PASSWORD 		= "c0nygre";
-	private final String USER_ID 		= "root";
-	private final String SCHEMA 		= "scrum";
-	private final String PORT 			= "3306";
-	private final String CONNECTION_URL = "jdbc:mysql://localhost:" + PORT + "/" + SCHEMA + "?useSSL="
+	private final String PASSWORD 			= "c0nygre";
+	private final String USER_ID 			= "root";
+	private final String SCHEMA				= "scrum";
+	private final String PORT			 	= "3306";
+	private final String CONNECTION_URL 	= "jdbc:mysql://localhost:" + PORT + "/" + SCHEMA + "?useSSL="
 			+ "false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
 
 	private Connection cn;
@@ -38,7 +38,7 @@ public class JDBCops implements TasksData {
 			DriverManager.registerDriver(d);
 			cn = DriverManager.getConnection(CONNECTION_URL, USER_ID, PASSWORD);
 			st = cn.createStatement();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			LoggerMain.logger.error(e);
 		}
 	}
@@ -62,17 +62,16 @@ public class JDBCops implements TasksData {
 			LoggerMain.logger.info("All tasks requested");
 			Driver d = new com.mysql.cj.jdbc.Driver();
 			DriverManager.registerDriver(d);
-			cn = DriverManager.getConnection(CONNECTION_URL,USER_ID,PASSWORD);
-//			rs = st.executeQuery("SELECT jira_no,task_name,owner,start_date,end_date,"
-//					+ "task_status,update_space FROM Task_details");
+			cn = DriverManager.getConnection(CONNECTION_URL, USER_ID, PASSWORD);
 			CallableStatement cStmt = null;
 			String plsql = "{CALL getAllTask(?)}";
 			cStmt = (CallableStatement) cn.prepareCall(plsql);
 			cStmt.setString(1, username);
-			rs=cStmt.executeQuery();
+			rs = cStmt.executeQuery();
 			System.out.println("Callable statement");
-			while (rs.next()) { 
-				Tasks.add(new Task(rs.getString(1),rs.getString(2),rs.getString(3),rs.getDate(4),rs.getDate(5),rs.getString(6),rs.getString(7)));
+			while (rs.next()) {
+				Tasks.add(new Task(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
+						rs.getString(6), rs.getString(7)));
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -90,7 +89,9 @@ public class JDBCops implements TasksData {
 		try {
 			init();
 			LoggerMain.logger.info("All tasks requested");
-			rs = st.executeQuery("SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees WHERE manager_soeid='"+username+"'");
+			rs = st.executeQuery(
+					"SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees WHERE manager_soeid='"
+							+ username + "'");
 			while (rs.next()) {
 				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6)));
@@ -241,7 +242,6 @@ public class JDBCops implements TasksData {
 	public String getEmployeeBySOEID(String SOEID) {
 		try {
 			init();
-			// LoggerMain.logger.info("Employee mail ids requested");
 			rs = st.executeQuery("SELECT name FROM employees where soeid = '" + SOEID + "'");
 
 			while (rs.next()) {
@@ -283,18 +283,11 @@ public class JDBCops implements TasksData {
 
 	}
 
-	public Employee getFreeEmployees() {
-		List<Employee> freeEmployees;
-		return null;
-	}
-
 	public void modifyTaskOwner(Task task) {
-		// TODO Auto-generated method stub
 		System.out.println("Hell");
 		try {
 			init();
-			PreparedStatement st = cn.prepareStatement(
-					"UPDATE task_details SET owner=? WHERE " + "jira_no = ?");
+			PreparedStatement st = cn.prepareStatement("UPDATE task_details SET owner=? WHERE " + "jira_no = ?");
 			st.setString(1, task.getOwner());
 			st.setString(2, task.getJira_Number());
 			st.executeUpdate();
@@ -304,7 +297,6 @@ public class JDBCops implements TasksData {
 		} finally {
 			closeConnection();
 		}
-	
-		
+
 	}
 }
