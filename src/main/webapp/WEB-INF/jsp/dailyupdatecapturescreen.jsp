@@ -270,7 +270,7 @@ font-weight:bold;
           </li>
           <li class="breadcrumb-item active">Overview</li>
           <li class="float-right"  style="margin-left:65%;">
-          	<div class="btn-group-justified float-right " style="font-weight:bold;text-align: right">
+          	<div class="btn-group-justified float-right " style="font-weight:bold;text-align: right;transform:scale(0.7,0.7)">
 
           
           <button onclick="allTasks()" id = "all_tasks_container" class="font-weight-bold btn btn-primary" selected>
