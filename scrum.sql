@@ -1,16 +1,18 @@
+DROP DATABASE SCRUM;
+CREATE DATABASE SCRUM;
 USE SCRUM;
 
 
 DROP TABLE Employees;
 CREATE TABLE Employees(Soeid varchar(10) PRIMARY KEY,Name varchar(50),Role varchar(15),Sec_scrum varchar(3),Manager_Soeid varchar(10),Project_id varchar(10));
 ALTER TABLE Employees ADD foreign key fk_id(Manager_Soeid) REFERENCES Employees(Soeid) ON DELETE SET NULL;
-
+INSERT INTO employees(Soeid,Name,Role,Sec_Scrum) VALUES('rr67654','Radha Ravi','Head','NO');
 INSERT INTO Employees VALUES('bs65643','Bala Subramanian','Manager','NO','rr67654','FX1234');
 INSERT INTO Employees VALUES('sr63573','Seetha Rajan','Dev','NO','bs65643','FX1234');
 INSERT INTO Employees VALUES('rs63572','ramesh Sarvanan','DBDev','NO','bs65643','FX1234');
 INSERT INTO Employees VALUES('vj69875','Vijay Jaganadhan','QA','NO','bs65643','FX1234');
 INSERT INTO Employees VALUES('sp62345','Shreya Prakash','BA','NO','bs65643','FX1234');
-INSERT INTO Employees VALUES('VR67457','ADEEB','Manager','NO','AT0001','XYZ1');
+INSERT INTO Employees VALUES('VR67457','ADEEB','Manager','NO','RR67654','XYZ1');
 
 
 #---
@@ -48,3 +50,8 @@ INSERT INTO login VALUES('bs65643','12345');
 INSERT INTO login VALUES('AT0001','123');
 
 #---
+DELIMITER //
+CREATE PROCEDURE getAllTask()
+BEGIN
+SELECT jira_no,task_name,owner,start_date,end_date,task_status,update_space FROM Task_details;
+END//
