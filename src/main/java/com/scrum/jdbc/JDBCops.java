@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.mysql.cj.jdbc.CallableStatement;
 import com.scrum.business.Employee;
 import com.scrum.business.Task;
 import com.scrum.business.TasksData;
@@ -58,15 +59,19 @@ public class JDBCops implements TasksData {
 	public List<Task> allTasks() {
 		List<Task> Tasks = new ArrayList<>();
 		try {
-			init();
 			LoggerMain.logger.info("All tasks requested");
-			rs = st.executeQuery("SELECT jira_no,task_name,owner,start_date,end_date,"
-					+ "task_status,update_space FROM Task_details order by end_date");
-
-			while (rs.next()) {
-				Tasks.add(new Task(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
-						rs.getString(6), rs.getString(7)));
-				System.out.println("Hellox " + rs.getString(1));
+			Driver d = new com.mysql.cj.jdbc.Driver();
+			DriverManager.registerDriver(d);
+			cn = DriverManager.getConnection(CONNECTION_URL,USER_ID,PASSWORD);
+//			rs = st.executeQuery("SELECT jira_no,task_name,owner,start_date,end_date,"
+//					+ "task_status,update_space FROM Task_details");
+			CallableStatement cStmt = null;
+			String plsql = "{CALL getAllTask}";
+			cStmt = (CallableStatement) cn.prepareCall(plsql);
+			rs=cStmt.executeQuery();
+			System.out.println("Callable statement");
+			while (rs.next()) { 
+				Tasks.add(new Task(rs.getString(1),rs.getString(2),rs.getString(3),rs.getDate(4),rs.getDate(5),rs.getString(6),rs.getString(7)));
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
