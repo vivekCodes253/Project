@@ -52,7 +52,7 @@
 				name="username" placeholder="SOEID"> 
 				
 				<input minlength="1"
-				type="text" id="password" class="fadeIn third" name="password"
+				type="password" id="password" class="fadeIn third" name="password"
 				placeholder="PASSWORD"> 
 				<input style="margin-top: 10%" type="submit" class="fadeIn fourth" value="Log In">
 		</form>
