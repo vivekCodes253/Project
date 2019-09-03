@@ -257,19 +257,19 @@ font-weight:bold;
             <a href="#">Dashboard</a>
           </li>
           <li class="breadcrumb-item active">Overview</li>
-          <li class="float-right"  style="margin-left:65%;">
+          <li class="float-right"  style="margin-left:60%;">
           	<div class="btn-group-justified float-right " style="font-weight:bold;text-align: right;transform:scale(0.7,0.7)">
 
           
-          <button onclick="allTasks()" id = "all_tasks_container" class="font-weight-bold btn btn-primary" selected>
+          <button onclick="allTasks()" id = "all_tasks_container" class="font-weight-bold btn btn-outline-dark" selected>
             
                 ALL TASKS (${taskcount})
           </button>
-           <button onclick="nearingTasks(${todaytaskcount})"" id = "today_tasks_container" class="font-weight-bold btn btn-danger">
+           <button onclick="nearingTasks(${todaytaskcount})"" id = "today_tasks_container" class="font-weight-bold btn btn-outline-dark">
                DUE TODAY (${todaytaskcount})
           </button>
           
-          <button onclick="nearingTasks(${deadlinetaskcount})" id = "nearing_tasks_container" class=" font-weight-bold btn btn-warning">
+          <button onclick="nearingTasks(${deadlinetaskcount})" id = "nearing_tasks_container" class=" font-weight-bold btn btn-outline-dark">
                DUE SOON (${deadlinetaskcount})
              
             
@@ -373,7 +373,7 @@ font-weight:bold;
     </form>
   </div>
 	
-	n>
+	
 	
             
             	
