@@ -66,6 +66,10 @@ public class Employee {
 		this.project_id = project_id;
 	}
 
+	public Employee() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [name=" + name + ", soeid=" + soeid + ", role=" + role + ", secondary_scrum=" + secondary_scrum

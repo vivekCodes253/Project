@@ -11,11 +11,23 @@ import java.util.List;
 import org.junit.Test;
 
 import com.scrum.business.Task;
+import com.scrum.jdbc.JDBCops;
 import com.scrum.repositories.TaskRepository;
-
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 public class TaskRepositoryTest {
 	
 
+	@Mock private JDBCops jdbcops;
+	 
+	  @Rule public MockitoRule rule = MockitoJUnit.rule();
+	 
 	TaskRepository taskRepo = new TaskRepository();
 	
 	@Test
@@ -39,4 +51,81 @@ public class TaskRepositoryTest {
 			assertTrue(count==1);
 			
 	}
+	
+	  @Test
+	  public void test() {
+	    MockitoAnnotations.initMocks(this);
+	    TaskRepository taskrepo = new TaskRepository(jdbcops);
+	    taskrepo.allTasks("xxxx");
+	    Mockito.verify(jdbcops).allTasks("xxxx");
+	}
+	  
+	  @Test
+	  public void testAllTasks() {
+	    TaskRepository taskrepo = new TaskRepository(jdbcops);
+	    Mockito.when(jdbcops.allTasks("xxxx")).thenReturn(createTestTasks());
+	    List<Task> actual = taskrepo.allTasks("xxxx");
+	    Assert.assertEquals("BO67895", actual.get(0).getJira_Number());
+	    Assert.assertEquals("Bid/Offer", actual.get(0).getTask_name());
+	    Mockito.verify(jdbcops).allTasks("xxxx");
+	}
+
+	  @Test
+	  public void testgetTaskById() {
+	    TaskRepository taskrepo = new TaskRepository(jdbcops);
+	    Mockito.when(jdbcops.taskById("B067895")).thenReturn(createTestTask());
+	    Task actual = taskrepo.getTaskById("B067895");
+	    Assert.assertEquals("BO67895", actual.getJira_Number());
+	    Assert.assertEquals("Bid/Offer", actual.getTask_name());
+	    Mockito.verify(jdbcops).taskById("B067895");
+	}
+	  
+	  @Test
+	  public void testSaveTask() {
+	    TaskRepository taskrepo = new TaskRepository(jdbcops);
+	    Task sampleTask = createTestTask();
+	    Mockito.when(jdbcops.editTask(sampleTask)).thenReturn(createTestTask());
+	    Task actual = taskrepo.saveTask(sampleTask);
+	    Assert.assertEquals("BO67895", actual.getJira_Number());
+	    Assert.assertEquals("Bid/Offer", actual.getTask_name());
+	    Mockito.verify(jdbcops).editTask(sampleTask);
+	}
+	  
+	  @Test
+	  public void testAddTask() {
+	    MockitoAnnotations.initMocks(this);
+	    TaskRepository taskrepo = new TaskRepository(jdbcops);
+	    Task task = createTestTask();
+	    List<Task> tasks = new ArrayList<Task>();
+	    tasks.add(task);
+	    taskrepo.addTask(task);
+	    Mockito.verify(jdbcops).addTasks(tasks);
+	}
+	  
+	  @Test
+	  public void testModifyTaskOwner() {
+	    MockitoAnnotations.initMocks(this);
+	    TaskRepository taskrepo = new TaskRepository(jdbcops);
+	    Task task = createTestTask();
+	    taskrepo.modifyTaskOwner(task);
+	    Mockito.verify(jdbcops).modifyTaskOwner(task);
+	}
+	  
+	  
+	  
+	  private List<Task> createTestTasks() {
+		    Task task = new Task();
+		    task.setJira_Number("BO67895");
+		    task.setTask_name("Bid/Offer");
+		    List<Task> tasks = new ArrayList<Task>();
+		    tasks.add(task);
+		    return tasks;
+		  }
+	  
+	  private Task createTestTask() {
+		    Task task = new Task();
+		    task.setJira_Number("BO67895");
+		    task.setTask_name("Bid/Offer");
+		    return task;
+		  }
 }
