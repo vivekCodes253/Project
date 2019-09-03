@@ -317,6 +317,11 @@ background-color: #3e8e41;
     -moz-animation-delay: 1.4s;
     animation-delay: 1.4s;
   }
+  .fadeIn.seventh {
+    -webkit-animation-delay: 1.6s;
+    -moz-animation-delay: 1.6s;
+    animation-delay: 1.6s;
+  }
   
   
   

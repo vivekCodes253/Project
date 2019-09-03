@@ -22,6 +22,7 @@
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
    <link href="css/updatetasksmodal.css" rel="stylesheet">
+   <link rel = "stylesheet" href = "css/style.css">
  
   <script>
 		function EditPopup(jira_number, task_status, update_space, name, owner,
@@ -351,29 +352,28 @@ font-weight:bold;
 	  <span class="close" onclick="EditClose()">&times;</span>
     <form action="/save" method = "POST" class="registerForm">
     <h2>Update</h2>
-      <input type="text" id="jira_Number" class="fadeIn second" name="jira_Number" placeholder="Jira number">
-      <input type="text" id="owner" class="fadeIn third" name="owner" placeholder="Jira Owner">
-      <input type = "text" id = "update_space" class = "fadeIn fourth" name ="update_space" placeholder = "UpdateSpace" aria-rowspan="3">
-      <input type = "date" id = "end_date" class = "fadeIn fifth" name ="end_date" placeholder = "Ending Date">
-      <div class="dropdown">
-            <SELECT id = "task_status" name = "task_status">Task Selection</select>
-            <div class="dropdown-content">
-            	<option id="task_Status" value="" selected hidden></option>
-              <option  value = "Requirement Analysis">Requirement Analysis</option>
-              <option value = "Feasibility study">Feasibility study</option>
-              <option value = "Development">Development</option>
-              <option value = "Unit Testing">Unit Testing</option>
-              <option value = "Integration Testing">Integration Testing</option>
-              <option value = "UAT Testing Coordination">UAT Testing Coordination</option>
-              <option value="Deployment Activity">Deployment Activity</option>
-                    <option value="Post Release Activity">Post Release Activity</option>
-            </div>
-          </div>
-      <input type="submit" class="fadeIn sixth" value="Submit">
+      <input type="text" id="jira_Number" class="fadeIn second" name="jira_Number" placeholder="Jira number" readonly>
+      <input type="text" id="owner" class="fadeIn third" name="owner" placeholder="Jira Owner" readonly>
+      <input type = "text" id = "update_space" class = "fadeIn fourth" name ="update_space" placeholder = "UpdateSpace" aria-rowspan="3" style="background-color:white">
+      <input type = "date" id = "end_date" class = "fadeIn fifth" name ="end_date" placeholder = "Ending Date" style="background-color:white">
+      <div >
+  <select id = "task_status" name="task_status" class = "fadeIn sixth custom-select" style="width:390px; text-align:center">
+  <option id="task_Status" value="" selected hidden></option>
+        <option value = "Requirement Analysis">Requirement Analysis</option>
+        <option value = "Feasibility study">Feasibility study</option>
+        <option value = "Development">Development</option>
+        <option value = "Unit Testing">Unit Testing</option>
+        <option value = "Integration Testing">Integration Testing</option>
+        <option value = "UAT Testing Coordination">UAT Testing Coordination</option>
+        <option value="Deployment Activity">Deployment Activity</option>
+        <option value="Post Release Activity">Post Release Activity</option>
+  </select>
+</div>
+      <input type="submit" class="fadeIn seventh mt-5" value="Submit">
     </form>
   </div>
 	
-	
+	n>
 	
             
             	
@@ -397,6 +397,7 @@ font-weight:bold;
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script type = "text/javascript" src = "js/try.js"></script>
 
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
