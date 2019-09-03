@@ -20,9 +20,9 @@ public class TaskRepositoryTest {
 	
 	@Test
 	public void getDeadlineTasksTest() {
-	
+		Date today = null;
 			try {
-				Date today = new SimpleDateFormat("yyyy-MM-dd").parse("2019-09-01");
+				 today = new SimpleDateFormat("yyyy-MM-dd").parse("2019-09-01");
 			} catch (ParseException e) {}
 							
 			
@@ -33,7 +33,7 @@ public class TaskRepositoryTest {
 			taskList.add(t1);
 			taskList.add(t2);
 			
-			int count = taskRepo.getDeadlineTasksCount(taskList);
+			int count = taskRepo.getDeadlineTasksCountFromDate(taskList, today);
 			
 			
 			assertTrue(count==1);

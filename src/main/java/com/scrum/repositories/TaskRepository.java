@@ -49,6 +49,19 @@ public class TaskRepository {
 		}
 		return count;
 	}
+	
+	public int getDeadlineTasksCountFromDate(List<Task> tasks, Date today) {
+		int count = 0;
+		Date date;
+		
+		for(Task task : tasks) {
+			date = task.getEnd_date();
+			System.out.println(today+" "+date);
+			if(DateTimeOps.getDifferenceDays(today,date)<4)
+				count++;
+		}
+		return count;
+	}
 
 	public int getTodayTasksCount(List<Task> tasks) {
 		int count = 0;
