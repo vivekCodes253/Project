@@ -157,7 +157,7 @@ public class JDBCops implements TasksData {
 	public boolean verifyUser(String username, String hash) {
 		try {
 			init();
-			LoggerMain.logger.info("Retrieving employee details "+ rs.getString(2)+ " from database" );
+			
 			
 			PreparedStatement st = cn
 					.prepareStatement("SELECT username,password FROM login WHERE username=? and password=?");
