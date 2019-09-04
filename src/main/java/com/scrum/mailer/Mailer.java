@@ -85,7 +85,7 @@ public class Mailer {
 			sendMessage(service,"me",myMail);
 			LoggerMain.logger.info("Mailing - "+email_receiver_id);
 		} catch (MessagingException e) {
-			LoggerMain.logger.error(e);
+			LoggerMain.logger.error(e+"");
 			e.printStackTrace();
 		}
     }

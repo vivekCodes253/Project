@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.unbescape.csv.CsvEscape;
 
 import com.scrum.business.Task;
 import com.scrum.fileops.FileReader;
@@ -13,12 +12,12 @@ import com.scrum.log.LoggerMain;
 
 @SpringBootApplication
 public class ScrumApplication {
-
+	
 	private static String CSV_FILE_PATH = "values.csv";
 	
 	public static void main(String[] args) {
 		LoggerMain loggermain = new LoggerMain();
-		updateTasks(CSV_FILE_PATH);
+		//updateTasks(CSV_FILE_PATH);
 		SpringApplication.run(ScrumApplication.class, args);
 	}
 	
@@ -27,7 +26,8 @@ public class ScrumApplication {
 	 * Input 			: Path to file
 	 * Return 			: */
 	public static void updateTasks(String dataPath) {
-		List<Task> tasks = FileReader.readTasksFromCSV(dataPath);
+		FileReader fr = new FileReader();
+		List<Task> tasks = fr.readTasksFromCSV(dataPath);
 		JDBCops jdbctasks = new JDBCops();
 		jdbctasks.addTasks(tasks);
 			

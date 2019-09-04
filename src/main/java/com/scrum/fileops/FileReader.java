@@ -10,8 +10,13 @@ import com.scrum.log.LoggerMain;
 
 public class FileReader {
 
-	public static List<Task> readTasksFromCSV(String filePath) {
+	
+	public List<Task> readTasksFromCSV(String filePath) {
+		
 		List<Task> taskList = new ArrayList<>();
+		 final InputStream inputStream = 
+			      getClass().getClassLoader().getResourceAsStream(filePath);
+			   BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream ));
 		String fileData = fileread(filePath);
 		String[] elements = fileData.split(",");
 		for (int i = 0; i < elements.length;) {

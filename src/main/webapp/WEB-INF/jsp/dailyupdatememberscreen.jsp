@@ -10,7 +10,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin - Dashboard</title>
+  <title>Scrum Master</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -251,6 +251,16 @@ background-color: #bbbbbb;
           </a>
         </form>
       </li>
+       <br><br><hr><br>
+       <li class="nav-item">
+        <form id="logoutForm" action="/" method="post">
+          <input type="hidden" name="type" value="logout" />
+          <a class="nav-link" href="#" onclick="document.getElementById('logoutForm').submit();">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>-Logout</span>
+          </a>
+        </form>
+      </li>
     </ul>
 
 
@@ -285,6 +295,7 @@ background-color: #bbbbbb;
           <div class="card-body">
             <div class="table-responsive">
             <form action="/" method="POST">
+            <input type="hidden" name="type" value="sendMail"/>
             <table class="table table-bordered table-hover" name="dataTable"id="dataTable" width="100%" cellspacing="0">
 		   <tr>
 		    <th>Employee</th>
@@ -312,8 +323,8 @@ background-color: #bbbbbb;
 		</c:forEach>
 	</table>
 	 
-	  <input type="hidden" name="type" value="sendMail" />
-	 	<input type="submit" class="btn btn-danger" value="Close Session & Submit">
+	  
+	 	<input type="submit" class="btn btn-danger" value="Submit">
 	 </form>
 	</div>
 	</div>
@@ -325,32 +336,7 @@ background-color: #bbbbbb;
 		
 			
 
-	  <div id="formContent" call="modal-content" style="margin-left:40%;margin-top:15%">
-	  <span class="close" onclick="EditClose()">&times;</span>
-    <form action="/save" method = "POST" class="registerForm">
-    <h2>Update</h2>
-      <input type="text" id="jira_Number" class="fadeIn second" name="jira_Number" placeholder="Jira number" readonly>
-      <input type="text" id="owner" class="fadeIn third" name="owner" placeholder="Jira Owner" readonly>
-      <input type = "text" id = "update_space" class = "fadeIn fourth" name ="update_space" placeholder = "UpdateSpace" aria-rowspan="3" style="background-color:white">
-      <input type = "date" id = "end_date" class = "fadeIn fifth" name ="end_date" placeholder = "Ending Date" style="background-color:white">
-      <div >
-  <select id = "task_status" name="task_status" class = "fadeIn sixth custom-select" style="width:390px; text-align:center">
-  <option id="task_Status" value="" selected hidden></option>
-        <option value = "Requirement Analysis">Requirement Analysis</option>
-        <option value = "Feasibility study">Feasibility study</option>
-        <option value = "Development">Development</option>
-        <option value = "Unit Testing">Unit Testing</option>
-        <option value = "Integration Testing">Integration Testing</option>
-        <option value = "UAT Testing Coordination">UAT Testing Coordination</option>
-        <option value="Deployment Activity">Deployment Activity</option>
-        <option value="Post Release Activity">Post Release Activity</option>
-  </select>
-</div>
-      <input type="submit" class="fadeIn seventh mt-5" value="Submit">
-    </form>
-  </div>
-	
-	n>
+
 	
             
             	

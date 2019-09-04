@@ -63,7 +63,9 @@ public class ScrumController {
 
 		if ("sendMail".equals(type)) {
 			return submitMail(request, model);
-		} else if ("modify".equals(type)) {
+		}else if("logout".equals(type)) {
+			return logout(request,model);
+		}else if ("modify".equals(type)) {
 			return modifyTask(request, model);
 		}else if ("addtask".equals(type)) {
 			return addTask(request, model);
@@ -117,7 +119,8 @@ public class ScrumController {
 			Task task = new Task(request.getParameter("jira_no"), request.getParameter("task_name"),
 					request.getParameter("owner"), request.getParameter("start_date"), request.getParameter("end_date"),
 					request.getParameter("task_status"), request.getParameter("update_space"));
-			taskRepo.addTask(task);
+			String status = taskRepo.addTask(task);
+			model.addAttribute("Status",status);
 
 		}
 		return addTasks(request, model);
@@ -225,8 +228,15 @@ public class ScrumController {
 			return "login";
 		} else {
 			Employee employee = new Employee(name, soeid, role, scrum_master, username, "1");
-			empRepo.addEmployee(employee);
-			LoggerMain.logger.info("New employee " + name + " soeid : " + soeid + " added!");
+			String result = empRepo.addEmployee(employee);
+			if("Success".equals(result)) {
+				LoggerMain.logger.info("New employee " + name + " soeid : " + soeid + " added!");
+				model.addAttribute("Status","Successfully added "+name);
+			}
+			else {
+				model.addAttribute("Status","ID Already exists");
+						
+			}
 			return addMembers(request, model);
 		}
 	}
@@ -258,7 +268,7 @@ public class ScrumController {
 			}
 			
 			model.addAttribute("Error", "Session Closed");
-			return "";// logout(request, model);
+			return dailyUpdateScreenDisplay(request, model);// logout(request, model);
 		}
 	}
 
@@ -307,6 +317,7 @@ public class ScrumController {
 	@RequestMapping("/logout")
 	String logout(HttpServletRequest request, Model model) {
 		request.getSession().setAttribute("username", null);
+		model.addAttribute("Error", "Session Closed");
 		return "login";
 	}
 

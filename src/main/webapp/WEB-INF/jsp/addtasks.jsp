@@ -11,7 +11,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin - Dashboard</title>
+ <title>Scrum Master</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -213,6 +213,16 @@ color: red;
           </a>
         </form>
       </li>
+       <br><br><hr><br>
+       <li class="nav-item">
+        <form id="logoutForm" action="/" method="post">
+          <input type="hidden" name="type" value="logout" />
+          <a class="nav-link" href="#" onclick="document.getElementById('logoutForm').submit();">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>-Logout</span>
+          </a>
+        </form>
+      </li>
     </ul>
 
 
@@ -379,5 +389,7 @@ color: red;
 
 
 </body>
-
+<c:if test="${not empty Status}">
+ 	 			 <script>alert("${Status}")</script>
+		</c:if>
 </html>

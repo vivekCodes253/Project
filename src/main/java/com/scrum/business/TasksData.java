@@ -10,7 +10,7 @@ public interface TasksData {
 
 	List<Employee> specificEmployees(String type);
 
-	void addEmployee(Employee employee);
+	String addEmployee(Employee employee);
 
 	public boolean verifyUser(String username, String password);
 

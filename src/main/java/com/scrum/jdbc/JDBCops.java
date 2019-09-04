@@ -39,7 +39,7 @@ public class JDBCops implements TasksData {
 			cn = DriverManager.getConnection(CONNECTION_URL, USER_ID, PASSWORD);
 			st = cn.createStatement();
 		} catch (Exception e) {
-			LoggerMain.logger.error(e);
+			LoggerMain.logger.error(e+"");
 		}
 	}
 
@@ -50,7 +50,7 @@ public class JDBCops implements TasksData {
 					cn.close();
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
-				LoggerMain.logger.error(ex);
+				LoggerMain.logger.error(ex+"");
 			}
 		}
 	}
@@ -76,7 +76,7 @@ public class JDBCops implements TasksData {
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -100,7 +100,7 @@ public class JDBCops implements TasksData {
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -123,7 +123,7 @@ public class JDBCops implements TasksData {
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -132,7 +132,7 @@ public class JDBCops implements TasksData {
 	}
 
 	@Override
-	public void addEmployee(Employee employee) {
+	public String addEmployee(Employee employee) {
 		try {
 			init();
 			LoggerMain.logger.info("Adding employee "+ employee.getName()+" "+employee.getSoeid()+ " to database" );
@@ -148,9 +148,22 @@ public class JDBCops implements TasksData {
 			st.setString(6, employee.getProject_id());
 
 			st.executeUpdate();
-		} catch (Exception ex) {
-			LoggerMain.logger.error(ex);
+			if("Yes".equals(employee.getSecondary_scrum())) {
+				st= cn.prepareStatement("insert into login (username,password) values(?,?)");
+				st.setString(1, employee.getSoeid());
+				st.setString(2, "123");                      //todo get real password from table omce ,made
+				st.executeUpdate();
+			}
 		}
+		catch(java.sql.SQLIntegrityConstraintViolationException ex) {
+			LoggerMain.logger.error(ex+"");
+			return "Eser already exists";
+		} catch (Exception ex) {
+			LoggerMain.logger.error(ex+"");
+			return "Error";
+			
+		}
+		return "Success";
 	}
 
 	@Override
@@ -171,7 +184,7 @@ public class JDBCops implements TasksData {
 			return (noOfResults > 0);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -191,7 +204,7 @@ public class JDBCops implements TasksData {
 					rs.getString(6), rs.getString(7)));
 
 		} catch (Exception ex) {
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -238,7 +251,7 @@ public class JDBCops implements TasksData {
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -255,7 +268,7 @@ public class JDBCops implements TasksData {
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 			return "";
 		} finally {
 			closeConnection();
@@ -263,7 +276,7 @@ public class JDBCops implements TasksData {
 		return "";
 	}
 
-	public void addTasks(List<Task> tasks) {
+	public String addTasks(List<Task> tasks) {
 		try {
 			init();
 			PreparedStatement st;
@@ -280,14 +293,21 @@ public class JDBCops implements TasksData {
 				st.setString(7, task.getUpdate_space());
 
 				st.executeUpdate();
+		
 			}
 		} catch (Exception ex) {
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
+			return("Unable to add. Jira number may already exist");
 		} finally {
 			closeConnection();
 		}
+		
+		//update Secondarysctum master if needed
+		
+		return "Succesfully added";
 
 	}
+	
 
 	public void modifyTaskOwner(Task task) {
 		System.out.println("Hell");

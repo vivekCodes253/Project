@@ -11,7 +11,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin - Dashboard</title>
+  <title>Scrum Master</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -137,6 +137,7 @@ color: red;
 
         </form>
       </li>
+      
       <li class="nav-item active">
         <form id="editForm" action="/" method="post">
           <input type="hidden" name="type" value="editpage" />
@@ -145,6 +146,7 @@ color: red;
             <span>Edit Pages</span>
           </a>
         </form>
+        </li>
       
        <li class="nav-item">
         <form id="taskForm" action="/" method="post">
@@ -161,9 +163,11 @@ color: red;
           <a class="nav-link" href="#" onclick="document.getElementById('memberForm').submit();">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>-Add Member</span>
+            
+            
           </a>
         </form>
-      </li>
+      
       </li>
        <li class="nav-item">
         <form id="modifyForm" action="/" method="post">
@@ -171,6 +175,16 @@ color: red;
           <a class="nav-link" href="#" onclick="document.getElementById('modifyForm').submit();">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>-Modify Task Owner</span>
+          </a>
+        </form>
+      </li>
+       <br><br><hr><br>
+       <li class="nav-item">
+        <form id="logoutForm" action="/" method="post">
+          <input type="hidden" name="type" value="logout" />
+          <a class="nav-link" href="#" onclick="document.getElementById('logoutForm').submit();">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>-Logout</span>
           </a>
         </form>
       </li>
@@ -190,13 +204,19 @@ color: red;
 
 
         </ol>
+       
 
 
 
         <!-- Icon Cards-->
-
+       
+       
+		
+	
+        
 
         <div class="register">
+         
           <!-- <div class="container register"> -->
           <div class="row">
 
@@ -214,6 +234,7 @@ color: red;
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                   <h3 class="register-heading">Add Members</h3>
+                  
                   <form action="addmembers" method="POST" , class = "registerForm">
                     <div class="row register-form">
                       <div class="col-md-6">
@@ -224,6 +245,7 @@ color: red;
                         <div class="form-group">
                           <input name="name"  type="text" class="form-control" placeholder="Name" value="" />
                         </div>
+                        
                         <div class="form-group">
 
                         </div>
@@ -325,5 +347,7 @@ color: red;
 
 
 </body>
-
+	<c:if test="${not empty Status}">
+ 	 			 <script>alert("${Status}")</script>
+		</c:if>
 </html>

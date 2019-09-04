@@ -18,7 +18,7 @@ import com.scrum.business.Employee;
 
 
 public class JDBCopsTests {
-	@InjectMocks private JDBCops jdbcops;
+	/*@InjectMocks private JDBCops jdbcops;
 	  @Mock private Connection mockConnection;
 	  @Mock private Statement mockStatement;
 	  @Mock private ResultSet rs;
@@ -57,5 +57,5 @@ public class JDBCopsTests {
 	        List<Employee> emp= jdbcops.specificEmployees("manager");
 		    Assert.assertEquals(emp.get(0).getSoeid(), e.getSoeid());
 		   // Mockito.verify(mockConnection.createStatement(), Mockito.times(1));
-		  }
+		  }*/
 }

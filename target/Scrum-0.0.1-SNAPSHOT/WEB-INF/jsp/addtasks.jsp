@@ -62,6 +62,14 @@
               }
             }
           },
+          jira_no: {
+              message: 'The jira Number is not valid',
+              validators: {
+                notEmpty: {
+                  message: 'Jira Number required!'
+                }
+              }
+            },
           task_name: {
             message: 'The name is not valid',
             validators: {
@@ -105,6 +113,14 @@
 
             }
           },
+          task_status: {
+              message: 'The task_status is not valid',
+              validators: {
+                notEmpty: {
+                  message: 'Task status required!'
+                }
+              }
+            },
           employee: {
             message: 'The username is not valid',
             validators: {
@@ -129,7 +145,10 @@
     });
   </script>
 
-
+<style>
+.has-error .help-block{
+color: red;
+}</style>
 </head>
 
 <body id="page-top">
@@ -347,7 +366,7 @@
         <footer class="sticky-footer">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright � Your Website 2019</span>
+              <span>Copyright  Your Website 2019</span>
             </div>
           </div>
         </footer>
