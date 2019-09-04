@@ -218,15 +218,15 @@ public class ScrumController {
 	 * to Add Members page
 	 */
 	@PostMapping("/addmembers")
-	public String addMembersPost(HttpServletRequest request, Model model, @RequestParam String SOEID,
+	public String addMembersPost(HttpServletRequest request, Model model, @RequestParam String soeid,
 			@RequestParam String name, @RequestParam String scrum_master, @RequestParam String role) {
 		String username = (String) request.getSession().getAttribute("username");
 		if (username == null) {
 			return "login";
 		} else {
-			Employee employee = new Employee(name, SOEID, role, scrum_master, username, "1");
+			Employee employee = new Employee(name, soeid, role, scrum_master, username, "1");
 			empRepo.addEmployee(employee);
-			LoggerMain.logger.info("New employee " + name + " SOEID : " + SOEID + " added!");
+			LoggerMain.logger.info("New employee " + name + " soeid : " + soeid + " added!");
 			return addMembers(request, model);
 		}
 	}

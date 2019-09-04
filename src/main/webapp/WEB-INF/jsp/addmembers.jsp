@@ -219,7 +219,7 @@ color: red;
                       <div class="col-md-6">
 
                         <div class="form-group">
-                          <input name="soeid" type="text" class="form-control" placeholder="SOEID" value="" />
+                          <input name="soeid" type="text" style="text-transform:uppercase"class="form-control" placeholder="SOEID" value="" />
                         </div>
                         <div class="form-group">
                           <input name="name"  type="text" class="form-control" placeholder="Name" value="" />

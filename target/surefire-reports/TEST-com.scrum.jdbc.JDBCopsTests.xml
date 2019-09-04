@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.scrum.test.TaskRepositoryTest" time="0" tests="7" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="com.scrum.jdbc.JDBCopsTests" time="2.08" tests="2" errors="0" skipped="0" failures="1">
   <properties>
     <property name="sun.desktop" value="windows"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -61,11 +61,10 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="52.0"/>
   </properties>
-  <testcase name="test" classname="com.scrum.test.TaskRepositoryTest" time="0"/>
-  <testcase name="testAllTasks" classname="com.scrum.test.TaskRepositoryTest" time="0"/>
-  <testcase name="testSaveTask" classname="com.scrum.test.TaskRepositoryTest" time="0"/>
-  <testcase name="testgetTaskById" classname="com.scrum.test.TaskRepositoryTest" time="0"/>
-  <testcase name="testAddTask" classname="com.scrum.test.TaskRepositoryTest" time="0"/>
-  <testcase name="testModifyTaskOwner" classname="com.scrum.test.TaskRepositoryTest" time="0"/>
-  <testcase name="getDeadlineTasksTest" classname="com.scrum.test.TaskRepositoryTest" time="0"/>
+  <testcase name="testMockallEmployee" classname="com.scrum.jdbc.JDBCopsTests" time="1.744"/>
+  <testcase name="testspecificEmployee" classname="com.scrum.jdbc.JDBCopsTests" time="0.141">
+    <failure message="expected:&lt;[AT0001]&gt; but was:&lt;[rs67689]&gt;" type="org.junit.ComparisonFailure"><![CDATA[org.junit.ComparisonFailure: expected:<[AT0001]> but was:<[rs67689]>
+	at com.scrum.jdbc.JDBCopsTests.testspecificEmployee(JDBCopsTests.java:58)
+]]></failure>
+  </testcase>
 </testsuite>
