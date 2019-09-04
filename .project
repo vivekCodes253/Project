@@ -11,11 +11,7 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-<<<<<<< HEAD
 			<name>org.springframework.ide.eclipse.boot.validation.springbootbuilder</name>
-=======
-			<name>org.eclipse.jdt.core.javabuilder</name>
->>>>>>> 8f558d17fde2928172922e76f1c837d390826408
 			<arguments>
 			</arguments>
 		</buildCommand>

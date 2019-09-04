@@ -10,7 +10,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.BasicConfigurator;
 import org.springframework.stereotype.Component;
 
 import com.mysql.cj.jdbc.CallableStatement;
@@ -26,7 +25,7 @@ public class JDBCops implements TasksData {
 	private final String USER_ID 			= "root";
 	private final String SCHEMA				= "scrum";
 	private final String PORT			 	= "3306";
-	private final String CONNECTION_URL 	= "jdbc:mysql://mysql:" + PORT + "/" + SCHEMA + "?useSSL="
+	private final String CONNECTION_URL 	= "jdbc:localhost://mysql:" + PORT + "/" + SCHEMA + "?useSSL="
 			+ "false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
 
 	private Connection cn;
@@ -89,7 +88,6 @@ public class JDBCops implements TasksData {
 	public List<Employee> allEmployee(String username) {
 		List<Employee> Employee = new ArrayList<>();
 		try {
-			BasicConfigurator.configure();
 			init();
 			LoggerMain.logger.info("All tasks requested");
 			rs = st.executeQuery(
@@ -114,7 +112,6 @@ public class JDBCops implements TasksData {
 		List<Employee> Employee = new ArrayList<>();
 		try {
 			init();
-			BasicConfigurator.configure();
 			LoggerMain.logger.info("All tasks requested");
 			rs = st.executeQuery(
 					"SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees where role = '"
@@ -123,7 +120,6 @@ public class JDBCops implements TasksData {
 				LoggerMain.logger.info("Retrieving employee details "+ rs.getString(2)+ " from database" );
 				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6)));
-				System.out.println("hello "+ rs.getString(1));
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -142,7 +138,7 @@ public class JDBCops implements TasksData {
 			LoggerMain.logger.info("Adding employee "+ employee.getName()+" "+employee.getSoeid()+ " to database" );
 			
 			PreparedStatement st = cn
-					.prepareStatement("insert into Employees(soeid,name,role,Sec_scrum,manager_soeid,project_id)  "
+					.prepareStatement("insert into employees(soeid,name,role,sec_scrum,manager_soeid,project_id)  "
 							+ "values(?,?,?,?,?,?)");
 			st.setString(1, employee.getSoeid());
 			st.setString(2, employee.getName());
@@ -161,14 +157,11 @@ public class JDBCops implements TasksData {
 		}
 		catch(java.sql.SQLIntegrityConstraintViolationException ex) {
 			LoggerMain.logger.error(ex+"");
-			return "Eser already exists";
+			return "User already exists";
 		} catch (Exception ex) {
 			LoggerMain.logger.error(ex+"");
-<<<<<<< HEAD
-=======
 			return "Error";
 			
->>>>>>> 8f558d17fde2928172922e76f1c837d390826408
 		}
 		return "Success";
 	}
@@ -232,7 +225,7 @@ public class JDBCops implements TasksData {
 			st.executeUpdate();
 
 			PreparedStatement st1 = cn
-					.prepareStatement("INSERT INTO update_details(Jira_no,owner,update_space) VALUES(?,?,?)");
+					.prepareStatement("INSERT INTO update_details(jira_no,owner,update_space) VALUES(?,?,?)");
 			st1.setString(1, task.getJira_Number());
 			st1.setString(2, task.getOwner());
 			st1.setString(3, task.getUpdate_space());
@@ -289,7 +282,7 @@ public class JDBCops implements TasksData {
 			PreparedStatement st;
 			for (Task task : tasks) {
 				st = cn.prepareStatement(
-						"insert into task_details(Jira_no,task_name,Owner,start_date,end_date,task_status,update_space)  "
+						"insert into task_details(jira_no,task_name,owner,start_date,end_date,task_status,update_space)  "
 								+ "values(?,?,?,?,?,?,?)");
 				st.setString(1, task.getJira_Number());
 				st.setString(2, task.getTask_name());
@@ -304,10 +297,7 @@ public class JDBCops implements TasksData {
 			}
 		} catch (Exception ex) {
 			LoggerMain.logger.error(ex+"");
-<<<<<<< HEAD
-=======
 			return("Unable to add. Jira number may already exist");
->>>>>>> 8f558d17fde2928172922e76f1c837d390826408
 		} finally {
 			closeConnection();
 		}
@@ -320,7 +310,7 @@ public class JDBCops implements TasksData {
 	
 
 	public void modifyTaskOwner(Task task) {
-		System.out.println("Hell");
+		
 		try {
 			init();
 			PreparedStatement st = cn.prepareStatement("UPDATE task_details SET owner=? WHERE " + "jira_no = ?");

@@ -17,11 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class LoggerMain {
 	public static Logger logger = LoggerFactory.getLogger(LoggerMain.class);
-<<<<<<< HEAD
-	static final String LOG_PROPERTIES_FILE = "log4j.properties";
-=======
-	//static final String LOG_PROPERTIES_FILE = "log4j.properties";
->>>>>>> 8f558d17fde2928172922e76f1c837d390826408
+
 
 	public LoggerMain() {
 		BasicConfigurator.configure();
