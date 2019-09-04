@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.example.demo.ScrumApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.18 s <<< FAILURE! - in com.example.demo.ScrumApplicationTests
-initializationError(com.example.demo.ScrumApplicationTests)  Time elapsed: 0.001 s  <<< ERROR!
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.135 s <<< FAILURE! - in com.example.demo.ScrumApplicationTests
+initializationError(com.example.demo.ScrumApplicationTests)  Time elapsed: 0.004 s  <<< ERROR!
 java.lang.ExceptionInInitializerError
 Caused by: java.lang.IllegalStateException: SpringJUnit4ClassRunner requires JUnit 4.12 or higher.
 
