@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JDBCops.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demothymeleaf</a> &gt; <a href="index.source.html" class="el_package">com.scrum.jdbc</a> &gt; <span class="el_source">JDBCops.java</span></div><h1>JDBCops.java</h1><pre class="source lang-java linenums">package com.scrum.jdbc;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.BasicConfigurator;
+import org.springframework.stereotype.Component;
+
+import com.mysql.cj.jdbc.CallableStatement;
+import com.scrum.business.Employee;
+import com.scrum.business.Task;
+import com.scrum.business.TasksData;
+import com.scrum.log.LoggerMain;
+
+@Component
+<span class="fc" id="L23">public class JDBCops implements TasksData {</span>
+
+<span class="fc" id="L25">	private final String PASSWORD 			= &quot;c0nygre&quot;;</span>
+<span class="fc" id="L26">	private final String USER_ID 			= &quot;root&quot;;</span>
+<span class="fc" id="L27">	private final String SCHEMA				= &quot;scrum&quot;;</span>
+<span class="fc" id="L28">	private final String PORT			 	= &quot;3306&quot;;</span>
+<span class="fc" id="L29">	private final String CONNECTION_URL 	= &quot;jdbc:mysql://localhost:&quot; + PORT + &quot;/&quot; + SCHEMA + &quot;?useSSL=&quot;</span>
+			+ &quot;false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true&quot;;
+
+	private Connection cn;
+	private Statement st;
+	private ResultSet rs;
+
+	private void init() throws Exception {
+		try {
+<span class="nc" id="L38">			Driver d = new com.mysql.cj.jdbc.Driver();</span>
+<span class="nc" id="L39">			DriverManager.registerDriver(d);</span>
+<span class="nc" id="L40">			cn = DriverManager.getConnection(CONNECTION_URL, USER_ID, PASSWORD);</span>
+<span class="nc" id="L41">			st = cn.createStatement();</span>
+<span class="nc" id="L42">		} catch (Exception e) {</span>
+<span class="nc" id="L43">			LoggerMain.logger.error(e+&quot;&quot;);</span>
+<span class="nc" id="L44">		}</span>
+<span class="nc" id="L45">	}</span>
+
+	private void closeConnection() {
+<span class="nc bnc" id="L48" title="All 2 branches missed.">		if (cn != null) {</span>
+			try {
+<span class="nc bnc" id="L50" title="All 2 branches missed.">				if (!cn.isClosed())</span>
+<span class="nc" id="L51">					cn.close();</span>
+<span class="nc" id="L52">			} catch (Exception ex) {</span>
+<span class="nc" id="L53">				System.out.println(ex.getMessage());</span>
+<span class="nc" id="L54">				LoggerMain.logger.error(ex+&quot;&quot;);</span>
+<span class="nc" id="L55">			}</span>
+		}
+<span class="nc" id="L57">	}</span>
+
+	@Override
+	public List&lt;Task&gt; allTasks(String username) {
+<span class="nc" id="L61">		List&lt;Task&gt; Tasks = new ArrayList&lt;&gt;();</span>
+		try {
+<span class="nc" id="L63">			LoggerMain.logger.info(&quot;All tasks requested&quot;);</span>
+<span class="nc" id="L64">			Driver d = new com.mysql.cj.jdbc.Driver();</span>
+<span class="nc" id="L65">			DriverManager.registerDriver(d);</span>
+<span class="nc" id="L66">			cn = DriverManager.getConnection(CONNECTION_URL, USER_ID, PASSWORD);</span>
+<span class="nc" id="L67">			CallableStatement cStmt = null;</span>
+<span class="nc" id="L68">			String plsql = &quot;{CALL getAllTask(?)}&quot;;</span>
+<span class="nc" id="L69">			cStmt = (CallableStatement) cn.prepareCall(plsql);</span>
+<span class="nc" id="L70">			cStmt.setString(1, username);</span>
+<span class="nc" id="L71">			rs = cStmt.executeQuery();</span>
+<span class="nc" id="L72">			System.out.println(&quot;Callable statement&quot;);</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">			while (rs.next()) {</span>
+<span class="nc" id="L74">				Tasks.add(new Task(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),</span>
+<span class="nc" id="L75">						rs.getString(6), rs.getString(7)));</span>
+			}
+<span class="nc" id="L77">		} catch (Exception ex) {</span>
+<span class="nc" id="L78">			System.out.println(ex.getMessage());</span>
+<span class="nc" id="L79">			LoggerMain.logger.error(ex+&quot;&quot;);</span>
+		} finally {
+<span class="nc" id="L81">			closeConnection();</span>
+		}
+
+<span class="nc" id="L84">		return Tasks;</span>
+	}
+
+	@Override
+	public List&lt;Employee&gt; allEmployee(String username) {
+<span class="nc" id="L89">		List&lt;Employee&gt; Employee = new ArrayList&lt;&gt;();</span>
+		try {
+<span class="nc" id="L91">			BasicConfigurator.configure();</span>
+<span class="nc" id="L92">			init();</span>
+<span class="nc" id="L93">			LoggerMain.logger.info(&quot;All tasks requested&quot;);</span>
+<span class="nc" id="L94">			rs = st.executeQuery(</span>
+					&quot;SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees WHERE manager_soeid='&quot;
+							+ username + &quot;'&quot;);
+<span class="nc bnc" id="L97" title="All 2 branches missed.">			while (rs.next()) {</span>
+<span class="nc" id="L98">				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),</span>
+<span class="nc" id="L99">						rs.getString(5), rs.getString(6)));</span>
+<span class="nc" id="L100">				System.out.println(&quot;Hello employee &quot; + rs.getString(1));</span>
+			}
+<span class="nc" id="L102">		} catch (Exception ex) {</span>
+<span class="nc" id="L103">			System.out.println(ex.getMessage());</span>
+<span class="nc" id="L104">			LoggerMain.logger.error(ex+&quot;&quot;);</span>
+		} finally {
+<span class="nc" id="L106">			closeConnection();</span>
+		}
+<span class="nc" id="L108">		return Employee;</span>
+	}
+
+	@Override
+	public List&lt;Employee&gt; specificEmployees(String type) {
+<span class="nc" id="L113">		List&lt;Employee&gt; Employee = new ArrayList&lt;&gt;();</span>
+		try {
+<span class="nc" id="L115">			init();</span>
+<span class="nc" id="L116">			BasicConfigurator.configure();</span>
+<span class="nc" id="L117">			LoggerMain.logger.info(&quot;All tasks requested&quot;);</span>
+<span class="nc" id="L118">			rs = st.executeQuery(</span>
+					&quot;SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees where role = '&quot;
+							+ type + &quot;'&quot;);
+<span class="nc bnc" id="L121" title="All 2 branches missed.">			while (rs.next()) {</span>
+<span class="nc" id="L122">				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),</span>
+<span class="nc" id="L123">						rs.getString(5), rs.getString(6)));</span>
+<span class="nc" id="L124">				System.out.println(&quot;hello &quot;+ rs.getString(1));</span>
+			}
+<span class="nc" id="L126">		} catch (Exception ex) {</span>
+<span class="nc" id="L127">			System.out.println(ex.getMessage());</span>
+<span class="nc" id="L128">			LoggerMain.logger.error(ex+&quot;&quot;);</span>
+		} finally {
+<span class="nc" id="L130">			closeConnection();</span>
+		}
+
+<span class="nc" id="L133">		return Employee;</span>
+	}
+
+	@Override
+	public void addEmployee(Employee employee) {
+		try {
+<span class="nc" id="L139">			init();</span>
+<span class="nc" id="L140">			PreparedStatement st = cn</span>
+<span class="nc" id="L141">					.prepareStatement(&quot;insert into Employees(soeid,name,role,Sec_scrum,manager_soeid,project_id)  &quot;</span>
+							+ &quot;values(?,?,?,?,?,?)&quot;);
+<span class="nc" id="L143">			st.setString(1, employee.getSoeid());</span>
+<span class="nc" id="L144">			st.setString(2, employee.getName());</span>
+<span class="nc" id="L145">			st.setString(3, employee.getRole());</span>
+<span class="nc" id="L146">			st.setString(4, employee.getSecondary_scrum());</span>
+<span class="nc" id="L147">			st.setString(5, employee.getManager_id());</span>
+<span class="nc" id="L148">			st.setString(6, employee.getProject_id());</span>
+
+<span class="nc" id="L150">			st.executeUpdate();</span>
+<span class="nc" id="L151">		} catch (Exception ex) {</span>
+<span class="nc" id="L152">			LoggerMain.logger.error(ex+&quot;&quot;);</span>
+<span class="nc" id="L153">		}</span>
+<span class="nc" id="L154">	}</span>
+
+	@Override
+	public boolean verifyUser(String username, String hash) {
+		try {
+<span class="nc" id="L159">			init();</span>
+<span class="nc" id="L160">			PreparedStatement st = cn</span>
+<span class="nc" id="L161">					.prepareStatement(&quot;SELECT username,password FROM login WHERE username=? and password=?&quot;);</span>
+<span class="nc" id="L162">			st.setString(1, username);</span>
+<span class="nc" id="L163">			st.setString(2, hash);</span>
+
+<span class="nc" id="L165">			rs = st.executeQuery();</span>
+<span class="nc" id="L166">			rs.last();</span>
+
+<span class="nc" id="L168">			int noOfResults = rs.getRow();</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">			return (noOfResults &gt; 0);</span>
+<span class="nc" id="L170">		} catch (Exception ex) {</span>
+<span class="nc" id="L171">			System.out.println(ex.getMessage());</span>
+<span class="nc" id="L172">			LoggerMain.logger.error(ex+&quot;&quot;);</span>
+		} finally {
+<span class="nc" id="L174">			closeConnection();</span>
+		}
+<span class="nc" id="L176">		return false;</span>
+	}
+
+	@Override
+	public Task taskById(String taskId) {
+<span class="nc" id="L181">		Task task = null;</span>
+		try {
+<span class="nc" id="L183">			init();</span>
+<span class="nc" id="L184">			LoggerMain.logger.info(&quot;Task searhed by id &quot; + taskId);</span>
+<span class="nc" id="L185">			rs = st.executeQuery(&quot;SELECT jira_no,task_name,owner,start_date,end_date,&quot;</span>
+					+ &quot;task_status,update_space FROM Task_details where jira_no='&quot; + taskId + &quot;'&quot;);
+<span class="nc" id="L187">			rs.first();</span>
+<span class="nc" id="L188">			return (new Task(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),</span>
+<span class="nc" id="L189">					rs.getString(6), rs.getString(7)));</span>
+
+<span class="nc" id="L191">		} catch (Exception ex) {</span>
+<span class="nc" id="L192">			LoggerMain.logger.error(ex+&quot;&quot;);</span>
+		} finally {
+<span class="nc" id="L194">			closeConnection();</span>
+		}
+
+<span class="nc" id="L197">		return task;</span>
+
+	}
+
+	@Override
+	public Task editTask(Task task) {
+		try {
+<span class="nc" id="L204">			init();</span>
+<span class="nc" id="L205">			PreparedStatement st = cn.prepareStatement(</span>
+					&quot;UPDATE task_details SET task_status = ?, update_space = ? WHERE &quot; + &quot;jira_no = ?&quot;);
+<span class="nc" id="L207">			st.setString(1, task.getTask_status());</span>
+<span class="nc" id="L208">			st.setString(2, task.getUpdate_space());</span>
+<span class="nc" id="L209">			st.setString(3, task.getJira_Number());</span>
+<span class="nc" id="L210">			st.executeUpdate();</span>
+
+<span class="nc" id="L212">			PreparedStatement st1 = cn</span>
+<span class="nc" id="L213">					.prepareStatement(&quot;INSERT INTO update_details(Jira_no,owner,update_space) VALUES(?,?,?)&quot;);</span>
+<span class="nc" id="L214">			st1.setString(1, task.getJira_Number());</span>
+<span class="nc" id="L215">			st1.setString(2, task.getOwner());</span>
+<span class="nc" id="L216">			st1.setString(3, task.getUpdate_space());</span>
+<span class="nc" id="L217">			st1.executeUpdate();</span>
+<span class="nc" id="L218">		} catch (Exception ex) {</span>
+<span class="nc" id="L219">			System.out.println(ex.getMessage());</span>
+		} finally {
+<span class="nc" id="L221">			closeConnection();</span>
+		}
+<span class="nc" id="L223">		return task;</span>
+	}
+
+	public List&lt;String&gt; getEmployeeEmailIds() {
+<span class="nc" id="L227">		List&lt;String&gt; mailIds = new ArrayList&lt;&gt;();</span>
+		try {
+<span class="nc" id="L229">			init();</span>
+<span class="nc" id="L230">			LoggerMain.logger.info(&quot;Employee mail ids requested&quot;);</span>
+<span class="nc" id="L231">			rs = st.executeQuery(&quot;SELECT email_id FROM employeemail&quot;);</span>
+
+<span class="nc bnc" id="L233" title="All 2 branches missed.">			while (rs.next()) {</span>
+<span class="nc" id="L234">				mailIds.add(rs.getString(1));</span>
+				// System.out.println(&quot;Hello &quot; + rs.getString(1));
+			}
+<span class="nc" id="L237">		} catch (Exception ex) {</span>
+<span class="nc" id="L238">			System.out.println(ex.getMessage());</span>
+<span class="nc" id="L239">			LoggerMain.logger.error(ex+&quot;&quot;);</span>
+		} finally {
+<span class="nc" id="L241">			closeConnection();</span>
+		}
+<span class="nc" id="L243">		return mailIds;</span>
+	}
+
+	public String getEmployeeBySOEID(String SOEID) {
+		try {
+<span class="nc" id="L248">			init();</span>
+<span class="nc" id="L249">			rs = st.executeQuery(&quot;SELECT name FROM employees where soeid = '&quot; + SOEID + &quot;'&quot;);</span>
+
+<span class="nc bnc" id="L251" title="All 2 branches missed.">			while (rs.next()) {</span>
+<span class="nc" id="L252">				return rs.getString(1);</span>
+			}
+<span class="nc" id="L254">		} catch (Exception ex) {</span>
+<span class="nc" id="L255">			System.out.println(ex.getMessage());</span>
+<span class="nc" id="L256">			LoggerMain.logger.error(ex+&quot;&quot;);</span>
+<span class="nc" id="L257">			return &quot;&quot;;</span>
+		} finally {
+<span class="nc" id="L259">			closeConnection();</span>
+		}
+<span class="nc" id="L261">		return &quot;&quot;;</span>
+	}
+
+	public void addTasks(List&lt;Task&gt; tasks) {
+		try {
+<span class="nc" id="L266">			init();</span>
+			PreparedStatement st;
+<span class="nc bnc" id="L268" title="All 2 branches missed.">			for (Task task : tasks) {</span>
+<span class="nc" id="L269">				st = cn.prepareStatement(</span>
+						&quot;insert into task_details(Jira_no,task_name,Owner,start_date,end_date,task_status,update_space)  &quot;
+								+ &quot;values(?,?,?,?,?,?,?)&quot;);
+<span class="nc" id="L272">				st.setString(1, task.getJira_Number());</span>
+<span class="nc" id="L273">				st.setString(2, task.getTask_name());</span>
+<span class="nc" id="L274">				st.setString(3, task.getOwner());</span>
+<span class="nc" id="L275">				st.setDate(4, new java.sql.Date(task.getStart_date().getTime()));</span>
+<span class="nc" id="L276">				st.setDate(5, new java.sql.Date(task.getEnd_date().getTime()));</span>
+<span class="nc" id="L277">				st.setString(6, task.getTask_status());</span>
+<span class="nc" id="L278">				st.setString(7, task.getUpdate_space());</span>
+
+<span class="nc" id="L280">				st.executeUpdate();</span>
+<span class="nc" id="L281">			}</span>
+<span class="nc" id="L282">		} catch (Exception ex) {</span>
+<span class="nc" id="L283">			LoggerMain.logger.error(ex+&quot;&quot;);</span>
+		} finally {
+<span class="nc" id="L285">			closeConnection();</span>
+		}
+
+<span class="nc" id="L288">	}</span>
+
+	public void modifyTaskOwner(Task task) {
+<span class="nc" id="L291">		System.out.println(&quot;Hell&quot;);</span>
+		try {
+<span class="nc" id="L293">			init();</span>
+<span class="nc" id="L294">			PreparedStatement st = cn.prepareStatement(&quot;UPDATE task_details SET owner=? WHERE &quot; + &quot;jira_no = ?&quot;);</span>
+<span class="nc" id="L295">			st.setString(1, task.getOwner());</span>
+<span class="nc" id="L296">			st.setString(2, task.getJira_Number());</span>
+<span class="nc" id="L297">			st.executeUpdate();</span>
+
+<span class="nc" id="L299">		} catch (Exception ex) {</span>
+<span class="nc" id="L300">			System.out.println(ex.getMessage());</span>
+		} finally {
+<span class="nc" id="L302">			closeConnection();</span>
+		}
+
+<span class="nc" id="L305">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

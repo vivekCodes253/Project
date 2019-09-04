@@ -117,24 +117,32 @@
 </script>
 <style>
 table{
-transform:scale(0.93,0.93);
+transform:scale(0.88,0.88);
 z-index:1;
 table-layout:fixed;
+font-size: 130%;
+
 }
 tr:not(:first-child){
 	fint-weight:initial;
 	transition: 0.2s;
  transform:scale(1,1);
+ padding:10px;
+ filter:alpha(opacity=30);
 }
 
 tr:not(:first-child):hover{
 height:120%;
-
+padding-top:10%;
+padding-bottom:10%;
 transform: scale(1.1,1.1);
 z-index: 3;
 font-weight:bold;
-}
- button
+background-color: #bbbbbb;
+filter:alpha(opacity=100);
+
+
+} button
  {border-radius: 150%;
  	font-weight:bold;
 
@@ -257,33 +265,9 @@ font-weight:bold;
             <a href="#">Dashboard</a>
           </li>
           <li class="breadcrumb-item active">Overview</li>
-          <li class="float-right"  style="margin-left:65%;">
-          	<div class="btn-group-justified float-right " style="font-weight:bold;text-align: right;transform:scale(0.7,0.7)">
 
-          
-          <button onclick="allTasks()" id = "all_tasks_container" class="font-weight-bold btn btn-primary" selected>
-            
-                ALL TASKS (${taskcount})
-          </button>
-           <button onclick="nearingTasks(${todaytaskcount})"" id = "today_tasks_container" class="font-weight-bold btn btn-danger">
-               DUE TODAY (${todaytaskcount})
-          </button>
-          
-          <button onclick="nearingTasks(${deadlinetaskcount})" id = "nearing_tasks_container" class=" font-weight-bold btn btn-warning">
-               DUE SOON (${deadlinetaskcount})
-             
-            
-          </button>
-          
-           
-          
-         
-         
-         
-          
-        </div>
           	
-          </li>
+          
         </ol>
                
                
@@ -302,16 +286,12 @@ font-weight:bold;
             <div class="table-responsive">
             <table class="table table-bordered table-hover" name="dataTable"id="dataTable" width="100%" cellspacing="0">
 		   <tr>
-			<th></th>
-			<th>Employee name</th>
-			<th>SOEID</th>
-			<th>Role</th>
-			<th>Secondary Scrum Master</th>
-			<th>Manager SOEID</th>
-			<th>Project ID</th>
+		    <th>Employee</th>
+			<th>Attended?</th>
 		</tr>
 		<c:forEach var="e" items="${employeelist}" varStatus = "status">
 			<tr class="collapsed-row">
+			<td>${e.name} (${e.soeid})</td>
 				<td>
 					<div style="height:30%;width:auto" data-toggle="buttons">
 					  <label class="btn-sm btn-normal btn btn-secondary active">
@@ -320,12 +300,7 @@ font-weight:bold;
 					  
 					</div>
 				</td>
-				<td>${e.name}</td>
-				<td>${e.soeid}</td>
-				<td>${e.role}</td>
-				<td>${e.secondary_scrum}</td>
-				<td>${e.manager_id}</td>
-				<td>${e.project_id}</td>
+				
 				</tr>
 		</c:forEach>
 	</table>

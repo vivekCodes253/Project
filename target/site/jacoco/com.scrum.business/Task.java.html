@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Task.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demothymeleaf</a> &gt; <a href="index.source.html" class="el_package">com.scrum.business</a> &gt; <span class="el_source">Task.java</span></div><h1>Task.java</h1><pre class="source lang-java linenums">package com.scrum.business;
+
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+public class Task {
+	private String jira_Number;
+	private String task_name;
+	private String owner;
+	private Date start_date;
+	private Date end_date;
+	private String task_status;
+	private String update_space;
+
+<span class="fc" id="L16">	public Task() {</span>
+		
+<span class="fc" id="L18">	}</span>
+	public String getJira_Number() {
+<span class="fc" id="L20">		return jira_Number;</span>
+	}
+
+	public void setJira_Number(String jira_Number) {
+<span class="fc" id="L24">		this.jira_Number = jira_Number;</span>
+<span class="fc" id="L25">	}</span>
+
+	public String getTask_name() {
+<span class="fc" id="L28">		return task_name;</span>
+	}
+
+	public void setTask_name(String task_name) {
+<span class="fc" id="L32">		this.task_name = task_name;</span>
+<span class="fc" id="L33">	}</span>
+
+	public String getOwner() {
+<span class="fc" id="L36">		return owner;</span>
+	}
+
+	public void setOwner(String owner) {
+<span class="fc" id="L40">		this.owner = owner;</span>
+<span class="fc" id="L41">	}</span>
+
+	public Date getStart_date() {
+<span class="fc" id="L44">		return start_date;</span>
+	}
+
+	public void setStart_date(Date start_date) {
+<span class="fc" id="L48">		this.start_date = start_date;</span>
+<span class="fc" id="L49">	}</span>
+
+	public Date getEnd_date() {
+<span class="fc" id="L52">		return end_date;</span>
+	}
+
+	public void setEnd_date(Date end_date) {
+<span class="fc" id="L56">		this.end_date = end_date;</span>
+<span class="fc" id="L57">	}</span>
+
+	public String getTask_status() {
+<span class="fc" id="L60">		return task_status;</span>
+	}
+
+	public void setTask_status(String task_status) {
+<span class="fc" id="L64">		this.task_status = task_status;</span>
+<span class="fc" id="L65">	}</span>
+
+	public String getUpdate_space() {
+<span class="fc" id="L68">		return update_space;</span>
+	}
+
+	public void setUpdate_space(String update_space) {
+<span class="fc" id="L72">		this.update_space = update_space;</span>
+<span class="fc" id="L73">	}</span>
+
+	public Task(String jira_Number, String task_name, String owner, Date start_date, Date end_date, String task_status,
+<span class="nc" id="L76">			String update_space) {</span>
+
+<span class="nc" id="L78">		this.jira_Number = jira_Number;</span>
+<span class="nc" id="L79">		this.task_name = task_name;</span>
+<span class="nc" id="L80">		this.owner = owner;</span>
+<span class="nc" id="L81">		this.start_date = start_date;</span>
+<span class="nc" id="L82">		this.end_date = end_date;</span>
+<span class="nc" id="L83">		this.task_status = task_status;</span>
+<span class="nc" id="L84">		this.update_space = update_space;</span>
+<span class="nc" id="L85">	}</span>
+
+	public Task(String jira_Number, String task_name, String owner, String start_date, String end_date,
+<span class="fc" id="L88">			String task_status, String update_space) {</span>
+<span class="fc" id="L89">		Date start_date_date = null, end_date_date = null;</span>
+		try {
+<span class="fc" id="L91">			start_date_date = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;).parse(start_date);</span>
+<span class="nc" id="L92">		} catch (ParseException e) {</span>
+<span class="nc" id="L93">			start_date_date = new Date();</span>
+<span class="fc" id="L94">		}</span>
+		try {
+<span class="fc" id="L96">			end_date_date = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;).parse(end_date);</span>
+<span class="nc" id="L97">		} catch (ParseException e) {</span>
+<span class="nc" id="L98">			end_date_date = new Date();</span>
+<span class="fc" id="L99">		}</span>
+<span class="fc" id="L100">		this.jira_Number = jira_Number;</span>
+<span class="fc" id="L101">		this.task_name = task_name;</span>
+<span class="fc" id="L102">		this.owner = owner;</span>
+<span class="fc" id="L103">		this.start_date = start_date_date;</span>
+<span class="fc" id="L104">		this.end_date = end_date_date;</span>
+<span class="fc" id="L105">		this.task_status = task_status;</span>
+<span class="fc" id="L106">		this.update_space = update_space;</span>
+<span class="fc" id="L107">	}</span>
+
+	@Override
+	public String toString() {
+<span class="nc" id="L111">		return &quot;Task [jira_Number=&quot; + jira_Number + &quot;, task_name=&quot; + task_name + &quot;, owner=&quot; + owner + &quot;, start_date=&quot;</span>
+				+ start_date + &quot;, end_date=&quot; + end_date + &quot;, task_status=&quot; + task_status + &quot;, update_space=&quot;
+				+ update_space + &quot;]&quot;;
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

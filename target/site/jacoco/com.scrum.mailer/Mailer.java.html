@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Mailer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demothymeleaf</a> &gt; <a href="index.source.html" class="el_package">com.scrum.mailer</a> &gt; <span class="el_source">Mailer.java</span></div><h1>Mailer.java</h1><pre class="source lang-java linenums">package com.scrum.mailer;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
+
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.Base64;
+import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.gmail.Gmail;
+import com.google.api.services.gmail.GmailScopes;
+import com.google.api.services.gmail.model.ListLabelsResponse;
+import com.google.api.services.gmail.model.Message;
+import com.scrum.log.LoggerMain;
+
+<span class="nc" id="L35">public class Mailer {</span>
+    private static final String APPLICATION_NAME = &quot;Gmail API Java Quickstart&quot;;
+<span class="nc" id="L37">    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();</span>
+    private static final String TOKENS_DIRECTORY_PATH = &quot;tokens&quot;;
+
+
+<span class="nc" id="L41">    private static final List&lt;String&gt; SCOPES =</span>
+<span class="nc" id="L42">            Arrays.asList(GmailScopes.MAIL_GOOGLE_COM);</span>
+    private static final String CREDENTIALS_FILE_PATH = &quot;/credentials.json&quot;;
+
+   
+    private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
+<span class="nc" id="L47">        InputStream in = Mailer.class.getResourceAsStream(CREDENTIALS_FILE_PATH);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        if (in == null) {</span>
+<span class="nc" id="L49">            throw new FileNotFoundException(&quot;Resource not found: &quot; + CREDENTIALS_FILE_PATH);</span>
+        }
+<span class="nc" id="L51">        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));</span>
+
+<span class="nc" id="L53">        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(</span>
+                HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+<span class="nc" id="L55">                .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(TOKENS_DIRECTORY_PATH)))</span>
+<span class="nc" id="L56">                .setAccessType(&quot;offline&quot;)</span>
+<span class="nc" id="L57">                .build();</span>
+<span class="nc" id="L58">        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();</span>
+<span class="nc" id="L59">        return new AuthorizationCodeInstalledApp(flow, receiver).authorize(&quot;user&quot;);</span>
+    }
+
+    public void sendMail(String email_receiver_id, String email_subject, String email_message) throws IOException, GeneralSecurityException {
+       
+<span class="nc" id="L64">    	LoggerMain.logger.info(&quot;Mailing - &quot;+email_receiver_id);</span>
+<span class="nc" id="L65">        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();</span>
+<span class="nc" id="L66">        Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))</span>
+<span class="nc" id="L67">                .setApplicationName(APPLICATION_NAME)</span>
+<span class="nc" id="L68">                .build();</span>
+
+<span class="nc" id="L70">        String user = &quot;me&quot;;</span>
+<span class="nc" id="L71">        ListLabelsResponse listResponse = service.users().labels().list(user).execute();</span>
+<span class="nc" id="L72">        List&lt;com.google.api.services.gmail.model.Label&gt; labels = listResponse.getLabels();</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (labels.isEmpty()) {</span>
+<span class="nc" id="L74">            System.out.println(&quot;No labels found.&quot;);</span>
+        } else {
+<span class="nc" id="L76">            System.out.println(&quot;Labels:&quot;);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">            for (com.google.api.services.gmail.model.Label label : labels) {</span>
+<span class="nc" id="L78">                System.out.printf(&quot;- %s\n&quot;, label.getName());</span>
+<span class="nc" id="L79">            }</span>
+        }
+        
+        try {
+<span class="nc" id="L83">   		MimeMessage myMail = createEmail(email_receiver_id, &quot;citi.fxlm.scrum@gmail.com&quot;, email_subject,email_message);</span>
+<span class="nc" id="L84">			sendMessage(service,&quot;me&quot;,myMail);</span>
+<span class="nc" id="L85">			LoggerMain.logger.info(&quot;Mailing - &quot;+email_receiver_id);</span>
+<span class="nc" id="L86">		} catch (MessagingException e) {</span>
+<span class="nc" id="L87">			LoggerMain.logger.error(e+&quot;&quot;);</span>
+<span class="nc" id="L88">			e.printStackTrace();</span>
+<span class="nc" id="L89">		}</span>
+<span class="nc" id="L90">    }</span>
+    
+    
+    public MimeMessage createEmail(String to, String from, String subject, String bodyText)
+			throws MessagingException {
+<span class="nc" id="L95">		Properties props = new Properties();</span>
+<span class="nc" id="L96">		Session session = Session.getDefaultInstance(props, null);</span>
+
+<span class="nc" id="L98">		MimeMessage email = new MimeMessage(session);</span>
+
+<span class="nc" id="L100">		email.setFrom(new InternetAddress(from));</span>
+<span class="nc" id="L101">		email.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));</span>
+<span class="nc" id="L102">		email.setSubject(subject);</span>
+<span class="nc" id="L103">		email.setText(bodyText);</span>
+<span class="nc" id="L104">		return email;</span>
+	}
+
+	public Message createMessageWithEmail(MimeMessage emailContent) throws MessagingException, IOException {
+<span class="nc" id="L108">		ByteArrayOutputStream buffer = new ByteArrayOutputStream();</span>
+<span class="nc" id="L109">		emailContent.writeTo(buffer);</span>
+<span class="nc" id="L110">		byte[] bytes = buffer.toByteArray();</span>
+<span class="nc" id="L111">		String encodedEmail = Base64.encodeBase64URLSafeString(bytes);</span>
+<span class="nc" id="L112">		Message message = new Message();</span>
+<span class="nc" id="L113">		message.setRaw(encodedEmail);</span>
+<span class="nc" id="L114">		return message;</span>
+	}
+
+	public Message sendMessage(Gmail service, String userId, MimeMessage emailContent)
+			throws MessagingException, IOException {
+<span class="nc" id="L119">		Message message = createMessageWithEmail(emailContent);</span>
+<span class="nc" id="L120">		message = service.users().messages().send(userId, message).execute();</span>
+<span class="nc" id="L121">		return message;</span>
+	}
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

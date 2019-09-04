@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScrumController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">demothymeleaf</a> &gt; <a href="index.source.html" class="el_package">com.scrum</a> &gt; <span class="el_source">ScrumController.java</span></div><h1>ScrumController.java</h1><pre class="source lang-java linenums">package com.scrum;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.scrum.business.Employee;
+import com.scrum.business.Task;
+import com.scrum.log.LoggerMain;
+import com.scrum.mailer.MailGenerator;
+import com.scrum.mailer.Mailer;
+import com.scrum.repositories.EmployeeRepository;
+import com.scrum.repositories.LoginRepository;
+import com.scrum.repositories.TaskRepository;
+
+@Controller
+<span class="fc" id="L28">public class ScrumController {</span>
+
+	@Autowired
+	TaskRepository taskRepo;
+
+	@Autowired
+	EmployeeRepository empRepo;
+
+	@Autowired
+	LoginRepository logRepo;
+
+	/*
+	 * Function Name : landingPage 
+	 * Purpose : Redirects Get mappings to login page
+	 * Input : - 
+	 * Return : String mapping to login page
+	 */
+	@GetMapping(&quot;/&quot;)
+	public String landingPage() {
+<span class="fc" id="L47">		LoggerMain.logger.info(&quot;Login page called&quot;);</span>
+<span class="fc" id="L48">		return &quot;login&quot;;</span>
+	}
+
+	/*
+	 * Function Name : landingPagePost Purpose : Redirects Post mappings to login
+	 * and dashboard page Input : Model, request objects : type hidden html object
+	 * value to redirect to correct page Return : String mapping to multiple pages
+	 * page
+	 */
+	@PostMapping(&quot;/&quot;)
+	public String landingPagePost(HttpServletRequest request, Model model,
+			@RequestParam(required = false) String type) {
+
+<span class="nc bnc" id="L61" title="All 2 branches missed.">		if (&quot;sendMail&quot;.equals(type)) {</span>
+<span class="nc" id="L62">			return submitMail(request, model);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">		} else if (&quot;modify&quot;.equals(type)) {</span>
+<span class="nc" id="L64">			return modifyTask(request, model);</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">		}else if (&quot;addtask&quot;.equals(type)) {</span>
+<span class="nc" id="L66">			return addTask(request, model);</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">		}else if (&quot;showEmployee&quot;.equals(type)) {</span>
+<span class="nc" id="L68">			return employeeDashboard(request, model);</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">		}else if (&quot;addtasks&quot;.equals(type)) {</span>
+<span class="nc" id="L70">			return addTasks(request, model);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">		} else if (&quot;editpage&quot;.equals(type)) {</span>
+<span class="nc" id="L72">			return addMembers(request, model);</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">		} else if (&quot;dashboard&quot;.equals(type)) {</span>
+<span class="nc" id="L74">			return dailyUpdateScreenDisplay(request, model);</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">		} else if (&quot;save&quot;.equals(type)) {</span>
+<span class="nc" id="L76">			return taskSaveHandler(request, model);</span>
+		} else {
+<span class="nc" id="L78">			return loginCheck(request, model);</span>
+		}
+	}
+	
+	@RequestMapping(&quot;/employeedashboard&quot;)
+	private String employeeDashboard(HttpServletRequest request, Model model) {
+<span class="fc" id="L84">		String username = (String) request.getSession().getAttribute(&quot;username&quot;);</span>
+<span class="fc" id="L85">		System.out.println(&quot;Hello&quot;);</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">		if (username == null) {</span>
+<span class="fc" id="L87">			return &quot;login&quot;;</span>
+		} else {
+<span class="nc" id="L89">			LoggerMain.logger.info(&quot;Task addition requested&quot;);</span>
+<span class="nc" id="L90">			model.addAttribute(&quot;employeelist&quot;, empRepo.allEmployee(username));</span>
+<span class="nc" id="L91">			return &quot;dailyupdatememberscreen&quot;;</span>
+		}
+	}
+
+	private String modifyTask(HttpServletRequest request, Model model) {
+<span class="nc" id="L96">		String username = (String) request.getSession().getAttribute(&quot;username&quot;);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (username == null) {</span>
+<span class="nc" id="L98">			return &quot;login&quot;;</span>
+		} else {
+<span class="nc" id="L100">			Task task = new Task(request.getParameter(&quot;jira_no&quot;), &quot;&quot;, request.getParameter(&quot;owner&quot;), &quot;2019-12-12&quot;,</span>
+					&quot;2019-12-12&quot;, &quot;&quot;, &quot;&quot;);
+<span class="nc" id="L102">			taskRepo.modifyTaskOwner(task);</span>
+		}
+
+<span class="nc" id="L105">		return modifyTasks(request, model);</span>
+	}
+
+	private String addTask(HttpServletRequest request, Model model) {
+<span class="nc" id="L109">		String username = (String) request.getSession().getAttribute(&quot;username&quot;);</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (username == null) {</span>
+<span class="nc" id="L111">			return &quot;login&quot;;</span>
+		} else {
+<span class="nc" id="L113">			Task task = new Task(request.getParameter(&quot;jira_no&quot;), request.getParameter(&quot;task_name&quot;),</span>
+<span class="nc" id="L114">					request.getParameter(&quot;owner&quot;), request.getParameter(&quot;start_date&quot;), request.getParameter(&quot;end_date&quot;),</span>
+<span class="nc" id="L115">					request.getParameter(&quot;task_status&quot;), request.getParameter(&quot;update_space&quot;));</span>
+<span class="nc" id="L116">			taskRepo.addTask(task);</span>
+
+		}
+<span class="nc" id="L119">		return addTasks(request, model);</span>
+	}
+
+	/*
+	 * Function Name : dailyUpdateScreenDisplay Purpose : Redirects dashboard page
+	 * Input : Model object Return : String mapping to dashboard page
+	 */
+	@RequestMapping(&quot;/dashboard&quot;)
+	public String dailyUpdateScreenDisplay(HttpServletRequest request, Model model) {
+		String username;
+<span class="fc" id="L129">		username = (String) request.getSession().getAttribute(&quot;username&quot;);</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">		if (username == null) {</span>
+<span class="fc" id="L131">			return &quot;login&quot;;</span>
+		} else {
+<span class="nc" id="L133">			LoggerMain.logger.info(&quot;Dashboard page called&quot;);</span>
+<span class="nc" id="L134">			List&lt;Task&gt; tasks = taskRepo.allTasks(username);</span>
+<span class="nc" id="L135">			model.addAttribute(&quot;tasks&quot;, tasks);</span>
+<span class="nc" id="L136">			model.addAttribute(&quot;taskcount&quot;, tasks.size());</span>
+<span class="nc" id="L137">			model.addAttribute(&quot;members&quot;, empRepo.getEmployeeNames(tasks));</span>
+<span class="nc" id="L138">			model.addAttribute(&quot;deadlinetaskcount&quot;, taskRepo.getDeadlineTasksCount(tasks));</span>
+<span class="nc" id="L139">			model.addAttribute(&quot;todaytaskcount&quot;, taskRepo.getTodayTasksCount(tasks));</span>
+<span class="nc" id="L140">			return &quot;dailyupdatecapturescreen&quot;;</span>
+		}
+	}
+
+	/*
+	 * Function Name : addtasks Purpose : Redirects Add Tasks page Input : Model
+	 * object Return : String mapping to Add Tasks page
+	 */
+	@RequestMapping(&quot;/addtasks&quot;)
+	String addTasks(HttpServletRequest request, Model model) {
+<span class="fc" id="L150">		String username = (String) request.getSession().getAttribute(&quot;username&quot;);</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">		if (username == null) {</span>
+<span class="fc" id="L152">			return &quot;login&quot;;</span>
+		} else {
+<span class="nc" id="L154">			LoggerMain.logger.info(&quot;Task addition requested&quot;);</span>
+<span class="nc" id="L155">			model.addAttribute(&quot;employeelist&quot;, empRepo.allEmployee(username));</span>
+<span class="nc" id="L156">			return &quot;addtasks&quot;;</span>
+		}
+	}
+
+	/*
+	 * Function Name : modifyTasks Purpose : Redirects Modify Tasks page Input :
+	 * Model object Return : String mapping to Modify Tasks page
+	 */
+	@GetMapping(&quot;/modify&quot;)
+	String modifyTasks(HttpServletRequest request, Model model) {
+<span class="fc" id="L166">		String username = (String) request.getSession().getAttribute(&quot;username&quot;);</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">		if (username == null) {</span>
+<span class="fc" id="L168">			return &quot;login&quot;;</span>
+		} else {
+<span class="nc" id="L170">			LoggerMain.logger.info(&quot;Task modification requested&quot;);</span>
+<span class="nc" id="L171">			model.addAttribute(&quot;tasks&quot;, taskRepo.allTasks(username));</span>
+<span class="nc" id="L172">			model.addAttribute(&quot;employeelist&quot;, empRepo.allEmployee(username));</span>
+<span class="nc" id="L173">			return &quot;modify&quot;;</span>
+		}
+	}
+
+	/*
+	 * Function Name : modifyTaskTaskData Purpose : Asynchronously loads task data
+	 * onto modify page - AJAX Input : Requested task id Return : JSON object of
+	 * required task
+	 */
+	@GetMapping(&quot;/getTaskDetails&quot;)
+	@ResponseBody
+	public Task modifyTasksTaskData(HttpServletRequest request, @RequestParam String task_id) {
+<span class="fc" id="L185">		String username = (String) request.getSession().getAttribute(&quot;username&quot;);</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">		if (username != null) {</span>
+<span class="nc" id="L187">			LoggerMain.logger.info(&quot;Task &quot; + task_id + &quot; loaded for modification&quot;);</span>
+<span class="nc" id="L188">			return taskRepo.getTaskById(task_id);</span>
+		}
+		
+<span class="fc" id="L191">		return null;</span>
+		
+	}
+
+	/*
+	 * Function Name : addMembers Purpose : Redirects to Add Members page Input :
+	 * Model object Return : String mapping to Add Members page
+	 */
+	@GetMapping(&quot;/addmembers&quot;)
+	public String addMembers(HttpServletRequest request, Model model) {
+<span class="fc" id="L201">		String username = (String) request.getSession().getAttribute(&quot;username&quot;);</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">		if (username == null) {</span>
+<span class="fc" id="L203">			return &quot;login&quot;;</span>
+		} else {
+<span class="nc" id="L205">			LoggerMain.logger.info(&quot;Member addition requested&quot;);</span>
+<span class="nc" id="L206">			model.addAttribute(&quot;managerlist&quot;, empRepo.specificEmployees(&quot;Manager&quot;));</span>
+<span class="nc" id="L207">			return &quot;addmembers&quot;;</span>
+		}
+	}
+
+	/*
+	 * Function Name : addMembersPost Purpose : Redirects to Add Members page after
+	 * saving the passed new employee Input : Model object Return : String mapping
+	 * to Add Members page
+	 */
+	@PostMapping(&quot;/addmembers&quot;)
+	public String addMembersPost(HttpServletRequest request, Model model, @RequestParam String SOEID,
+			@RequestParam String name, @RequestParam String scrum_master, @RequestParam String role) {
+<span class="nc" id="L219">		String username = (String) request.getSession().getAttribute(&quot;username&quot;);</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (username == null) {</span>
+<span class="nc" id="L221">			return &quot;login&quot;;</span>
+		} else {
+<span class="nc" id="L223">			Employee employee = new Employee(name, SOEID, role, scrum_master, username, &quot;1&quot;);</span>
+<span class="nc" id="L224">			empRepo.addEmployee(employee);</span>
+<span class="nc" id="L225">			LoggerMain.logger.info(&quot;New employee &quot; + name + &quot; SOEID : &quot; + SOEID + &quot; added!&quot;);</span>
+<span class="nc" id="L226">			return addMembers(request, model);</span>
+		}
+	}
+
+	/*
+	 * Function Name : submitMail Purpose : Sends email to all registered users with
+	 * summary - TODO summary Input : HTTPRequest object, Model object Return :
+	 * String mapping to login page
+	 */
+	public String submitMail(HttpServletRequest request, Model model) {
+<span class="nc" id="L236">		String username = (String) request.getSession().getAttribute(&quot;username&quot;);</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		if (username == null) {</span>
+<span class="nc" id="L238">			return &quot;login&quot;;</span>
+		} else {
+<span class="nc" id="L240">			List&lt;String&gt; emailId = empRepo.getMailIds();</span>
+<span class="nc" id="L241">			Mailer mailer = new Mailer();</span>
+<span class="nc" id="L242">			SimpleDateFormat formatter = new SimpleDateFormat(&quot;E d, MMMM 'at' HH:mm z&quot;);</span>
+<span class="nc" id="L243">			String dateString = formatter.format(new Date(System.currentTimeMillis()));</span>
+<span class="nc" id="L244">			String message = MailGenerator.generateSummary(username);</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">			for (String email : emailId) {</span>
+
+				try {
+<span class="nc" id="L248">					mailer.sendMail(email, &quot;Scrum summary - &quot; + dateString, message);</span>
+<span class="nc" id="L249">				} catch (Exception e) {</span>
+<span class="nc" id="L250">					LoggerMain.logger.warn(&quot;Exception &quot; + e + &quot; while sending mail to &quot; + email);</span>
+<span class="nc" id="L251">				}</span>
+<span class="nc" id="L252">			}</span>
+
+<span class="nc" id="L254">			model.addAttribute(&quot;Error&quot;, &quot;Session Closed&quot;);</span>
+<span class="nc" id="L255">			return logout(request, model);</span>
+		}
+	}
+
+	/*
+	 * Function Name : loginCheck Purpose : Validated user login Input : HTTPRequest
+	 * object, Model object Return : String mapping to login page if fail else maps
+	 * to dashboard
+	 */
+	public String loginCheck(HttpServletRequest request, Model model) {
+<span class="nc" id="L265">		String username = request.getParameter(&quot;username&quot;);</span>
+<span class="nc" id="L266">		String password = request.getParameter(&quot;password&quot;);</span>
+<span class="nc" id="L267">		LoggerMain.logger.info(&quot;Attepting login username : &quot; + username);</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">		if (logRepo.verifyUser(username, password)) {</span>
+<span class="nc" id="L269">			LoggerMain.logger.info(&quot;Login success&quot;);</span>
+<span class="nc" id="L270">			request.getSession().setAttribute(&quot;username&quot;, username);</span>
+<span class="nc" id="L271">			return dailyUpdateScreenDisplay(request, model);</span>
+		} else {
+<span class="nc" id="L273">			LoggerMain.logger.info(&quot;Login failed!&quot;);</span>
+<span class="nc" id="L274">			model.addAttribute(&quot;Error&quot;, &quot;Wrong credentials&quot;);</span>
+<span class="nc" id="L275">			return &quot;login&quot;;</span>
+		}
+	}
+
+	/*
+	 * Function Name : taskSavveHandler Purpose : Saves updates to tasks Input :
+	 * HTTPRequest object, Model object Return : String mapping to dashboard page
+	 */
+	@RequestMapping(&quot;/save&quot;)
+	String taskSaveHandler(HttpServletRequest request, Model model) {
+<span class="fc" id="L285">		String username = (String) request.getSession().getAttribute(&quot;username&quot;);</span>
+<span class="pc bpc" id="L286" title="1 of 2 branches missed.">		if (username == null) {</span>
+<span class="fc" id="L287">			return &quot;login&quot;;</span>
+		} else {
+<span class="nc" id="L289">			Date start_date = Date.valueOf(&quot;2019-09-18&quot;); // dummy date value</span>
+<span class="nc" id="L290">			Date end_date = Date.valueOf(request.getParameter(&quot;end_date&quot;));</span>
+<span class="nc" id="L291">			Task t = new Task(request.getParameter(&quot;jira_Number&quot;), &quot;&quot;, request.getParameter(&quot;owner&quot;), start_date,</span>
+<span class="nc" id="L292">					end_date, request.getParameter(&quot;task_status&quot;), request.getParameter(&quot;update_space&quot;));</span>
+<span class="nc" id="L293">			taskRepo.saveTask(t);</span>
+<span class="nc" id="L294">			return dailyUpdateScreenDisplay(request, model);</span>
+		}
+	}
+
+	/*
+	 * Function Name : logout Purpose : logout Input : Return :
+	 */
+	@RequestMapping(&quot;/logout&quot;)
+	String logout(HttpServletRequest request, Model model) {
+<span class="fc" id="L303">		request.getSession().setAttribute(&quot;username&quot;, null);</span>
+<span class="fc" id="L304">		return &quot;login&quot;;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

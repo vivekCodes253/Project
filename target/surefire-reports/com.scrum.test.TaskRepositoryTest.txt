@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.scrum.test.TaskRepositoryTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s - in com.scrum.test.TaskRepositoryTest

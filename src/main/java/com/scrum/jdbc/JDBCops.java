@@ -40,7 +40,7 @@ public class JDBCops implements TasksData {
 			cn = DriverManager.getConnection(CONNECTION_URL, USER_ID, PASSWORD);
 			st = cn.createStatement();
 		} catch (Exception e) {
-			LoggerMain.logger.error(e);
+			LoggerMain.logger.error(e+"");
 		}
 	}
 
@@ -51,7 +51,7 @@ public class JDBCops implements TasksData {
 					cn.close();
 			} catch (Exception ex) {
 				System.out.println(ex.getMessage());
-				LoggerMain.logger.error(ex);
+				LoggerMain.logger.error(ex+"");
 			}
 		}
 	}
@@ -76,7 +76,7 @@ public class JDBCops implements TasksData {
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -101,7 +101,7 @@ public class JDBCops implements TasksData {
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -125,7 +125,7 @@ public class JDBCops implements TasksData {
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -149,7 +149,7 @@ public class JDBCops implements TasksData {
 
 			st.executeUpdate();
 		} catch (Exception ex) {
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		}
 	}
 
@@ -169,7 +169,7 @@ public class JDBCops implements TasksData {
 			return (noOfResults > 0);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -189,7 +189,7 @@ public class JDBCops implements TasksData {
 					rs.getString(6), rs.getString(7)));
 
 		} catch (Exception ex) {
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -236,7 +236,7 @@ public class JDBCops implements TasksData {
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}
@@ -253,7 +253,7 @@ public class JDBCops implements TasksData {
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 			return "";
 		} finally {
 			closeConnection();
@@ -280,7 +280,7 @@ public class JDBCops implements TasksData {
 				st.executeUpdate();
 			}
 		} catch (Exception ex) {
-			LoggerMain.logger.error(ex);
+			LoggerMain.logger.error(ex+"");
 		} finally {
 			closeConnection();
 		}

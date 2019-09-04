@@ -5,16 +5,17 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.log4j.BasicConfigurator;
 
 public class LoggerMain {
-	public static Logger logger = Logger.getLogger(LoggerMain.class);
+	public static Logger logger = LoggerFactory.getLogger(LoggerMain.class);
 	static final String LOG_PROPERTIES_FILE = "log4j.properties";
 
 	public LoggerMain() {
 		BasicConfigurator.configure();
-		initializeLogger();
+		//initializeLogger();
 	}
 
 	private static void initializeLogger() {
