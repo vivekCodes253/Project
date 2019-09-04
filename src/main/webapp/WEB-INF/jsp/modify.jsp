@@ -163,7 +163,10 @@ function update(name) {
 </script>
 
 </script>
-  
+  <style>
+.has-error .help-block{
+color: red;
+}</style>
 
 </head>
 

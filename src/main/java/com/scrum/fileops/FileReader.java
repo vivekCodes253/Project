@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.scrum.business.Task;
+import com.scrum.log.LoggerMain;
 
 public class FileReader {
 
@@ -14,9 +15,11 @@ public class FileReader {
 		String fileData = fileread(filePath);
 		String[] elements = fileData.split(",");
 		for (int i = 0; i < elements.length;) {
+			LoggerMain.logger.info("Adding task "+ elements[i + 1]+" Jira no "+ elements[i]+" from "+filePath);
 			taskList.add(new Task(elements[i], elements[i + 1], elements[i + 2], elements[i + 3], elements[i + 4],
 					elements[i + 5], elements[i + 6]));
 			i += 7;
+			
 		}
 
 		return taskList;

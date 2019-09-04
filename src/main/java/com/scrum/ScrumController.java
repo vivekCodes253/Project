@@ -78,6 +78,7 @@ public class ScrumController {
 		} else if ("save".equals(type)) {
 			return taskSaveHandler(request, model);
 		} else {
+			//System.out.println("Are we here");
 			return loginCheck(request, model);
 		}
 	}

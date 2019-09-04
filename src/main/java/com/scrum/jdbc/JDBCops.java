@@ -70,6 +70,7 @@ public class JDBCops implements TasksData {
 			rs = cStmt.executeQuery();
 			System.out.println("Callable statement");
 			while (rs.next()) {
+				LoggerMain.logger.info("Retrieving task "+ rs.getString(2)+ " from database" );
 				Tasks.add(new Task(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
 						rs.getString(6), rs.getString(7)));
 			}
@@ -93,9 +94,9 @@ public class JDBCops implements TasksData {
 					"SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees WHERE manager_soeid='"
 							+ username + "'");
 			while (rs.next()) {
+				LoggerMain.logger.info("Retrieving employee details "+ rs.getString(2)+ " from database" );
 				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6)));
-				System.out.println("Hello employee " + rs.getString(1));
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -116,6 +117,7 @@ public class JDBCops implements TasksData {
 					"SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees where role = '"
 							+ type + "'");
 			while (rs.next()) {
+				LoggerMain.logger.info("Retrieving employee details "+ rs.getString(2)+ " from database" );
 				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6)));
 			}
@@ -133,6 +135,8 @@ public class JDBCops implements TasksData {
 	public void addEmployee(Employee employee) {
 		try {
 			init();
+			LoggerMain.logger.info("Adding employee "+ employee.getName()+" "+employee.getSoeid()+ " to database" );
+			
 			PreparedStatement st = cn
 					.prepareStatement("insert into Employees(soeid,name,role,Sec_scrum,manager_soeid,project_id)  "
 							+ "values(?,?,?,?,?,?)");
@@ -153,6 +157,8 @@ public class JDBCops implements TasksData {
 	public boolean verifyUser(String username, String hash) {
 		try {
 			init();
+			
+			
 			PreparedStatement st = cn
 					.prepareStatement("SELECT username,password FROM login WHERE username=? and password=?");
 			st.setString(1, username);
