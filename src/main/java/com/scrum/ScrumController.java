@@ -1,8 +1,11 @@
 package com.scrum;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -60,7 +63,9 @@ public class ScrumController {
 
 		if ("sendMail".equals(type)) {
 			return submitMail(request, model);
-		} else if ("modify".equals(type)) {
+		}else if("logout".equals(type)) {
+			return logout(request,model);
+		}else if ("modify".equals(type)) {
 			return modifyTask(request, model);
 		}else if ("addtask".equals(type)) {
 			return addTask(request, model);
@@ -75,6 +80,7 @@ public class ScrumController {
 		} else if ("save".equals(type)) {
 			return taskSaveHandler(request, model);
 		} else {
+			//System.out.println("Are we here");
 			return loginCheck(request, model);
 		}
 	}
@@ -113,7 +119,8 @@ public class ScrumController {
 			Task task = new Task(request.getParameter("jira_no"), request.getParameter("task_name"),
 					request.getParameter("owner"), request.getParameter("start_date"), request.getParameter("end_date"),
 					request.getParameter("task_status"), request.getParameter("update_space"));
-			taskRepo.addTask(task);
+			String status = taskRepo.addTask(task);
+			model.addAttribute("Status",status);
 
 		}
 		return addTasks(request, model);
@@ -214,15 +221,22 @@ public class ScrumController {
 	 * to Add Members page
 	 */
 	@PostMapping("/addmembers")
-	public String addMembersPost(HttpServletRequest request, Model model, @RequestParam String SOEID,
+	public String addMembersPost(HttpServletRequest request, Model model, @RequestParam String soeid,
 			@RequestParam String name, @RequestParam String scrum_master, @RequestParam String role) {
 		String username = (String) request.getSession().getAttribute("username");
 		if (username == null) {
 			return "login";
 		} else {
-			Employee employee = new Employee(name, SOEID, role, scrum_master, username, "1");
-			empRepo.addEmployee(employee);
-			LoggerMain.logger.info("New employee " + name + " SOEID : " + SOEID + " added!");
+			Employee employee = new Employee(name, soeid, role, scrum_master, username, "1");
+			String result = empRepo.addEmployee(employee);
+			if("Success".equals(result)) {
+				LoggerMain.logger.info("New employee " + name + " soeid : " + soeid + " added!");
+				model.addAttribute("Status","Successfully added "+name);
+			}
+			else {
+				model.addAttribute("Status","ID Already exists");
+						
+			}
 			return addMembers(request, model);
 		}
 	}
@@ -237,11 +251,13 @@ public class ScrumController {
 		if (username == null) {
 			return "login";
 		} else {
+			Map<String, String[]> attendees = request.getParameterMap();
 			List<String> emailId = empRepo.getMailIds();
 			Mailer mailer = new Mailer();
 			SimpleDateFormat formatter = new SimpleDateFormat("E d, MMMM 'at' HH:mm z");
 			String dateString = formatter.format(new Date(System.currentTimeMillis()));
-			String message = MailGenerator.generateSummary(username);
+			String message = MailGenerator.generateSummary(username,attendees,dateString,"Adeeb Tahir"); //todo -> get scrum master name
+			
 			for (String email : emailId) {
 
 				try {
@@ -250,9 +266,9 @@ public class ScrumController {
 					LoggerMain.logger.warn("Exception " + e + " while sending mail to " + email);
 				}
 			}
-
+			
 			model.addAttribute("Error", "Session Closed");
-			return logout(request, model);
+			return dailyUpdateScreenDisplay(request, model);// logout(request, model);
 		}
 	}
 
@@ -301,6 +317,7 @@ public class ScrumController {
 	@RequestMapping("/logout")
 	String logout(HttpServletRequest request, Model model) {
 		request.getSession().setAttribute("username", null);
+		model.addAttribute("Error", "Session Closed");
 		return "login";
 	}
 

@@ -77,10 +77,10 @@ public class TaskRepository {
 		return count;
 	}
 
-	public void addTask(Task task) {
+	public String addTask(Task task) {
 		List<Task> tasks = new ArrayList<>();
 		tasks.add(task);
-		jdbctasks.addTasks(tasks);
+		return jdbctasks.addTasks(tasks);
 
 	}
 

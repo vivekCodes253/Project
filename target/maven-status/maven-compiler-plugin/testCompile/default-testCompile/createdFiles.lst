@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 com\scrum\repositories\EmployeeRepositoryTest.class
 com\scrum\repositories\LoginRepositoryTest.class
 com\scrum\business\EmployeeTest.class
@@ -5,3 +6,8 @@ com\scrum\repositories\TaskRepositoryTest.class
 com\scrum\business\TaskTest.class
 com\scrum\ScrumControllerTest.class
 com\scrum\business\LoginTest.class
+=======
+com/scrum/repositories/LoginRepositoryTest.class
+com/scrum/repositories/TaskRepositoryTest.class
+com/scrum/repositories/EmployeeRepositoryTest.class
+>>>>>>> 8f558d17fde2928172922e76f1c837d390826408

@@ -11,7 +11,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin - Dashboard</title>
+  <title>Scrum Master</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -46,7 +46,7 @@
         },
         fields: {
           template: {
-            message: 'The username is not valid',
+            message: 'The SOEID is not valid',
             validators: {
               notEmpty: {
                 message: 'Taskname required!'
@@ -62,65 +62,43 @@
               }
             }
           },
-          task_name: {
+          soeid: {
+              message: 'The SOEID is not valid',
+              validators: {
+                notEmpty: {
+                  message: 'SOEID required!'
+                }
+              }
+            },
+            task_status: {
+                message: 'The task_status is not valid',
+                validators: {
+                  notEmpty: {
+                    message: 'Task status required!'
+                  }
+                }
+              },
+             role: {
+                  message: 'The Role is not valid',
+                  validators: {
+                    notEmpty: {
+                      message: 'Role required!'
+                    }
+                  }
+                },
+                scrum_master: {
+                    message: 'The Scrum Master Status is not valid',
+                    validators: {
+                      notEmpty: {
+                        message: 'Scrum Master Status required!'
+                      }
+                    }
+                  },
+          name: {
             message: 'The name is not valid',
             validators: {
               notEmpty: {
                 message: 'Taskname required!'
-              }
-            }
-          },
-          start_date: {
-            message: 'The date is not valid',
-            validators: {
-              notEmpty: {
-                message: 'Start date required!'
-              }
-            }
-          },
-          end_date: {
-            message: 'The date is not valid',
-            validators: {
-              notEmpty: {
-                message: 'End date required!'
-              }
-
-            }
-          },
-          update_space: {
-            message: 'The update is not valid',
-            validators: {
-              notEmpty: {
-                message: 'Update required!'
-              },
-
-            }
-          },
-          task_phase: {
-            message: 'The task phase is not valid',
-            validators: {
-              notEmpty: {
-                message: 'Task phase required!'
-              }
-
-            }
-          },
-          employee: {
-            message: 'The username is not valid',
-            validators: {
-              notEmpty: {
-                message: 'Employee name required!'
-              }
-
-            }
-          },
-          email: {
-            validators: {
-              notEmpty: {
-                message: 'The email is required and cannot be empty'
-              },
-              emailAddress: {
-                message: 'The input is not a valid email address'
               }
             }
           }
@@ -128,7 +106,10 @@
       });
     });
   </script>
-
+<style>
+.has-error .help-block{
+color: red;
+}</style>
 
 </head>
 
@@ -156,6 +137,7 @@
 
         </form>
       </li>
+      
       <li class="nav-item active">
         <form id="editForm" action="/" method="post">
           <input type="hidden" name="type" value="editpage" />
@@ -164,6 +146,7 @@
             <span>Edit Pages</span>
           </a>
         </form>
+        </li>
       
        <li class="nav-item">
         <form id="taskForm" action="/" method="post">
@@ -180,9 +163,11 @@
           <a class="nav-link" href="#" onclick="document.getElementById('memberForm').submit();">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>-Add Member</span>
+            
+            
           </a>
         </form>
-      </li>
+      
       </li>
        <li class="nav-item">
         <form id="modifyForm" action="/" method="post">
@@ -190,6 +175,16 @@
           <a class="nav-link" href="#" onclick="document.getElementById('modifyForm').submit();">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>-Modify Task Owner</span>
+          </a>
+        </form>
+      </li>
+       <br><br><hr><br>
+       <li class="nav-item">
+        <form id="logoutForm" action="/" method="post">
+          <input type="hidden" name="type" value="logout" />
+          <a class="nav-link" href="#" onclick="document.getElementById('logoutForm').submit();">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>-Logout</span>
           </a>
         </form>
       </li>
@@ -209,13 +204,19 @@
 
 
         </ol>
+       
 
 
 
         <!-- Icon Cards-->
-
+       
+       
+		
+	
+        
 
         <div class="register">
+         
           <!-- <div class="container register"> -->
           <div class="row">
 
@@ -233,18 +234,19 @@
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                   <h3 class="register-heading">Add Members</h3>
-                  <form action="addmembers" method="POST">
+                  
+                  <form action="addmembers" method="POST" , class = "registerForm">
                     <div class="row register-form">
                       <div class="col-md-6">
 
                         <div class="form-group">
-                          <input name="SOEID" type="text" class="form-control" placeholder="SOEID" value="" />
+                          <input name="soeid" type="text" style="text-transform:uppercase"class="form-control" placeholder="SOEID" value="" />
                         </div>
                         <div class="form-group">
-                          <input name="name" type="text" class="form-control" placeholder="Name" value="" />
+                          <input name="name"  type="text" class="form-control" placeholder="Name" value="" />
                         </div>
+                        
                         <div class="form-group">
-
 
                         </div>
                         <div class="form-group"></div>
@@ -268,6 +270,7 @@
                             <option>DB Developer</option>
                             <option>Data Analyst</option>
                             <option>Manager</option>
+                            <option select = "selected">Developer</option>
                           </select>
                         </div>
                         <div class="form-group">
@@ -331,7 +334,7 @@
         <footer class="sticky-footer">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright � Your Website 2019</span>
+              <span>Copyright Your Website 2019</span>
             </div>
           </div>
         </footer>
@@ -344,5 +347,7 @@
 
 
 </body>
-
+	<c:if test="${not empty Status}">
+ 	 			 <script>alert("${Status}")</script>
+		</c:if>
 </html>

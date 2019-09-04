@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Training\Project\src\test\java\com\scrum\repositories\LoginRepositoryTest.java
 C:\Training\Project\src\test\java\com\scrum\repositories\EmployeeRepositoryTest.java
 C:\Training\Project\src\test\java\com\scrum\business\EmployeeTest.java
@@ -5,3 +6,11 @@ C:\Training\Project\src\test\java\com\scrum\business\TaskTest.java
 C:\Training\Project\src\test\java\com\scrum\ScrumControllerTest.java
 C:\Training\Project\src\test\java\com\scrum\repositories\TaskRepositoryTest.java
 C:\Training\Project\src\test\java\com\scrum\business\LoginTest.java
+=======
+C:\Citi Training\Project\src\test\java\com\scrum\business\EmployeeTest.java
+C:\Citi Training\Project\src\test\java\com\scrum\business\TaskTest.java
+C:\Citi Training\Project\src\test\java\com\scrum\repositories\LoginRepositoryTest.java
+C:\Citi Training\Project\src\test\java\com\scrum\repositories\TaskRepositoryTest.java
+C:\Citi Training\Project\src\test\java\com\scrum\repositories\EmployeeRepositoryTest.java
+C:\Citi Training\Project\src\test\java\com\scrum\business\LoginTest.java
+>>>>>>> 8f558d17fde2928172922e76f1c837d390826408

@@ -106,6 +106,10 @@ public class Task {
 		this.update_space = update_space;
 	}
 
+	public Task() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public String toString() {
 		return "Task [jira_Number=" + jira_Number + ", task_name=" + task_name + ", owner=" + owner + ", start_date="

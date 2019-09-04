@@ -11,7 +11,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin - Dashboard</title>
+ <title>Scrum Master</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -62,6 +62,14 @@
               }
             }
           },
+          jira_no: {
+              message: 'The jira Number is not valid',
+              validators: {
+                notEmpty: {
+                  message: 'Jira Number required!'
+                }
+              }
+            },
           task_name: {
             message: 'The name is not valid',
             validators: {
@@ -105,6 +113,14 @@
 
             }
           },
+          task_status: {
+              message: 'The task_status is not valid',
+              validators: {
+                notEmpty: {
+                  message: 'Task status required!'
+                }
+              }
+            },
           employee: {
             message: 'The username is not valid',
             validators: {
@@ -129,7 +145,10 @@
     });
   </script>
 
-
+<style>
+.has-error .help-block{
+color: red;
+}</style>
 </head>
 
 <body id="page-top">
@@ -191,6 +210,16 @@
           <a class="nav-link" href="#" onclick="document.getElementById('modifyForm').submit();">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>-Modify Task Owner</span>
+          </a>
+        </form>
+      </li>
+       <br><br><hr><br>
+       <li class="nav-item">
+        <form id="logoutForm" action="/" method="post">
+          <input type="hidden" name="type" value="logout" />
+          <a class="nav-link" href="#" onclick="document.getElementById('logoutForm').submit();">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>-Logout</span>
           </a>
         </form>
       </li>
@@ -347,7 +376,7 @@
         <footer class="sticky-footer">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright � Your Website 2019</span>
+              <span>Copyright  Your Website 2019</span>
             </div>
           </div>
         </footer>
@@ -360,5 +389,7 @@
 
 
 </body>
-
+<c:if test="${not empty Status}">
+ 	 			 <script>alert("${Status}")</script>
+		</c:if>
 </html>

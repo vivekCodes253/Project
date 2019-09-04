@@ -1,24 +1,4 @@
-try.js
-h
 
-Type
-Javascript
-Size
-3 KB (2,797 bytes)
-Storage used
-0 bytesOwned by
-Location
-select
-Owner
-hemanth subramanian
-Modified
-10:45 AM by hemanth subramanian
-Opened
-10:50 AM by me
-Created
-10:45 AM
-Add a description
-Viewers can download
 var x, i, j, selElmnt, a, b, c;
 /*look for any elements with the class "custom-select":*/
 x = document.getElementsByClassName("custom-select");

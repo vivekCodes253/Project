@@ -11,6 +11,10 @@ import java.util.List;
 import org.junit.Test;
 
 import com.scrum.business.Task;
+<<<<<<< HEAD
+=======
+import com.scrum.fileops.DateTimeOps;
+>>>>>>> 8f558d17fde2928172922e76f1c837d390826408
 import com.scrum.jdbc.JDBCops;
 
 
@@ -56,6 +60,21 @@ public class TaskRepositoryTest {
 
 	}
 
+<<<<<<< HEAD
+=======
+	public int getDeadlineTasksCountFromDate(List<Task> tasks, Date today) {
+		int count = 0;
+		Date date;
+
+		for (Task task : tasks) {
+			date = task.getEnd_date();
+			System.out.println(today + " " + date);
+			if (DateTimeOps.getDifferenceDays(today, date) < 4)
+				count++;
+		}
+		return count;
+	}
+>>>>>>> 8f558d17fde2928172922e76f1c837d390826408
 	@Test
 	public void test() {
 		MockitoAnnotations.initMocks(this);

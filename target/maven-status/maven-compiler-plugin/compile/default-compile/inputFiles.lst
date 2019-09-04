@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Training\Project\src\main\java\com\scrum\fileops\FileReader.java
 C:\Training\Project\src\main\java\com\scrum\business\Login.java
 C:\Training\Project\src\main\java\com\scrum\repositories\LoginRepository.java
@@ -13,3 +14,21 @@ C:\Training\Project\src\main\java\com\scrum\fileops\DateTimeOps.java
 C:\Training\Project\src\main\java\com\scrum\log\LoggerMain.java
 C:\Training\Project\src\main\java\com\scrum\repositories\EmployeeRepository.java
 C:\Training\Project\src\main\java\com\scrum\business\Employee.java
+=======
+C:\Citi Training\Project\src\main\java\com\scrum\business\Task.java
+C:\Citi Training\Project\src\main\java\com\scrum\repositories\EmployeeRepository.java
+C:\Citi Training\Project\src\main\java\com\scrum\repositories\LoginRepository.java
+C:\Citi Training\Project\src\main\java\com\scrum\fileops\DateTimeOps.java
+C:\Citi Training\Project\src\main\java\com\scrum\business\Employee.java
+C:\Citi Training\Project\src\main\java\com\scrum\fileops\ResourceAccess.java
+C:\Citi Training\Project\src\main\java\com\scrum\ScrumApplication.java
+C:\Citi Training\Project\src\main\java\com\scrum\mailer\MailGenerator.java
+C:\Citi Training\Project\src\main\java\com\scrum\log\LoggerMain.java
+C:\Citi Training\Project\src\main\java\com\scrum\jdbc\JDBCops.java
+C:\Citi Training\Project\src\main\java\com\scrum\ScrumController.java
+C:\Citi Training\Project\src\main\java\com\scrum\business\Login.java
+C:\Citi Training\Project\src\main\java\com\scrum\repositories\TaskRepository.java
+C:\Citi Training\Project\src\main\java\com\scrum\mailer\Mailer.java
+C:\Citi Training\Project\src\main\java\com\scrum\business\TasksData.java
+C:\Citi Training\Project\src\main\java\com\scrum\fileops\FileReader.java
+>>>>>>> 8f558d17fde2928172922e76f1c837d390826408

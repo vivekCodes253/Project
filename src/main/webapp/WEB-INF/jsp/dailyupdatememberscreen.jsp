@@ -10,7 +10,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin - Dashboard</title>
+  <title>Scrum Master</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -139,7 +139,7 @@ transform: scale(1.1,1.1);
 z-index: 3;
 font-weight:bold;
 background-color: #bbbbbb;
-filter:alpha(opacity=100);
+
 
 
 } button
@@ -251,6 +251,16 @@ filter:alpha(opacity=100);
           </a>
         </form>
       </li>
+       <br><br><hr><br>
+       <li class="nav-item">
+        <form id="logoutForm" action="/" method="post">
+          <input type="hidden" name="type" value="logout" />
+          <a class="nav-link" href="#" onclick="document.getElementById('logoutForm').submit();">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>-Logout</span>
+          </a>
+        </form>
+      </li>
     </ul>
 
 
@@ -284,18 +294,26 @@ filter:alpha(opacity=100);
             
           <div class="card-body">
             <div class="table-responsive">
+            <form action="/" method="POST">
+            <input type="hidden" name="type" value="sendMail"/>
             <table class="table table-bordered table-hover" name="dataTable"id="dataTable" width="100%" cellspacing="0">
 		   <tr>
 		    <th>Employee</th>
 			<th>Attended?</th>
+		
 		</tr>
 		<c:forEach var="e" items="${employeelist}" varStatus = "status">
 			<tr class="collapsed-row">
 			<td>${e.name} (${e.soeid})</td>
 				<td>
 					<div style="height:30%;width:auto" data-toggle="buttons">
-					  <label class="btn-sm btn-normal btn btn-secondary active">
-					    <input checked type="checkbox" name="${e.name}status" id="${e.name}check" autocomplete="off" style ="font-size: 50%" > Present
+					  <label class="btn-sm btn-success btn btn-secondary active">
+					    <input checked type="radio" name="${e.name}" id="${e.name}check" value="present" autocomplete="off" style ="font-size: 50%" > Present
+					  </label>
+					  
+				
+					  <label class="btn-sm btn-danger btn btn-secondary active">
+					    <input type="radio" name="${e.name}" id="${e.name}check" value="absent" autocomplete="off" style ="font-size: 50%" > N/A
 					  </label>
 					  
 					</div>
@@ -304,9 +322,9 @@ filter:alpha(opacity=100);
 				</tr>
 		</c:forEach>
 	</table>
-	 <form action="/" method="POST">
-	 <input type="hidden" name="type" value="sendMail" />
-	 	<input type="submit" class="btn btn-danger" value="Close Session & Submit">
+	 
+	  
+	 	<input type="submit" class="btn btn-danger" value="Submit">
 	 </form>
 	</div>
 	</div>
@@ -318,32 +336,7 @@ filter:alpha(opacity=100);
 		
 			
 
-	  <div id="formContent" call="modal-content" style="margin-left:40%;margin-top:15%">
-	  <span class="close" onclick="EditClose()">&times;</span>
-    <form action="/save" method = "POST" class="registerForm">
-    <h2>Update</h2>
-      <input type="text" id="jira_Number" class="fadeIn second" name="jira_Number" placeholder="Jira number" readonly>
-      <input type="text" id="owner" class="fadeIn third" name="owner" placeholder="Jira Owner" readonly>
-      <input type = "text" id = "update_space" class = "fadeIn fourth" name ="update_space" placeholder = "UpdateSpace" aria-rowspan="3" style="background-color:white">
-      <input type = "date" id = "end_date" class = "fadeIn fifth" name ="end_date" placeholder = "Ending Date" style="background-color:white">
-      <div >
-  <select id = "task_status" name="task_status" class = "fadeIn sixth custom-select" style="width:390px; text-align:center">
-  <option id="task_Status" value="" selected hidden></option>
-        <option value = "Requirement Analysis">Requirement Analysis</option>
-        <option value = "Feasibility study">Feasibility study</option>
-        <option value = "Development">Development</option>
-        <option value = "Unit Testing">Unit Testing</option>
-        <option value = "Integration Testing">Integration Testing</option>
-        <option value = "UAT Testing Coordination">UAT Testing Coordination</option>
-        <option value="Deployment Activity">Deployment Activity</option>
-        <option value="Post Release Activity">Post Release Activity</option>
-  </select>
-</div>
-      <input type="submit" class="fadeIn seventh mt-5" value="Submit">
-    </form>
-  </div>
-	
-	n>
+
 	
             
             	

@@ -26,7 +26,7 @@ public class JDBCops implements TasksData {
 	private final String USER_ID 			= "root";
 	private final String SCHEMA				= "scrum";
 	private final String PORT			 	= "3306";
-	private final String CONNECTION_URL 	= "jdbc:mysql://localhost:" + PORT + "/" + SCHEMA + "?useSSL="
+	private final String CONNECTION_URL 	= "jdbc:mysql://mysql:" + PORT + "/" + SCHEMA + "?useSSL="
 			+ "false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
 
 	private Connection cn;
@@ -71,6 +71,7 @@ public class JDBCops implements TasksData {
 			rs = cStmt.executeQuery();
 			System.out.println("Callable statement");
 			while (rs.next()) {
+				LoggerMain.logger.info("Retrieving task "+ rs.getString(2)+ " from database" );
 				Tasks.add(new Task(rs.getString(1), rs.getString(2), rs.getString(3), rs.getDate(4), rs.getDate(5),
 						rs.getString(6), rs.getString(7)));
 			}
@@ -95,9 +96,9 @@ public class JDBCops implements TasksData {
 					"SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees WHERE manager_soeid='"
 							+ username + "'");
 			while (rs.next()) {
+				LoggerMain.logger.info("Retrieving employee details "+ rs.getString(2)+ " from database" );
 				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6)));
-				System.out.println("Hello employee " + rs.getString(1));
 			}
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
@@ -119,6 +120,7 @@ public class JDBCops implements TasksData {
 					"SELECT name, soeid , role , sec_scrum , manager_soeid , project_id FROM employees where role = '"
 							+ type + "'");
 			while (rs.next()) {
+				LoggerMain.logger.info("Retrieving employee details "+ rs.getString(2)+ " from database" );
 				Employee.add(new Employee(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6)));
 				System.out.println("hello "+ rs.getString(1));
@@ -134,9 +136,11 @@ public class JDBCops implements TasksData {
 	}
 
 	@Override
-	public void addEmployee(Employee employee) {
+	public String addEmployee(Employee employee) {
 		try {
 			init();
+			LoggerMain.logger.info("Adding employee "+ employee.getName()+" "+employee.getSoeid()+ " to database" );
+			
 			PreparedStatement st = cn
 					.prepareStatement("insert into Employees(soeid,name,role,Sec_scrum,manager_soeid,project_id)  "
 							+ "values(?,?,?,?,?,?)");
@@ -148,15 +152,33 @@ public class JDBCops implements TasksData {
 			st.setString(6, employee.getProject_id());
 
 			st.executeUpdate();
+			if("Yes".equals(employee.getSecondary_scrum())) {
+				st= cn.prepareStatement("insert into login (username,password) values(?,?)");
+				st.setString(1, employee.getSoeid());
+				st.setString(2, "123");                      //todo get real password from table omce ,made
+				st.executeUpdate();
+			}
+		}
+		catch(java.sql.SQLIntegrityConstraintViolationException ex) {
+			LoggerMain.logger.error(ex+"");
+			return "Eser already exists";
 		} catch (Exception ex) {
 			LoggerMain.logger.error(ex+"");
+<<<<<<< HEAD
+=======
+			return "Error";
+			
+>>>>>>> 8f558d17fde2928172922e76f1c837d390826408
 		}
+		return "Success";
 	}
 
 	@Override
 	public boolean verifyUser(String username, String hash) {
 		try {
 			init();
+			
+			
 			PreparedStatement st = cn
 					.prepareStatement("SELECT username,password FROM login WHERE username=? and password=?");
 			st.setString(1, username);
@@ -261,7 +283,7 @@ public class JDBCops implements TasksData {
 		return "";
 	}
 
-	public void addTasks(List<Task> tasks) {
+	public String addTasks(List<Task> tasks) {
 		try {
 			init();
 			PreparedStatement st;
@@ -278,14 +300,24 @@ public class JDBCops implements TasksData {
 				st.setString(7, task.getUpdate_space());
 
 				st.executeUpdate();
+		
 			}
 		} catch (Exception ex) {
 			LoggerMain.logger.error(ex+"");
+<<<<<<< HEAD
+=======
+			return("Unable to add. Jira number may already exist");
+>>>>>>> 8f558d17fde2928172922e76f1c837d390826408
 		} finally {
 			closeConnection();
 		}
+		
+		//update Secondarysctum master if needed
+		
+		return "Succesfully added";
 
 	}
+	
 
 	public void modifyTaskOwner(Task task) {
 		System.out.println("Hell");

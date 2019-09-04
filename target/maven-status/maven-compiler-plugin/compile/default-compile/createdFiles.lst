@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 com\scrum\business\Employee.class
 com\scrum\log\LoggerMain.class
 com\scrum\fileops\FileReader.class
@@ -13,3 +14,6 @@ com\scrum\mailer\MailGenerator.class
 com\scrum\repositories\TaskRepository.class
 com\scrum\business\Login.class
 com\scrum\repositories\EmployeeRepository.class
+=======
+com/scrum/fileops/ResourceAccess.class
+>>>>>>> 8f558d17fde2928172922e76f1c837d390826408
