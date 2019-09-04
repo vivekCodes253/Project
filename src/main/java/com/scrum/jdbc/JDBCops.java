@@ -25,7 +25,7 @@ public class JDBCops implements TasksData {
 	private final String USER_ID 			= "root";
 	private final String SCHEMA				= "scrum";
 	private final String PORT			 	= "3306";
-	private final String CONNECTION_URL 	= "jdbc:mysql://localhost:" + PORT + "/" + SCHEMA + "?useSSL="
+	private final String CONNECTION_URL 	= "jdbc:mysql://mysql:" + PORT + "/" + SCHEMA + "?useSSL="
 			+ "false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
 
 	private Connection cn;
