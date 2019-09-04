@@ -1,16 +1,16 @@
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\business\Login.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\fileops\DateTimeOps.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\fileops\FileReader.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\log\LoggerMain.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\fileops\ResourceAccess.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\business\Employee.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\business\TasksData.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\repositories\LoginRepository.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\business\Task.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\ScrumController.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\repositories\EmployeeRepository.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\mailer\Mailer.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\ScrumApplication.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\jdbc\JDBCops.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\repositories\TaskRepository.java
-C:\Course\Java\Workspace\Project\src\main\java\com\scrum\mailer\MailGenerator.java
+C:\Citi Training\Project\src\main\java\com\scrum\business\Task.java
+C:\Citi Training\Project\src\main\java\com\scrum\repositories\EmployeeRepository.java
+C:\Citi Training\Project\src\main\java\com\scrum\repositories\LoginRepository.java
+C:\Citi Training\Project\src\main\java\com\scrum\fileops\DateTimeOps.java
+C:\Citi Training\Project\src\main\java\com\scrum\business\Employee.java
+C:\Citi Training\Project\src\main\java\com\scrum\fileops\ResourceAccess.java
+C:\Citi Training\Project\src\main\java\com\scrum\ScrumApplication.java
+C:\Citi Training\Project\src\main\java\com\scrum\mailer\MailGenerator.java
+C:\Citi Training\Project\src\main\java\com\scrum\log\LoggerMain.java
+C:\Citi Training\Project\src\main\java\com\scrum\jdbc\JDBCops.java
+C:\Citi Training\Project\src\main\java\com\scrum\ScrumController.java
+C:\Citi Training\Project\src\main\java\com\scrum\business\Login.java
+C:\Citi Training\Project\src\main\java\com\scrum\repositories\TaskRepository.java
+C:\Citi Training\Project\src\main\java\com\scrum\mailer\Mailer.java
+C:\Citi Training\Project\src\main\java\com\scrum\business\TasksData.java
+C:\Citi Training\Project\src\main\java\com\scrum\fileops\FileReader.java

@@ -1,0 +1,16 @@
+com\scrum\business\Employee.class
+com\scrum\fileops\FileReader.class
+com\scrum\business\TasksData.class
+com\scrum\ScrumApplication.class
+com\scrum\fileops\DateTimeOps.class
+com\scrum\repositories\LoginRepository.class
+com\scrum\mailer\Mailer.class
+com\scrum\repositories\TaskRepository.class
+com\scrum\repositories\EmployeeRepository.class
+com\scrum\log\LoggerMain.class
+com\scrum\jdbc\JDBCops.class
+com\scrum\business\Task.class
+com\scrum\ScrumController.class
+com\scrum\mailer\MailGenerator.class
+com\scrum\business\Login.class
+com\scrum\fileops\ResourceAccess.class
